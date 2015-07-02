@@ -11,11 +11,6 @@ buildscript {
 }
 
 apply {
-	plugin 'br.com.cams7.greeting'
 	plugin 'cpp'
 	plugin 'br.com.cams7.eclipse-cdt'
-}
-
-task greeting(type: br.com.cams7.plugin.GreetingTask) {
-    greeting = 'howdy!'
 }
