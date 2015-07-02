@@ -16,3 +16,7 @@ repo/
 .classpath
 .settings/
 bin/
+
+#Arquivo gerado na pasta 'docs'
+.~lock.*.docx#
+
