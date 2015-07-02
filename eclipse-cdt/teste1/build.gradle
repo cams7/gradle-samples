@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        maven {
+            url uri('../../repo')
+        }
+    }
+    dependencies {
+        classpath group: 'br.com.cams7.plugin', name: 'eclipse-cdt',
+				  version: '1.0-SNAPSHOT'
+    }
+}
+
+apply {
+	plugin 'br.com.cams7.greeting'
+	plugin 'cpp'
+	plugin 'br.com.cams7.eclipse-cdt'
+}
+
+task greeting(type: br.com.cams7.plugin.GreetingTask) {
+    greeting = 'howdy!'
+}
