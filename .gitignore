@@ -17,6 +17,9 @@ repo/
 .settings/
 bin/
 
+#Arquivo gerado pela task 'eclipseCDT' do plugin 'eclipse-cdt'
+.cproject
+
 #Arquivo gerado na pasta 'docs'
 .~lock.*.docx#
 
