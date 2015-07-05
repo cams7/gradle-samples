@@ -3,7 +3,6 @@
  */
 package br.com.cams7.plugin.model.module
 
-import groovy.util.Node
 
 /**
  * @author cams7

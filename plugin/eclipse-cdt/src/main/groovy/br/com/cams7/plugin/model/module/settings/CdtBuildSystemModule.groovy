@@ -5,7 +5,9 @@ package br.com.cams7.plugin.model.module.settings
 
 import static br.com.cams7.plugin.model.module.CdtBuildSystemModule.ATTR_CDTBUILDSYSTEM
 import static br.com.cams7.plugin.model.module.CdtBuildSystemModule.ATTR_VERSION
+import static br.com.cams7.plugin.model.module.SettingsModule.ATTR_ORG_ECLIPSE_CDT_CORE_SETTINGS
 import static br.com.cams7.plugin.model.module.SettingsModule.ATTR_RELEASE
+import static br.com.cams7.plugin.model.module.SettingsModule.TAG_CCONFIGURATION
 import br.com.cams7.plugin.model.module.AbstractCProjectModule
 import br.com.cams7.plugin.model.module.settings.node.AdditionalInputNode
 import br.com.cams7.plugin.model.module.settings.node.InputTypeNode
@@ -42,7 +44,6 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	private final String ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE = "cdt.managedbuild.target.gnu.platform.exe.release"
 	private final String ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE_ID = ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE + ".777563348"
 	private final String ATTR_DEBUGPLATFORM = "Debug Platform"
-	private final String ATTR_BUILDPATH = "\${workspace_loc:/teste1}/" + ATTR_RELEASE
 	private final String ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE = "cdt.managedbuild.target.gnu.builder.exe.release"
 	private final String ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID = ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE + ".1901366259"
 	private final String ATTR_GNUMAKEBUILDER = "Gnu Make Builder"
@@ -87,6 +88,33 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	private final String ATTR_ENTRY_KIND = "sourcePath"
 	private final String ATTR_ENTRY_NAME = "src"
 
+	private final String projectName
+
+	def CdtBuildSystemModule(String projectName) {
+		assert projectName != null
+		this.projectName = projectName
+	}
+
+	def CdtBuildSystemModule(Node cconfiguration) {
+		projectName = getProjectName(cconfiguration)
+	}
+
+	private String getProjectName(Node node) {
+		Node storageModuleNode = node[TAG_STORAGEMODULE].find { it.@moduleId == getModuleId() }
+		Node configurationNode = storageModuleNode[TAG_CONFIGURATION].find { it.@buildArtefactType == ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE }
+		Node folderInfoNode = configurationNode[TAG_FOLDERINFO].find { it.@id == ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + "."}
+		Node toolChainNode = folderInfoNode[TAG_TOOLCHAIN].find { it.@id == ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE_ID }
+		Node builderNode = toolChainNode[TAG_BUILDER].find { it.@id == ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID }
+		String buildPath  =  builderNode.@buildPath
+		String projectName =  buildPath.substring(buildPath.indexOf("/") + 1, buildPath.lastIndexOf("/") - 1)
+		return projectName
+	}
+
+	private String getBuildPath(){
+		final String ATTR_BUILDPATH = "\${workspace_loc:/" + projectName + "}/" + ATTR_RELEASE
+		return ATTR_BUILDPATH
+	}
+
 
 	/* (non-Javadoc)
 	 * @see br.com.cams7.plugin.model.module.CProjectModule#getModuleId()
@@ -101,15 +129,15 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	 */
 	@Override
 	public void appendNode(Node node) {
-		def storageModuleNode = node.appendNode(TAG_STORAGEMODULE, [moduleId: getModuleId(), version: ATTR_VERSION])
+		Node storageModuleNode = node.appendNode(TAG_STORAGEMODULE, [moduleId: getModuleId(), version: ATTR_VERSION])
 
 		final String BUILD_PROPERTIES = ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDTYPE + "=" + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDTYPE_RELEASE + "," + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE + "=" + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE
-		def configurationNode = storageModuleNode.appendNode(TAG_CONFIGURATION, [artifactName: ATTR_PROJNAME, buildArtefactType: ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE, buildProperties: BUILD_PROPERTIES, cleanCommand: ATTR_CLEANCOMMAND, description: ATTR_EMPTY, id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID, name: ATTR_RELEASE, parent: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE])
+		Node configurationNode = storageModuleNode.appendNode(TAG_CONFIGURATION, [artifactName: ATTR_PROJNAME, buildArtefactType: ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE, buildProperties: BUILD_PROPERTIES, cleanCommand: ATTR_CLEANCOMMAND, description: ATTR_EMPTY, id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID, name: ATTR_RELEASE, parent: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE])
 
-		def folderInfoNode = configurationNode.appendNode(TAG_FOLDERINFO, [id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + ".", name: "/", resourcePath: ATTR_EMPTY])
-		def toolChainNode = folderInfoNode.appendNode(TAG_TOOLCHAIN, [id: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE_ID, name: ATTR_LINUXGCC, superClass: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE])
+		Node folderInfoNode = configurationNode.appendNode(TAG_FOLDERINFO, [id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + ".", name: "/", resourcePath: ATTR_EMPTY])
+		Node toolChainNode = folderInfoNode.appendNode(TAG_TOOLCHAIN, [id: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE_ID, name: ATTR_LINUXGCC, superClass: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE])
 		toolChainNode.appendNode(TAG_TARGETPLATFORM, [id: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE_ID, name: ATTR_DEBUGPLATFORM, superClass: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE])
-		toolChainNode.appendNode(TAG_BUILDER, [buildPath: ATTR_BUILDPATH, id: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID, keepEnvironmentInBuildfile: false, managedBuildOn: true, name: ATTR_GNUMAKEBUILDER, superClass: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE])
+		toolChainNode.appendNode(TAG_BUILDER, [buildPath: getBuildPath(), id: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID, keepEnvironmentInBuildfile: false, managedBuildOn: true, name: ATTR_GNUMAKEBUILDER, superClass: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE])
 
 		ToolNode tool = new ToolNode(ATTR_CDT_MANAGEDBUILD_TOOL_GNU_ARCHIVER_BASE_ID, ATTR_GCCARCHIVER, ATTR_CDT_MANAGEDBUILD_TOOL_GNU_ARCHIVER_BASE)
 		addToolNode(toolChainNode, tool)
@@ -165,7 +193,7 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 
 		addToolNode(toolChainNode, tool)
 
-		def sourceEntriesNode = configurationNode.appendNode(TAG_SOURCEENTRIES)
+		Node sourceEntriesNode = configurationNode.appendNode(TAG_SOURCEENTRIES)
 		sourceEntriesNode.appendNode(TAG_ENTRY, [flags: ATTR_ENTRY_FLAGS, kind: ATTR_ENTRY_KIND, name: ATTR_ENTRY_NAME])
 	}
 

@@ -3,7 +3,6 @@
  */
 package br.com.cams7.plugin.model.module
 
-
 /**
  * @author cams7
  *
@@ -13,9 +12,34 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	public static final String ATTR_CDTBUILDSYSTEM = "cdtBuildSystem"
 	public static final String ATTR_VERSION = "4.0.0"
 
-	private final String ATTR_PROJECT_PROJECTTYPE = "cdt.managedbuild.target.gnu.exe"
-	private final String ATTR_PROJECT_ID = "teste1." + ATTR_PROJECT_PROJECTTYPE + ".1407714280"
+	private final String TAG_PROJECT = "project"
+
 	private final String ATTR_PROJECT_NAME = "Executable"
+	private final String ATTR_PROJECT_PROJECTTYPE = "cdt.managedbuild.target.gnu.exe"
+
+	private final String projectName
+
+	def CdtBuildSystemModule(String projectName) {
+		assert projectName != null
+		this.projectName = projectName
+	}
+
+	def CdtBuildSystemModule(Node node) {
+		projectName = getProjectName(node)
+	}
+
+	private String getProjectName(Node node) {
+		Node storageModuleNode = node[TAG_STORAGEMODULE].find { it.@moduleId == getModuleId() }
+		Node projectModule =  storageModuleNode[TAG_PROJECT].find { it.@projectType == ATTR_PROJECT_PROJECTTYPE }
+		String projectId  =  projectModule.@id
+		String projectName =  projectId.substring(0, projectId.indexOf("."))
+		return projectName
+	}
+
+	private String getProjectId(){
+		final String ATTR_PROJECT_ID = projectName + "." + ATTR_PROJECT_PROJECTTYPE + ".1407714280"
+		return ATTR_PROJECT_ID
+	}
 
 	/* (non-Javadoc)
 	 * @see br.com.cams7.plugin.model.module.CProjectModule#getModuleId()
@@ -30,8 +54,8 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	 */
 	@Override
 	public void appendNode(Node node) {
-		def storageModuleNode = node.appendNode(TAG_STORAGEMODULE, [moduleId: getModuleId(), version: ATTR_VERSION])
-		storageModuleNode.appendNode('project', [id: ATTR_PROJECT_ID, name: ATTR_PROJECT_NAME, projectType: ATTR_PROJECT_PROJECTTYPE])
+		Node storageModuleNode = node.appendNode(TAG_STORAGEMODULE, [moduleId: getModuleId(), version: ATTR_VERSION])
+		storageModuleNode.appendNode(TAG_PROJECT, [id: projectId, name: ATTR_PROJECT_NAME, projectType: ATTR_PROJECT_PROJECTTYPE])
 	}
 
 	@Override

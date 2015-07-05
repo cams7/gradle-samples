@@ -63,7 +63,7 @@ class CProject extends XmlPersistableConfigurationObject {
 	}
 
 	public CProject(){
-		super(new XmlTransformer());
+		super(new XmlTransformer())
 	}
 
 	/* (non-Javadoc)
@@ -81,10 +81,10 @@ class CProject extends XmlPersistableConfigurationObject {
 
 			switch(moduleNode.@moduleId){
 				case SettingsModule.ATTR_ORG_ECLIPSE_CDT_CORE_SETTINGS:
-					module = new SettingsModule()
+					module = new SettingsModule(node)
 					break
 				case CdtBuildSystemModule.ATTR_CDTBUILDSYSTEM:
-					module = new CdtBuildSystemModule()
+					module = new CdtBuildSystemModule(node)
 					break
 				case ScannerConfigurationModule.ATTR_SCANNERCONFIGURATION:
 					module = new ScannerConfigurationModule()

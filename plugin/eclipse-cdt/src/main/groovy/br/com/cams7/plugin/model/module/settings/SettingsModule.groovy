@@ -5,6 +5,7 @@ package br.com.cams7.plugin.model.module.settings
 
 import static br.com.cams7.plugin.model.module.SettingsModule.ATTR_ORG_ECLIPSE_CDT_CORE_SETTINGS
 import static br.com.cams7.plugin.model.module.SettingsModule.ATTR_RELEASE
+import groovy.util.Node;
 import br.com.cams7.plugin.model.module.AbstractCProjectModule
 
 /**

@@ -29,13 +29,13 @@ class CProjectFactory {
 
 	private final CProjectModuleBuilder settingsCreator = new CProjectModuleBuilder() {
 		void update(List<CProjectModule> modules, EclipseCProject cproject) {
-			modules << new SettingsModule()
+			modules << new SettingsModule(cproject.getProject().getName())
 		}
 	}
 
 	private final CProjectModuleBuilder cdtBuildSystemCreator = new CProjectModuleBuilder() {
 		void update(List<CProjectModule> modules, EclipseCProject cproject) {
-			modules << new CdtBuildSystemModule()
+			modules << new CdtBuildSystemModule(cproject.getProject().getName())
 		}
 	}
 
