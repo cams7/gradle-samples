@@ -32,4 +32,12 @@ class EclipseCDTPluginTest {
 
 		assertTrue(project.tasks.cleanEclipseCDT instanceof Task)
 	}
+
+	//	@Test
+	//	public void pluginAddsEclipseCProjectTaskToProject() {
+	//		Project project = ProjectBuilder.builder().build()
+	//		project.pluginManager.apply PLUGIN
+	//
+	//		assertTrue(project.tasks.eclipseCProject instanceof Task)
+	//	}
 }
