@@ -71,6 +71,9 @@ class SettingsModule extends AbstractCProjectModule {
 			return false
 
 		//		SettingsModule module = (SettingsModule) o
+		//
+		//		if(projectName != module.projectName)
+		//			return false
 
 		return true
 	}
@@ -83,6 +86,6 @@ class SettingsModule extends AbstractCProjectModule {
 
 	@Override
 	public String toString() {
-		return "SettingsModule{}";
+		return "SettingsModule{projectName = '" + projectName + "'}";
 	}
 }

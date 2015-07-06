@@ -1,0 +1,64 @@
+allprojects {
+	apply plugin: 'maven'
+	
+	group = 'br.com.cams7.plugin'
+	version = '1.0-SNAPSHOT'
+	
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				repository(url: uri('/home/cams7/desenv/github/gradle-samples/repo'))
+			}
+		}
+	}
+}
+
+subprojects {
+	apply {
+		plugin 'groovy'
+		plugin 'eclipse'
+	}
+	
+	dependencies {
+		compile gradleApi()
+		compile localGroovy()
+	}
+	
+	repositories {  
+		mavenCentral()  
+	}
+
+	dependencies {  
+		compile 'dom4j:dom4j:1.6.+'  
+		testCompile 'junit:junit:4.+'
+	}
+
+	//configurations {
+	//    compile.exclude module: 'gradle-ide'
+	//}	
+}
+
+project(':ui') {
+    dependencies {
+        compile project(':open-api')
+    }
+}
+
+project(':launcher') {
+    dependencies {
+        compile project(':ui')
+    }
+}
+
+project(':ide') {
+    dependencies {
+        compile project(':launcher')
+    }
+}
+
+project(':eclipse-cdt') {
+    dependencies {
+        compile project(':ide')
+    }
+}
+

@@ -7,7 +7,11 @@ import javax.inject.Inject
 
 import org.gradle.api.Project
 import org.gradle.internal.reflect.Instantiator
+import org.gradle.language.cpp.plugins.CppLangPlugin.Cpp;
 import org.gradle.language.cpp.plugins.CppPlugin
+import org.gradle.language.cpp.tasks.CppCompile;
+import org.gradle.nativeplatform.NativeExecutableSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.CppCompileSpec;
 import org.gradle.plugins.ide.api.XmlFileContentMerger
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.eclipse.GenerateEclipseProject
@@ -31,7 +35,6 @@ class EclipseCDTPlugin extends IdePlugin {
 
 	@Inject
 	public EclipseCDTPlugin(Instantiator instantiator) {
-		super()
 		this.instantiator = instantiator
 	}
 
@@ -45,11 +48,11 @@ class EclipseCDTPlugin extends IdePlugin {
 
 	@Override
 	protected void onApply(Project project) {
-		lifecycleTask.description = "Generates Eclipse CDT configuration files."
-		cleanTask.description = "Cleans Eclipse CDT configuration files."
-
 		project.pluginManager.apply(EclipsePlugin)
 		def model = project.extensions.getByType(EclipseModel)
+		
+		lifecycleTask.description = "Generates Eclipse CDT configuration files."
+		cleanTask.description = "Cleans Eclipse CDT configuration files."
 
 		def delegatePlugin = project.plugins.getPlugin(EclipsePlugin)
 		delegatePlugin.lifecycleTask.dependsOn(lifecycleTask)
@@ -110,7 +113,7 @@ class EclipseCDTPlugin extends IdePlugin {
 	}
 
 	private void configureEclipseCProject(Project project, EclipseModel model) {
-		project.plugins.withType(CppPlugin) {
+		project.plugins.withType(CppPlugin) {			
 			EclipseModel.metaClass {
 				cproject = null
 
@@ -131,6 +134,7 @@ class EclipseCDTPlugin extends IdePlugin {
 				//model properties:
 				cproject = model.cproject
 				cproject.file = new XmlFileContentMerger(xmlTransformer)
+				cproject.sourceSets = project.sourceSets
 			}
 		}
 	}
@@ -142,5 +146,9 @@ class EclipseCDTPlugin extends IdePlugin {
 		def task = project.tasks.create(taskName, taskType)
 		project.configure(task, action)
 		plugin.addWorker(task)
+	}
+	
+	private Set<File> getMainSourceDirs(Project project) {
+		project.sourceSets.main.allSource.srcDirs as LinkedHashSet
 	}
 }

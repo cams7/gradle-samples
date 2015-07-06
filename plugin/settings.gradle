@@ -1,0 +1,1 @@
+include 'open-api', 'ui', 'launcher', 'ide', 'eclipse-cdt'

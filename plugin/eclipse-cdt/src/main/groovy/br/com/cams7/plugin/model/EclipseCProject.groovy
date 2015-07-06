@@ -22,44 +22,44 @@ class EclipseCProject {
 	/**
 	 * The source sets to be added.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
-	//	Iterable<SourceSet> sourceSets
+	Iterable<SourceSet> sourceSets
 
 	/**
-	 * The configurations whose files are to be added as classpath entries.
+	 * The configurations whose files are to be added as cproject entries.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	Collection<Configuration> plusConfigurations = []
 
 	/**
-	 * The configurations whose files are to be excluded from the classpath entries.
+	 * The configurations whose files are to be excluded from the cproject entries.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	Collection<Configuration> minusConfigurations = []
 
 	/**
 	 * A subset of {@link #plusConfigurations} whose files are not to be exported to downstream Eclipse projects.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	Collection<Configuration> noExportConfigurations = []
 
 	/**
-	 * The classpath containers to be added.
+	 * The cproject containers to be added.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	Set<String> containers = new LinkedHashSet<String>()
 
 	/**
-	 * Further classpath containers to be added.
+	 * Further cproject containers to be added.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 *
-	 * @param containers the classpath containers to be added
+	 * @param containers the cproject containers to be added
 	 */
 	//	void containers(String... containers) {
 	//		assert containers != null
@@ -69,21 +69,21 @@ class EclipseCProject {
 	/**
 	 * The default output directory where Eclipse puts compiled classes.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	File defaultOutputDir
 
 	/**
 	 * Whether to download and associate source Jars with the dependency Jars. Defaults to true.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	boolean downloadSources = true
 
 	/**
 	 * Whether to download and associate Javadoc Jars with the dependency Jars. Defaults to false.
 	 * <p>
-	 * See {@link EclipseClasspath} for an example.
+	 * See {@link EclipseCProject} for an example.
 	 */
 	//	boolean downloadJavadoc = false
 
@@ -114,7 +114,7 @@ class EclipseCProject {
 	}
 
 	/**
-	 * Calculates, resolves and returns dependency entries of this classpath.
+	 * Calculates, resolves and returns dependency entries of this cproject.
 	 */
 	public List<CProjectModule> resolveDependencies() {
 		def modules = new CProjectFactory().createModules(this)
@@ -122,7 +122,7 @@ class EclipseCProject {
 		return modules
 	}
 
-	public void mergeXmlClasspath(CProject cproject) {
+	public void mergeXmlCProject(CProject cproject) {
 		file.beforeMerged.execute(cproject)
 		def modules = resolveDependencies()
 		cproject.configure(modules)

@@ -66,7 +66,10 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 		if (getClass() != o.class)
 			return false
 
-		//		CdtBuildSystemModule module = (CdtBuildSystemModule) o
+		CdtBuildSystemModule module = (CdtBuildSystemModule) o
+
+		if(projectName != module.projectName)
+			return false
 
 		return true
 	}
@@ -78,6 +81,6 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 
 	@Override
 	public String toString() {
-		return "CdtBuildSystemModule{}";
+		return "CdtBuildSystemModule{projectName = '" + projectName + "'}";
 	}
 }

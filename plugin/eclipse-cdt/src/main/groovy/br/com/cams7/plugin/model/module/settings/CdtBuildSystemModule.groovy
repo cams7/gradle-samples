@@ -102,7 +102,7 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	private String getProjectName(Node node) {
 		Node storageModuleNode = node[TAG_STORAGEMODULE].find { it.@moduleId == getModuleId() }
 		Node configurationNode = storageModuleNode[TAG_CONFIGURATION].find { it.@buildArtefactType == ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE }
-		Node folderInfoNode = configurationNode[TAG_FOLDERINFO].find { it.@id == ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + "."}
+		Node folderInfoNode = configurationNode[TAG_FOLDERINFO].find { it.@id == getCdtManagedbuildConfigGnuExeReleaseId()}
 		Node toolChainNode = folderInfoNode[TAG_TOOLCHAIN].find { it.@id == ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE_ID }
 		Node builderNode = toolChainNode[TAG_BUILDER].find { it.@id == ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID }
 		String buildPath  =  builderNode.@buildPath
@@ -113,6 +113,10 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 	private String getBuildPath(){
 		final String ATTR_BUILDPATH = "\${workspace_loc:/" + projectName + "}/" + ATTR_RELEASE
 		return ATTR_BUILDPATH
+	}
+
+	private String getCdtManagedbuildConfigGnuExeReleaseId(){
+		return ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + "."
 	}
 
 
@@ -134,7 +138,7 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 		final String BUILD_PROPERTIES = ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDTYPE + "=" + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDTYPE_RELEASE + "," + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE + "=" + ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE
 		Node configurationNode = storageModuleNode.appendNode(TAG_CONFIGURATION, [artifactName: ATTR_PROJNAME, buildArtefactType: ATTR_ORG_ECLIPSE_CDT_BUILD_CORE_BUILDARTEFACTTYPE_EXE, buildProperties: BUILD_PROPERTIES, cleanCommand: ATTR_CLEANCOMMAND, description: ATTR_EMPTY, id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID, name: ATTR_RELEASE, parent: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE])
 
-		Node folderInfoNode = configurationNode.appendNode(TAG_FOLDERINFO, [id: ATTR_CDT_MANAGEDBUILD_CONFIG_GNU_EXE_RELEASE_ID + ".", name: "/", resourcePath: ATTR_EMPTY])
+		Node folderInfoNode = configurationNode.appendNode(TAG_FOLDERINFO, [id: getCdtManagedbuildConfigGnuExeReleaseId(), name: "/", resourcePath: ATTR_EMPTY])
 		Node toolChainNode = folderInfoNode.appendNode(TAG_TOOLCHAIN, [id: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE_ID, name: ATTR_LINUXGCC, superClass: ATTR_CDT_MANAGEDBUILD_TOOLCHAIN_GNU_EXE_RELEASE])
 		toolChainNode.appendNode(TAG_TARGETPLATFORM, [id: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE_ID, name: ATTR_DEBUGPLATFORM, superClass: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_PLATFORM_EXE_RELEASE])
 		toolChainNode.appendNode(TAG_BUILDER, [buildPath: getBuildPath(), id: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE_ID, keepEnvironmentInBuildfile: false, managedBuildOn: true, name: ATTR_GNUMAKEBUILDER, superClass: ATTR_CDT_MANAGEDBUILD_TARGET_GNU_BUILDER_EXE_RELEASE])
@@ -232,7 +236,10 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 		if (getClass() != o.class)
 			return false
 
-		//		CdtBuildSystemModule module = (CdtBuildSystemModule) o
+		CdtBuildSystemModule module = (CdtBuildSystemModule) o
+
+		if(projectName != module.projectName)
+			return false
 
 		return true
 	}
@@ -245,6 +252,6 @@ class CdtBuildSystemModule extends AbstractCProjectModule {
 
 	@Override
 	public String toString() {
-		return "CdtBuildSystemModule{}";
+		return "CdtBuildSystemModule{projectName = '" + projectName + "'}";
 	}
 }

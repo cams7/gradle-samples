@@ -1,0 +1,33 @@
+buildscript {	                
+	repositories {
+		mavenCentral()
+		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+	}
+	dependencies {
+		classpath 'dom4j:dom4j:1.6.+'
+		classpath 'br.com.cams7.plugin:open-api:1.0-SNAPSHOT'	
+		classpath 'br.com.cams7.plugin:ui:1.0-SNAPSHOT'	
+		classpath 'br.com.cams7.plugin:launcher:1.0-SNAPSHOT'			
+		classpath 'br.com.cams7.plugin:ide:1.0-SNAPSHOT'
+	}
+}
+
+apply {
+	plugin 'war'
+	plugin 'jetty'
+	plugin 'br.com.cams7.eclipse-wtp'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'commons-io', name: 'commons-io', version: '2.+'
+    compile group: 'log4j', name: 'log4j', version: '1.2.+', ext: 'jar'
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.+'
+}
+
+httpPort = 8080
+stopPort = 9451
+stopKey = 'foo'

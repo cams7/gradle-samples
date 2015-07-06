@@ -31,7 +31,7 @@ class GenerateEclipseCProject extends XmlGeneratorTask<CProject> {
 
 	@Override
 	protected void configure(CProject cproject) {
-		getCproject().mergeXmlClasspath(cproject)
+		getCproject().mergeXmlCProject(cproject)
 	}
 
 	@Override
