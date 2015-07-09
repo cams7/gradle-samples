@@ -1,0 +1,8 @@
+#make all
+*.d
+*.elf
+*.lst
+*.map
+*.o
+#make flash
+*.hex
