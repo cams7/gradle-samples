@@ -11,13 +11,13 @@
 # PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 # Define your programmer in this file: ~/user.mk
--include ~/user.mk
+-include ~/desenv/github/gradle-samples/avr-examples/user.mk
 
 SILENT ?= @
 CROSS ?= avr-
 
 MCU ?= atmega328p
-F_CPU ?= 8000000L
+F_CPU ?= 16000000L
 
 TARGET = main
 
