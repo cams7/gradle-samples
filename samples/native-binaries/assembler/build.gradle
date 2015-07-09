@@ -1,0 +1,54 @@
+buildscript {	                
+	repositories {
+		mavenCentral()
+		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+	}
+	dependencies {	
+		classpath 'dom4j:dom4j:1.6.+'		
+		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
+	}
+}
+
+apply {
+	plugin 'br.com.cams7.assembler'
+	plugin 'br.com.cams7.c'
+}
+
+model {
+    platforms {
+        x86 {
+            architecture "i386"
+            //architecture "x86"
+        }
+         x64 {
+            architecture "x86_64"
+        }
+    }
+}
+
+model {
+    components {
+        main(NativeExecutableSpec) {
+            targetPlatform "x86"
+            targetPlatform "x64"
+            binaries.all {
+                if (toolChain in VisualCpp) {
+                    sources {
+                        platformAsm(AssemblerSourceSet) {
+                            source.srcDir "src/main/asm_i386_masm"
+                        }
+                    }
+                    assembler.args "/Zi"
+                } else {
+                    sources {
+                        platformAsm(AssemblerSourceSet) {
+                            source.srcDir "src/main/asm_i386_gcc"
+                        }
+                    }
+                    assembler.args "-g"
+                }
+            }
+        }
+    }
+}
+

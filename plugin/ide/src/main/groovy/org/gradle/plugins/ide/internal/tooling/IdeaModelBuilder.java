@@ -83,7 +83,8 @@ public class IdeaModelBuilder implements ToolingModelBuilder {
         for (Dependency dependency : resolved) {
             if (dependency instanceof SingleEntryModuleLibrary) {
                 SingleEntryModuleLibrary d = (SingleEntryModuleLibrary) dependency;
-                DefaultIdeaSingleEntryLibraryDependency defaultDependency = new org.gradle.tooling.internal.idea.DefaultIdeaSingleEntryLibraryDependency()
+                @SuppressWarnings("deprecation")
+				DefaultIdeaSingleEntryLibraryDependency defaultDependency = new org.gradle.tooling.internal.idea.DefaultIdeaSingleEntryLibraryDependency()
                         .setFile(d.getLibraryFile())
                         .setSource(d.getSourceFile())
                         .setJavadoc(d.getJavadocFile())
@@ -96,7 +97,8 @@ public class IdeaModelBuilder implements ToolingModelBuilder {
                 dependencies.add(defaultDependency);
             } else if (dependency instanceof ModuleDependency) {
                 ModuleDependency d = (ModuleDependency) dependency;
-                DefaultIdeaModuleDependency defaultDependency = new org.gradle.tooling.internal.idea.DefaultIdeaModuleDependency()
+                @SuppressWarnings("deprecation")
+				DefaultIdeaModuleDependency defaultDependency = new org.gradle.tooling.internal.idea.DefaultIdeaModuleDependency()
                         .setExported(d.getExported())
                         .setScope(new DefaultIdeaDependencyScope(d.getScope()))
                         .setDependencyModule(modules.get(d.getName()));

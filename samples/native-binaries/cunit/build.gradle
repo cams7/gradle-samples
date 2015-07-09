@@ -1,0 +1,69 @@
+buildscript {	                
+	repositories {
+		mavenCentral()
+		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+	}
+	dependencies {	
+		classpath 'dom4j:dom4j:1.6.+'		
+		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
+		classpath 'br.com.cams7.plugin:testing-native:1.0-SNAPSHOT'
+	}
+}
+
+apply {
+	plugin "br.com.cams7.c"
+	plugin "br.com.cams7.cunit"	
+}
+
+model {
+    flavors {
+        passing
+        failing
+    }
+    platforms {
+        x86 {
+            architecture "x86"
+        }
+        x64 {
+            architecture "x86_64"
+        }
+    }
+    repositories {
+        libs(PrebuiltLibraries) {
+            cunit {
+                headers.srcDir "libs/cunit/2.1-2/include"
+                binaries.withType(StaticLibraryBinary) {
+                    staticLibraryFile =
+                        file("libs/cunit/2.1-2/lib/" +
+                             findCUnitLibForPlatform(targetPlatform))
+                }
+            }
+        }
+    }
+    components {
+        operators(NativeLibrarySpec) {
+            targetPlatform "x86"
+            targetPlatform "x64"
+        }
+    }
+}
+binaries.withType(CUnitTestSuiteBinarySpec) {
+    lib library: "cunit", linkage: "static"
+
+    if (flavor == flavors.failing) {
+        cCompiler.define "PLUS_BROKEN"
+    }
+}
+
+def findCUnitLibForPlatform(Platform platform) {
+    if (platform.operatingSystem.windows) {
+        return "vs2010/cunit.lib"
+//        return "vs2013/cunit.lib"
+//        return "cygwin/cunit.lib"
+//        return "mingw/cunit.lib"
+    } else if (platform.operatingSystem.macOsX) {
+        return "osx/libcunit.a"
+    } else {
+        return "linux/libcunit.a"
+    }
+}

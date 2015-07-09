@@ -1,0 +1,49 @@
+buildscript {	                
+	repositories {
+		mavenCentral()
+		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+	}
+	dependencies {	
+		classpath 'dom4j:dom4j:1.6.+'		
+		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
+	}
+}
+
+apply {
+	plugin 'br.com.cams7.cpp'
+	plugin 'br.com.cams7.c'
+}
+
+model {
+    components {
+        hello(NativeLibrarySpec) {
+            sources {
+                c {
+                    source {
+                        srcDir "src/source"
+                        include "**/*.c"
+                    }
+                    exportedHeaders {
+                        srcDir "src/include"
+                    }
+                }
+            }
+        }
+        main(NativeExecutableSpec) {
+            sources {
+                cpp {
+                    source {
+                        srcDir "src/source"
+                        include "**/*.cpp"
+                    }
+                }
+            }
+            binaries.all {
+                // Each executable binary produced uses the 'hello' static library binary
+                lib library: 'hello', linkage: 'static'
+            }
+        }
+    }
+}
+
+

@@ -50,7 +50,7 @@ class EclipseCDTPlugin extends IdePlugin {
 	protected void onApply(Project project) {
 		project.pluginManager.apply(EclipsePlugin)
 		def model = project.extensions.getByType(EclipseModel)
-		
+
 		lifecycleTask.description = "Generates Eclipse CDT configuration files."
 		cleanTask.description = "Cleans Eclipse CDT configuration files."
 
@@ -113,7 +113,7 @@ class EclipseCDTPlugin extends IdePlugin {
 	}
 
 	private void configureEclipseCProject(Project project, EclipseModel model) {
-		project.plugins.withType(CppPlugin) {			
+		project.plugins.withType(CppPlugin) {
 			EclipseModel.metaClass {
 				cproject = null
 
@@ -134,7 +134,6 @@ class EclipseCDTPlugin extends IdePlugin {
 				//model properties:
 				cproject = model.cproject
 				cproject.file = new XmlFileContentMerger(xmlTransformer)
-				cproject.sourceSets = project.sourceSets
 			}
 		}
 	}
@@ -146,9 +145,5 @@ class EclipseCDTPlugin extends IdePlugin {
 		def task = project.tasks.create(taskName, taskType)
 		project.configure(task, action)
 		plugin.addWorker(task)
-	}
-	
-	private Set<File> getMainSourceDirs(Project project) {
-		project.sourceSets.main.allSource.srcDirs as LinkedHashSet
 	}
 }

@@ -24,7 +24,7 @@ class EclipseCProject {
 	 * <p>
 	 * See {@link EclipseCProject} for an example.
 	 */
-	Iterable<SourceSet> sourceSets
+	//	Iterable<SourceSet> sourceSets
 
 	/**
 	 * The configurations whose files are to be added as cproject entries.

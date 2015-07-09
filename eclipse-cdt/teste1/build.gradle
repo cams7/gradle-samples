@@ -14,36 +14,8 @@ buildscript {
 }
 
 apply {
-	plugin 'java'
 	plugin 'cpp'
 	plugin 'br.com.cams7.eclipse-cdt'	
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile 'junit:junit:4.12'
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'java/src'
-        }
-        resources {
-            srcDir 'java/src-resources'
-        }
-    }
-    test {
-        java {
-            srcDir 'java/test'
-        }
-        resources {
-            srcDir 'java/test-resources'
-        }
-    }
 }
 
 model {
