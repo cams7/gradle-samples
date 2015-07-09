@@ -1,0 +1,11 @@
+// This line will import the tasks defined on the arduino.gradle file. Don't remove it.
+apply from: 'arduino.gradle'
+
+// Name of the main file of your sketch
+ext.sketchMainFile = "main.cpp"
+
+// The microcontroler used
+ext.cpuName = "atmega328p"
+
+// Clock speed of the board
+ext.cpuClock = "16000000L"

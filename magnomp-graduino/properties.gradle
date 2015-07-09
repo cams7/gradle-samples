@@ -1,0 +1,5 @@
+// Path to the Arduino IDE instalation.
+ext.arduinoDir = "C:\\Users\\cams7\\desenv\\embarcado\\arduino\\arduino-1.0.6"
+
+// Com port used to communicate with Arduino
+ext.comPort = "COM3"
