@@ -9,9 +9,7 @@ buildscript {
 }
 
 apply {
-	plugin 'org.samples.greeting'	
+	plugin 'br.com.cams7.avr'	
 }
 
-task greeting(type: org.gradle.GreetingTask) {
-    greeting = 'howdy!'
-}
+
