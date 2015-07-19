@@ -19,9 +19,10 @@ package org.gradle.language.cpp.internal;
 import org.gradle.language.cpp.CppSourceSet;
 import org.gradle.language.nativeplatform.internal.AbstractHeaderExportingDependentSourceSet;
 
-public class DefaultCppSourceSet extends AbstractHeaderExportingDependentSourceSet implements CppSourceSet {
-    @Override
-    protected String getTypeName() {
-        return "C++ source";
-    }
+public class DefaultCppSourceSet extends
+		AbstractHeaderExportingDependentSourceSet implements CppSourceSet {
+	@Override
+	protected String getTypeName() {
+		return "C++ source";
+	}
 }
