@@ -12,4 +12,35 @@ apply {
 	plugin 'br.com.cams7.avr'	
 }
 
+model {
+    components {
+        hello(NativeLibrarySpec) {
+            sources {
+                c {
+                    source {
+                        srcDir "src/source"
+                        include "**/hello.c"
+                    }
+                    exportedHeaders {
+                        srcDir "src/include"
+                    }
+                }
+            }
+        }
+        main(NativeExecutableSpec) {
+            sources {
+                c {
+                    source {
+                        srcDir "src/source"
+                        include "**/main.c"
+                    }
+                }
+            }
+            binaries.all {
+                // Each executable binary produced uses the 'hello' static library binary
+                lib library: 'hello', linkage: 'static'
+            }
+        }
+    }
+}
 

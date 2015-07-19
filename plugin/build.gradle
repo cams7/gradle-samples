@@ -87,3 +87,9 @@ project(':testing-native') {
     }
 }
 
+project(':avr') {
+    dependencies {
+        compile project(':language-native')        
+    }
+}
+
