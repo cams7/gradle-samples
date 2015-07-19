@@ -13,12 +13,29 @@ apply {
 }
 
 model {
+    platforms {
+        x64 {
+            architecture "x86_64"
+        }        
+    }
+    
+    buildTypes {
+        release
+    }
+    
+    toolChains {
+        gcc(Gcc)
+        clang(Clang)
+    }
+    
     components {
         hello(NativeLibrarySpec) {
+            targetPlatform "x64"
+        
             sources {
                 c {
                     source {
-                        srcDir "src/source"
+                        srcDir "src/c"
                         include "**/hello.c"
                     }
                     exportedHeaders {
@@ -28,10 +45,12 @@ model {
             }
         }
         main(NativeExecutableSpec) {
+            targetPlatform "x64"
+            
             sources {
                 c {
                     source {
-                        srcDir "src/source"
+                        srcDir "src/c"
                         include "**/main.c"
                     }
                 }
@@ -44,3 +63,21 @@ model {
     }
 }
 
+// Tasks to build all binaries for a tool chain
+task gccExecutables {
+    dependsOn binaries.withType(NativeExecutableBinary).matching {
+        it.toolChain in Gcc
+    }
+}
+
+task clangExecutables {
+    dependsOn binaries.withType(NativeExecutableBinary).matching {
+        it.toolChain in Clang
+    }
+}
+
+task buildAllExecutables {
+    dependsOn binaries.withType(NativeExecutableBinary).matching {
+        it.buildable
+    }
+}
