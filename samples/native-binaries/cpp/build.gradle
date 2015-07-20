@@ -2,7 +2,7 @@
 buildscript {	                
 	repositories {
 		mavenCentral()
-		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+		maven {url uri('../../../repo')}
 	}
 	dependencies {	
 		classpath 'dom4j:dom4j:1.6.+'		
@@ -23,7 +23,7 @@ model {
         main(NativeExecutableSpec) {
             sources {
                 cpp {
-                    lib library: "hello"
+                    lib library: "hello", linkage: 'static'
                 }
             }
         }

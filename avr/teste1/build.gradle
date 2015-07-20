@@ -1,7 +1,7 @@
 buildscript {	                
 	repositories {
 		mavenCentral()
-		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+		maven {url uri('../../repo')}
 	}
 	dependencies {
 		classpath 'br.com.cams7.plugin:avr:1.0-SNAPSHOT'
@@ -14,6 +14,9 @@ apply {
 
 model {
     platforms {
+		x86 {
+            architecture "x86"
+        }
         x64 {
             architecture "x86_64"
         }        
@@ -25,11 +28,11 @@ model {
     
     toolChains {
         gcc(Gcc)
-        clang(Clang)
     }
     
     components {
         hello(NativeLibrarySpec) {
+			targetPlatform "x86"
             targetPlatform "x64"
         
             sources {
@@ -45,6 +48,7 @@ model {
             }
         }
         main(NativeExecutableSpec) {
+			targetPlatform "x86"
             targetPlatform "x64"
             
             sources {
@@ -67,17 +71,5 @@ model {
 task gccExecutables {
     dependsOn binaries.withType(NativeExecutableBinary).matching {
         it.toolChain in Gcc
-    }
-}
-
-task clangExecutables {
-    dependsOn binaries.withType(NativeExecutableBinary).matching {
-        it.toolChain in Clang
-    }
-}
-
-task buildAllExecutables {
-    dependsOn binaries.withType(NativeExecutableBinary).matching {
-        it.buildable
     }
 }

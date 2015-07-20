@@ -7,7 +7,7 @@ allprojects {
 	uploadArchives {
 		repositories {
 			mavenDeployer {
-				repository(url: uri('/home/cams7/desenv/github/gradle-samples/repo'))
+				repository(url: uri('../../repo'))
 			}
 		}
 	}
@@ -18,6 +18,8 @@ subprojects {
 		plugin 'groovy'
 		plugin 'eclipse'
 	}
+	
+	compileGroovy.options.encoding = 'UTF-8'
 	
 	dependencies {
 		compile gradleApi()
@@ -32,7 +34,7 @@ subprojects {
 		compile 'dom4j:dom4j:1.6.+'  
 		testCompile 'junit:junit:4.+'
 	}
-
+	
 	//configurations {
 	//    compile.exclude module: 'gradle-ide'
 	//}	
@@ -47,7 +49,7 @@ project(':ui') {
 project(':launcher') {
     dependencies {
         compile project(':ui')
-    }
+    }		
 }
 
 project(':ide') {
@@ -92,4 +94,3 @@ project(':avr') {
         compile project(':language-native')        
     }
 }
-

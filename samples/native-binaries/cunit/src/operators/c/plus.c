@@ -4,6 +4,7 @@ int plus(int a, int b) {
 #ifdef PLUS_BROKEN
     return 2;
 #else
-    return a + b;
+	int result = a + b;
+    return result;
 #endif
 }

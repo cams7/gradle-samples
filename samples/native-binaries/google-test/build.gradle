@@ -1,7 +1,7 @@
 buildscript {	                
 	repositories {
 		mavenCentral()
-		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+		maven {url uri('../../../repo')}
 	}
 	dependencies {	
 		classpath 'dom4j:dom4j:1.6.+'		
@@ -42,7 +42,7 @@ model {
     components {
         operators(NativeLibrarySpec) {
             targetPlatform "x86"
-            targetPlatform "x64"
+            //targetPlatform "x64"
         }
     }
 }
@@ -60,10 +60,10 @@ tasks.withType(RunTestExecutable) {
 
 def findGoogleTestCoreLibForPlatform(Platform platform) {
     if (platform.operatingSystem.windows) {
-        return "vs2013/gtest.lib"
+//        return "vs2013/gtest.lib"
 //        return "vs2013/gtest-core.lib"
 //        return "cygwin/gtest-core.lib"
-//        return "mingw/gtest-core.lib"
+        return "mingw/gtest.lib"
     } else if (platform.operatingSystem.macOsX) {
         return "osx/libgtest.a"
     } else {

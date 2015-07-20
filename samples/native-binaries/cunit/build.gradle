@@ -1,7 +1,7 @@
 buildscript {	                
 	repositories {
 		mavenCentral()
-		maven {url uri('/home/cams7/desenv/github/gradle-samples/repo')}
+		maven {url uri('../../../repo')}
 	}
 	dependencies {	
 		classpath 'dom4j:dom4j:1.6.+'		
@@ -24,9 +24,6 @@ model {
         x86 {
             architecture "x86"
         }
-        x64 {
-            architecture "x86_64"
-        }
     }
     repositories {
         libs(PrebuiltLibraries) {
@@ -43,7 +40,6 @@ model {
     components {
         operators(NativeLibrarySpec) {
             targetPlatform "x86"
-            targetPlatform "x64"
         }
     }
 }
@@ -57,10 +53,10 @@ binaries.withType(CUnitTestSuiteBinarySpec) {
 
 def findCUnitLibForPlatform(Platform platform) {
     if (platform.operatingSystem.windows) {
-        return "vs2010/cunit.lib"
+//        return "vs2010/cunit.lib"
 //        return "vs2013/cunit.lib"
 //        return "cygwin/cunit.lib"
-//        return "mingw/cunit.lib"
+        return "mingw/cunit.lib"
     } else if (platform.operatingSystem.macOsX) {
         return "osx/libcunit.a"
     } else {
