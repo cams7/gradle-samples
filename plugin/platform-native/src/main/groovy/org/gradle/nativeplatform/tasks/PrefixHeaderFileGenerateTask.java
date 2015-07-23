@@ -29,30 +29,31 @@ import java.util.Set;
  * Generates a prefix header file from a list of headers to be precompiled.
  */
 public class PrefixHeaderFileGenerateTask extends DefaultTask {
-    @Input
-    Set<String> headers;
+	@Input
+	Set<String> headers;
 
-    @OutputFile
-    File prefixHeaderFile;
+	@OutputFile
+	File prefixHeaderFile;
 
-    @TaskAction
-    void generatePrefixHeaderFile() {
-        PrefixHeaderFileGeneratorUtil.generatePCHFile(headers, prefixHeaderFile);
-    }
+	@TaskAction
+	void generatePrefixHeaderFile() {
+		PrefixHeaderFileGeneratorUtil
+				.generatePCHFile(headers, prefixHeaderFile);
+	}
 
-    public Set<String> getHeaders() {
-        return headers;
-    }
+	public Set<String> getHeaders() {
+		return headers;
+	}
 
-    public void setHeaders(Set<String> headers) {
-        this.headers = headers;
-    }
+	public void setHeaders(Set<String> headers) {
+		this.headers = headers;
+	}
 
-    public File getPrefixHeaderFile() {
-        return prefixHeaderFile;
-    }
+	public File getPrefixHeaderFile() {
+		return prefixHeaderFile;
+	}
 
-    public void setPrefixHeaderFile(File prefixHeaderFile) {
-        this.prefixHeaderFile = prefixHeaderFile;
-    }
+	public void setPrefixHeaderFile(File prefixHeaderFile) {
+		this.prefixHeaderFile = prefixHeaderFile;
+	}
 }

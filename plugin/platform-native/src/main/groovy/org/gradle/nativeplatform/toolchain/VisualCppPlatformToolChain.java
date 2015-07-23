@@ -19,37 +19,38 @@ package org.gradle.nativeplatform.toolchain;
 import org.gradle.api.Incubating;
 
 /**
- * Visual C++ specific settings for the tools used to build for a particular platform.
+ * Visual C++ specific settings for the tools used to build for a particular
+ * platform.
  */
 @Incubating
 public interface VisualCppPlatformToolChain extends NativePlatformToolChain {
-    /**
-     * Returns the settings to use for the C compiler.
-     */
-    CommandLineToolConfiguration getcCompiler();
+	/**
+	 * Returns the settings to use for the C compiler.
+	 */
+	CommandLineToolConfiguration getcCompiler();
 
-    /**
-     * Returns the settings to use for the C++ compiler.
-     */
-    CommandLineToolConfiguration getCppCompiler();
+	/**
+	 * Returns the settings to use for the C++ compiler.
+	 */
+	CommandLineToolConfiguration getCppCompiler();
 
-    /**
-     * Returns the settings to use for the Windows resources compiler.
-     */
-    CommandLineToolConfiguration getRcCompiler();
+	/**
+	 * Returns the settings to use for the Windows resources compiler.
+	 */
+	CommandLineToolConfiguration getRcCompiler();
 
-    /**
-     * Returns the settings to use for the assembler.
-     */
-    CommandLineToolConfiguration getAssembler();
+	/**
+	 * Returns the settings to use for the assembler.
+	 */
+	CommandLineToolConfiguration getAssembler();
 
-    /**
-     * Returns the settings to use for the linker.
-     */
-    CommandLineToolConfiguration getLinker();
+	/**
+	 * Returns the settings to use for the linker.
+	 */
+	CommandLineToolConfiguration getLinker();
 
-    /**
-     * Returns the settings to use for the archiver.
-     */
-    CommandLineToolConfiguration getStaticLibArchiver();
+	/**
+	 * Returns the settings to use for the archiver.
+	 */
+	CommandLineToolConfiguration getStaticLibArchiver();
 }

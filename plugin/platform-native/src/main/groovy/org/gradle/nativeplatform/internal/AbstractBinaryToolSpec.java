@@ -23,58 +23,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractBinaryToolSpec implements BinaryToolSpec {
-    private List<String> args = new ArrayList<String>();
-    private List<String> systemArgs = new ArrayList<String>();
-    private File tempDir;
-    private NativePlatform platform;
-    private BuildOperationLogger oplogger;
+	private List<String> args = new ArrayList<String>();
+	private List<String> systemArgs = new ArrayList<String>();
+	private File tempDir;
+	private NativePlatform platform;
+	private BuildOperationLogger oplogger;
 
-    public NativePlatform getTargetPlatform() {
-        return platform;
-    }
+	public NativePlatform getTargetPlatform() {
+		return platform;
+	}
 
-    public void setTargetPlatform(NativePlatform platform) {
-        this.platform = platform;
-    }
+	public void setTargetPlatform(NativePlatform platform) {
+		this.platform = platform;
+	}
 
-    public File getTempDir() {
-        return tempDir;
-    }
+	public File getTempDir() {
+		return tempDir;
+	}
 
-    public void setTempDir(File tempDir) {
-        this.tempDir = tempDir;
-    }
+	public void setTempDir(File tempDir) {
+		this.tempDir = tempDir;
+	}
 
-    public List<String> getArgs() {
-        return args;
-    }
+	public List<String> getArgs() {
+		return args;
+	}
 
-    public void args(List<String> args) {
-        this.args.addAll(args);
-    }
+	public void args(List<String> args) {
+		this.args.addAll(args);
+	}
 
-    public List<String> getSystemArgs() {
-        return systemArgs;
-    }
+	public List<String> getSystemArgs() {
+		return systemArgs;
+	}
 
-    public void systemArgs(List<String> args) {
-       if(!systemArgs.containsAll(args)){
-           systemArgs.addAll(args);
-       }
-    }
+	public void systemArgs(List<String> args) {
+		if (!systemArgs.containsAll(args)) {
+			systemArgs.addAll(args);
+		}
+	}
 
-    public List<String> getAllArgs() {
-        List<String> allArgs = new ArrayList<String>(systemArgs.size() + args.size());
-        allArgs.addAll(systemArgs);
-        allArgs.addAll(args);
-        return allArgs;
-    }
+	public List<String> getAllArgs() {
+		List<String> allArgs = new ArrayList<String>(systemArgs.size()
+				+ args.size());
+		allArgs.addAll(systemArgs);
+		allArgs.addAll(args);
+		return allArgs;
+	}
 
-    public BuildOperationLogger getOperationLogger() {
-        return oplogger;
-    }
+	public BuildOperationLogger getOperationLogger() {
+		return oplogger;
+	}
 
-    public void setOperationLogger(BuildOperationLogger oplogger) {
-        this.oplogger = oplogger;
-    }
+	public void setOperationLogger(BuildOperationLogger oplogger) {
+		this.oplogger = oplogger;
+	}
 }

@@ -21,14 +21,16 @@ import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.BuildType;
 import org.gradle.nativeplatform.BuildTypeContainer;
 
-public class DefaultBuildTypeContainer extends AbstractNamedDomainObjectContainer<BuildType> implements BuildTypeContainer {
+public class DefaultBuildTypeContainer extends
+		AbstractNamedDomainObjectContainer<BuildType> implements
+		BuildTypeContainer {
 
-    public DefaultBuildTypeContainer(Instantiator instantiator) {
-        super(BuildType.class, instantiator);
-    }
+	public DefaultBuildTypeContainer(Instantiator instantiator) {
+		super(BuildType.class, instantiator);
+	}
 
-    @Override
-    protected BuildType doCreate(String name) {
-        return getInstantiator().newInstance(DefaultBuildType.class, name);
-    }
+	@Override
+	protected BuildType doCreate(String name) {
+		return getInstantiator().newInstance(DefaultBuildType.class, name);
+	}
 }

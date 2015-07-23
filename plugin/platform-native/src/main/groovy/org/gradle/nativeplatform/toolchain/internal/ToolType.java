@@ -19,27 +19,24 @@ package org.gradle.nativeplatform.toolchain.internal;
 import org.gradle.util.GUtil;
 
 public enum ToolType {
-    CPP_COMPILER("C++ compiler"),
-    C_COMPILER("C compiler"),
-    OBJECTIVECPP_COMPILER("Objective-C++ compiler"),
-    OBJECTIVEC_COMPILER("Objective-C compiler"),
-    WINDOW_RESOURCES_COMPILER("Windows resources compiler"),
-    ASSEMBLER("Assembler"),
-    LINKER("Linker"),
-    STATIC_LIB_ARCHIVER("Static library archiver");
+	CPP_COMPILER("C++ compiler"), C_COMPILER("C compiler"), OBJECTIVECPP_COMPILER(
+			"Objective-C++ compiler"), OBJECTIVEC_COMPILER(
+			"Objective-C compiler"), WINDOW_RESOURCES_COMPILER(
+			"Windows resources compiler"), ASSEMBLER("Assembler"), LINKER(
+			"Linker"), STATIC_LIB_ARCHIVER("Static library archiver");
 
-    private final String toolName;
+	private final String toolName;
 
-    ToolType(String toolName) {
-        this.toolName = toolName;
-    }
+	ToolType(String toolName) {
+		this.toolName = toolName;
+	}
 
-    public String getToolName() {
-        return toolName;
-    }
+	public String getToolName() {
+		return toolName;
+	}
 
-    @Override
-    public String toString() {
-        return GUtil.toLowerCamelCase(name());
-    }
+	@Override
+	public String toString() {
+		return GUtil.toLowerCamelCase(name());
+	}
 }

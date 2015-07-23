@@ -23,38 +23,38 @@ import org.gradle.api.Named;
  */
 @Incubating
 public interface OperatingSystem extends Named {
-    /**
-     * Returns a human-consumable display name for this operating system.
-     */
-    String getDisplayName();
+	/**
+	 * Returns a human-consumable display name for this operating system.
+	 */
+	String getDisplayName();
 
-    /**
-     * Is this the current OS?
-     */
-    boolean isCurrent();
+	/**
+	 * Is this the current OS?
+	 */
+	boolean isCurrent();
 
-    /**
-     * Is it Windows?
-     */
-    boolean isWindows();
+	/**
+	 * Is it Windows?
+	 */
+	boolean isWindows();
 
-    /**
-     * Is it Mac OS X?
-     */
-    boolean isMacOsX();
+	/**
+	 * Is it Mac OS X?
+	 */
+	boolean isMacOsX();
 
-    /**
-     * Is it Linux?
-     */
-    boolean isLinux();
+	/**
+	 * Is it Linux?
+	 */
+	boolean isLinux();
 
-    /**
-     * Is it Solaris?
-     */
-    boolean isSolaris();
+	/**
+	 * Is it Solaris?
+	 */
+	boolean isSolaris();
 
-    /**
-     * Is it FreeBSD?
-     */
-    boolean isFreeBSD();
+	/**
+	 * Is it FreeBSD?
+	 */
+	boolean isFreeBSD();
 }

@@ -18,75 +18,75 @@ package org.gradle.nativeplatform.platform.internal;
 import org.gradle.internal.os.OperatingSystem;
 
 public class DefaultOperatingSystem implements OperatingSystemInternal {
-    private static final OperatingSystem CURRENT_OS = OperatingSystem.current();
+	private static final OperatingSystem CURRENT_OS = OperatingSystem.current();
 
-    private final String name;
-    private final OperatingSystem internalOs;
+	private final String name;
+	private final OperatingSystem internalOs;
 
-    public DefaultOperatingSystem(String name) {
-        this(name, OperatingSystem.forName(name));
-    }
+	public DefaultOperatingSystem(String name) {
+		this(name, OperatingSystem.forName(name));
+	}
 
-    public DefaultOperatingSystem(String name, OperatingSystem internalOs) {
-        this.name = name;
-        this.internalOs = internalOs;
-    }
+	public DefaultOperatingSystem(String name, OperatingSystem internalOs) {
+		this.name = name;
+		this.internalOs = internalOs;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getDisplayName() {
-        return String.format("operating system '%s'", name);
-    }
+	public String getDisplayName() {
+		return String.format("operating system '%s'", name);
+	}
 
-    @Override
-    public String toString() {
-        return getDisplayName();
-    }
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 
-    public OperatingSystem getInternalOs() {
-        return internalOs;
-    }
+	public OperatingSystem getInternalOs() {
+		return internalOs;
+	}
 
-    public boolean isCurrent() {
-        return internalOs == CURRENT_OS;
-    }
+	public boolean isCurrent() {
+		return internalOs == CURRENT_OS;
+	}
 
-    public boolean isWindows() {
-        return internalOs.isWindows();
-    }
+	public boolean isWindows() {
+		return internalOs.isWindows();
+	}
 
-    public boolean isLinux() {
-        return internalOs.isLinux();
-    }
+	public boolean isLinux() {
+		return internalOs.isLinux();
+	}
 
-    public boolean isMacOsX() {
-        return internalOs.isMacOsX();
-    }
+	public boolean isMacOsX() {
+		return internalOs.isMacOsX();
+	}
 
-    public boolean isSolaris() {
-        return internalOs == OperatingSystem.SOLARIS;
-    }
+	public boolean isSolaris() {
+		return internalOs == OperatingSystem.SOLARIS;
+	}
 
-    public boolean isFreeBSD() {
-        return internalOs == OperatingSystem.FREE_BSD;
-    }
+	public boolean isFreeBSD() {
+		return internalOs == OperatingSystem.FREE_BSD;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DefaultOperatingSystem that = (DefaultOperatingSystem) o;
-        return name.equals(that.name);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		DefaultOperatingSystem that = (DefaultOperatingSystem) o;
+		return name.equals(that.name);
+	}
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 }

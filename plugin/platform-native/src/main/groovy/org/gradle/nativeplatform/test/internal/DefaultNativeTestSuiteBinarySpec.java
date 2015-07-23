@@ -29,65 +29,69 @@ import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
 import java.io.File;
 
-public abstract class DefaultNativeTestSuiteBinarySpec extends AbstractNativeBinarySpec implements NativeTestSuiteBinarySpecInternal {
-    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
-    private NativeBinarySpec testedBinary;
-    private File executableFile;
+public abstract class DefaultNativeTestSuiteBinarySpec extends
+		AbstractNativeBinarySpec implements NativeTestSuiteBinarySpecInternal {
+	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
+			super.getTasks());
+	private NativeBinarySpec testedBinary;
+	private File executableFile;
 
-    @Override
-    public NativeTestSuiteSpec getComponent() {
-        return (NativeTestSuiteSpec) super.getComponent();
-    }
+	@Override
+	public NativeTestSuiteSpec getComponent() {
+		return (NativeTestSuiteSpec) super.getComponent();
+	}
 
-    public NativeBinarySpec getTestedBinary() {
-        return testedBinary;
-    }
+	public NativeBinarySpec getTestedBinary() {
+		return testedBinary;
+	}
 
-    public void setTestedBinary(NativeBinarySpecInternal testedBinary) {
-        this.testedBinary = testedBinary;
-        setTargetPlatform(testedBinary.getTargetPlatform());
-        setToolChain(testedBinary.getToolChain());
-        setPlatformToolProvider(testedBinary.getPlatformToolProvider());
-        setBuildType(testedBinary.getBuildType());
-        setFlavor(testedBinary.getFlavor());
-    }
+	public void setTestedBinary(NativeBinarySpecInternal testedBinary) {
+		this.testedBinary = testedBinary;
+		setTargetPlatform(testedBinary.getTargetPlatform());
+		setToolChain(testedBinary.getToolChain());
+		setPlatformToolProvider(testedBinary.getPlatformToolProvider());
+		setBuildType(testedBinary.getBuildType());
+		setFlavor(testedBinary.getFlavor());
+	}
 
-    public File getExecutableFile() {
-        return executableFile;
-    }
+	public File getExecutableFile() {
+		return executableFile;
+	}
 
-    public void setExecutableFile(File executableFile) {
-        this.executableFile = executableFile;
-    }
+	public void setExecutableFile(File executableFile) {
+		this.executableFile = executableFile;
+	}
 
-    public File getPrimaryOutput() {
-        return getExecutableFile();
-    }
+	public File getPrimaryOutput() {
+		return getExecutableFile();
+	}
 
-    @Override
-    protected ObjectFilesToBinary getCreateOrLink() {
-        return tasks.getLink();
-    }
+	@Override
+	protected ObjectFilesToBinary getCreateOrLink() {
+		return tasks.getLink();
+	}
 
-    public NativeTestSuiteBinarySpec.TasksCollection getTasks() {
-        return tasks;
-    }
+	public NativeTestSuiteBinarySpec.TasksCollection getTasks() {
+		return tasks;
+	}
 
-    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements NativeTestSuiteBinarySpec.TasksCollection {
-        public DefaultTasksCollection(BinaryTasksCollection delegate) {
-            super(delegate);
-        }
+	private static class DefaultTasksCollection extends
+			BinaryTasksCollectionWrapper implements
+			NativeTestSuiteBinarySpec.TasksCollection {
+		public DefaultTasksCollection(BinaryTasksCollection delegate) {
+			super(delegate);
+		}
 
-        public LinkExecutable getLink() {
-            return findSingleTaskWithType(LinkExecutable.class);
-        }
+		public LinkExecutable getLink() {
+			return findSingleTaskWithType(LinkExecutable.class);
+		}
 
-        public InstallExecutable getInstall() {
-            return findSingleTaskWithType(InstallExecutable.class);
-        }
+		public InstallExecutable getInstall() {
+			return findSingleTaskWithType(InstallExecutable.class);
+		}
 
-        public RunTestExecutable getRun() {
-            return findSingleTaskWithType(RunTestExecutable.class);
-        }
-    }
+		public RunTestExecutable getRun() {
+			return findSingleTaskWithType(RunTestExecutable.class);
+		}
+	}
 }

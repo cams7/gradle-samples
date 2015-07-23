@@ -24,13 +24,13 @@ import java.util.List;
  */
 @Incubating
 public interface Tool {
-    /**
-     * The arguments passed when executing this tool.
-     */
-    List<String> getArgs();
+	/**
+	 * The arguments passed when executing this tool.
+	 */
+	List<String> getArgs();
 
-    /**
-     * Adds a number of arguments to be passed to the tool.
-     */
-    void args(String... args);
+	/**
+	 * Adds a number of arguments to be passed to the tool.
+	 */
+	void args(String... args);
 }

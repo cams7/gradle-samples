@@ -24,6 +24,7 @@ import org.gradle.api.artifacts.repositories.ArtifactRepository;
  * A container of {@link PrebuiltLibrary} instances.
  */
 @Incubating
-public interface PrebuiltLibraries extends ArtifactRepository, NamedDomainObjectSet<PrebuiltLibrary> {
-    PrebuiltLibrary resolveLibrary(String name);
+public interface PrebuiltLibraries extends ArtifactRepository,
+		NamedDomainObjectSet<PrebuiltLibrary> {
+	PrebuiltLibrary resolveLibrary(String name);
 }

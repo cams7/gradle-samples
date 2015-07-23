@@ -27,71 +27,80 @@ import org.gradle.nativeplatform.NativeDependencySet;
 import java.io.File;
 import java.util.Set;
 
-public class SourceSetNativeDependencyResolver implements NativeDependencyResolver {
-    private final NativeDependencyResolver delegate;
+public class SourceSetNativeDependencyResolver implements
+		NativeDependencyResolver {
+	private final NativeDependencyResolver delegate;
 
-    public SourceSetNativeDependencyResolver(NativeDependencyResolver delegate) {
-        this.delegate = delegate;
-    }
+	public SourceSetNativeDependencyResolver(NativeDependencyResolver delegate) {
+		this.delegate = delegate;
+	}
 
-    public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
-        for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult.getPendingResolutions()) {
-            if (resolution.getInput() instanceof LanguageSourceSet) {
-                LanguageSourceSet input = (LanguageSourceSet) resolution.getInput();
-                resolution.setNativeDependencySet(createNativeDependencySet(input));
-            }
-        }
-        delegate.resolve(nativeBinaryResolveResult);
-    }
+	public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
+		for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult
+				.getPendingResolutions()) {
+			if (resolution.getInput() instanceof LanguageSourceSet) {
+				LanguageSourceSet input = (LanguageSourceSet) resolution
+						.getInput();
+				resolution
+						.setNativeDependencySet(createNativeDependencySet(input));
+			}
+		}
+		delegate.resolve(nativeBinaryResolveResult);
+	}
 
-    private NativeDependencySet createNativeDependencySet(LanguageSourceSet sourceSet) {
-        if (sourceSet instanceof HeaderExportingSourceSet) {
-            return new LanguageSourceSetNativeDependencySet((HeaderExportingSourceSet) sourceSet);
-        }
-        return new EmptyNativeDependencySet();
-    }
+	private NativeDependencySet createNativeDependencySet(
+			LanguageSourceSet sourceSet) {
+		if (sourceSet instanceof HeaderExportingSourceSet) {
+			return new LanguageSourceSetNativeDependencySet(
+					(HeaderExportingSourceSet) sourceSet);
+		}
+		return new EmptyNativeDependencySet();
+	}
 
-    private static class EmptyNativeDependencySet implements NativeDependencySet {
-        public FileCollection getIncludeRoots() {
-            return empty();
-        }
+	private static class EmptyNativeDependencySet implements
+			NativeDependencySet {
+		public FileCollection getIncludeRoots() {
+			return empty();
+		}
 
-        public FileCollection getLinkFiles() {
-            return empty();
-        }
+		public FileCollection getLinkFiles() {
+			return empty();
+		}
 
-        public FileCollection getRuntimeFiles() {
-            return empty();
-        }
+		public FileCollection getRuntimeFiles() {
+			return empty();
+		}
 
-        private FileCollection empty() {
-            return new SimpleFileCollection();
-        }
-    }
+		private FileCollection empty() {
+			return new SimpleFileCollection();
+		}
+	}
 
-    private static class LanguageSourceSetNativeDependencySet extends EmptyNativeDependencySet {
-        private final HeaderExportingSourceSet sourceSet;
+	private static class LanguageSourceSetNativeDependencySet extends
+			EmptyNativeDependencySet {
+		private final HeaderExportingSourceSet sourceSet;
 
-        private LanguageSourceSetNativeDependencySet(HeaderExportingSourceSet sourceSet) {
-            this.sourceSet = sourceSet;
-        }
+		private LanguageSourceSetNativeDependencySet(
+				HeaderExportingSourceSet sourceSet) {
+			this.sourceSet = sourceSet;
+		}
 
-        public FileCollection getIncludeRoots() {
-            return new AbstractFileCollection() {
-                @Override
-                public String getDisplayName() {
-                    return "Include roots of " + sourceSet.getName();
-                }
+		public FileCollection getIncludeRoots() {
+			return new AbstractFileCollection() {
+				@Override
+				public String getDisplayName() {
+					return "Include roots of " + sourceSet.getName();
+				}
 
-                public Set<File> getFiles() {
-                    return sourceSet.getExportedHeaders().getSrcDirs();
-                }
+				public Set<File> getFiles() {
+					return sourceSet.getExportedHeaders().getSrcDirs();
+				}
 
-                @Override
-                public TaskDependency getBuildDependencies() {
-                    return sourceSet.getBuildDependencies();
-                }
-            };
-        }
-    }
+				@Override
+				public TaskDependency getBuildDependencies() {
+					return sourceSet.getBuildDependencies();
+				}
+			};
+		}
+	}
 }

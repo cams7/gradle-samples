@@ -22,7 +22,9 @@ import org.gradle.platform.base.internal.PlatformAwareComponentSpecInternal;
 
 import java.util.Set;
 
-public interface TargetedNativeComponentInternal extends TargetedNativeComponent, PlatformAwareComponentSpecInternal {
-    Set<Flavor> chooseFlavors(Set<? extends Flavor> candidates);
-    Set<BuildType> chooseBuildTypes(Set<? extends BuildType> candidates);
+public interface TargetedNativeComponentInternal extends
+		TargetedNativeComponent, PlatformAwareComponentSpecInternal {
+	Set<Flavor> chooseFlavors(Set<? extends Flavor> candidates);
+
+	Set<BuildType> chooseBuildTypes(Set<? extends BuildType> candidates);
 }

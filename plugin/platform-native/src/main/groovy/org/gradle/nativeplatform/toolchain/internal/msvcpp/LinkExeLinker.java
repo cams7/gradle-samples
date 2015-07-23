@@ -34,52 +34,60 @@ import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs
 
 class LinkExeLinker implements Compiler<LinkerSpec> {
 
-    private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
-    private final Transformer<LinkerSpec, LinkerSpec> specTransformer;
-    private final ArgsTransformer<LinkerSpec> argsTransformer;
-    private final CommandLineToolContext invocationContext;
-    private final BuildOperationProcessor buildOperationProcessor;
+	private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
+	private final Transformer<LinkerSpec, LinkerSpec> specTransformer;
+	private final ArgsTransformer<LinkerSpec> argsTransformer;
+	private final CommandLineToolContext invocationContext;
+	private final BuildOperationProcessor buildOperationProcessor;
 
-    LinkExeLinker(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, Transformer<LinkerSpec, LinkerSpec> specTransformer) {
-        this.buildOperationProcessor = buildOperationProcessor;
-        this.argsTransformer = new LinkerArgsTransformer();
-        this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
-        this.invocationContext = invocationContext;
-        this.specTransformer = specTransformer;
-    }
+	LinkExeLinker(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
+			CommandLineToolContext invocationContext,
+			Transformer<LinkerSpec, LinkerSpec> specTransformer) {
+		this.buildOperationProcessor = buildOperationProcessor;
+		this.argsTransformer = new LinkerArgsTransformer();
+		this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
+		this.invocationContext = invocationContext;
+		this.specTransformer = specTransformer;
+	}
 
-    public WorkResult execute(LinkerSpec spec) {
-        BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor.newQueue(commandLineToolInvocationWorker, spec.getOperationLogger().getLogLocation());
-        LinkerSpec transformedSpec = specTransformer.transform(spec);
-        List<String> args = argsTransformer.transform(transformedSpec);
-        invocationContext.getArgAction().execute(args);
-        new VisualCppOptionsFileArgsWriter(spec.getTempDir()).execute(args);
-        CommandLineToolInvocation invocation = invocationContext.createInvocation(
-                String.format("linking %s", spec.getOutputFile().getName()), args, spec.getOperationLogger());
-        queue.add(invocation);
-        queue.waitForCompletion();
-        return new SimpleWorkResult(true);
-    }
+	public WorkResult execute(LinkerSpec spec) {
+		BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor
+				.newQueue(commandLineToolInvocationWorker, spec
+						.getOperationLogger().getLogLocation());
+		LinkerSpec transformedSpec = specTransformer.transform(spec);
+		List<String> args = argsTransformer.transform(transformedSpec);
+		invocationContext.getArgAction().execute(args);
+		new VisualCppOptionsFileArgsWriter(spec.getTempDir()).execute(args);
+		CommandLineToolInvocation invocation = invocationContext
+				.createInvocation(String.format("linking %s", spec
+						.getOutputFile().getName()), args, spec
+						.getOperationLogger());
+		queue.add(invocation);
+		queue.waitForCompletion();
+		return new SimpleWorkResult(true);
+	}
 
-    private static class LinkerArgsTransformer implements ArgsTransformer<LinkerSpec> {
-        public List<String> transform(LinkerSpec spec) {
-            List<String> args = new ArrayList<String>();
-            args.addAll(escapeUserArgs(spec.getAllArgs()));
-            args.add("/OUT:" + spec.getOutputFile().getAbsolutePath());
-            args.add("/NOLOGO");
-            if (spec instanceof SharedLibraryLinkerSpec) {
-                args.add("/DLL");
-            }
-            for (File pathEntry : spec.getLibraryPath()) {
-                args.add("/LIBPATH:" + pathEntry.getAbsolutePath());
-            }
-            for (File file : spec.getObjectFiles()) {
-                args.add(file.getAbsolutePath());
-            }
-            for (File file : spec.getLibraries()) {
-                args.add(file.getAbsolutePath());
-            }
-            return args;
-        }
-    }
+	private static class LinkerArgsTransformer implements
+			ArgsTransformer<LinkerSpec> {
+		public List<String> transform(LinkerSpec spec) {
+			List<String> args = new ArrayList<String>();
+			args.addAll(escapeUserArgs(spec.getAllArgs()));
+			args.add("/OUT:" + spec.getOutputFile().getAbsolutePath());
+			args.add("/NOLOGO");
+			if (spec instanceof SharedLibraryLinkerSpec) {
+				args.add("/DLL");
+			}
+			for (File pathEntry : spec.getLibraryPath()) {
+				args.add("/LIBPATH:" + pathEntry.getAbsolutePath());
+			}
+			for (File file : spec.getObjectFiles()) {
+				args.add(file.getAbsolutePath());
+			}
+			for (File file : spec.getLibraries()) {
+				args.add(file.getAbsolutePath());
+			}
+			return args;
+		}
+	}
 }

@@ -23,13 +23,20 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWor
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CPCHCompileSpec;
 
 public class CPCHCompiler extends GccCompatibleNativeCompiler<CPCHCompileSpec> {
-    public CPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineTool, invocationContext, new CPCHCompileArgsTransformer(), Transformers.<CPCHCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
-    }
+	public CPCHCompiler(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineTool,
+			CommandLineToolContext invocationContext,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineTool, invocationContext,
+				new CPCHCompileArgsTransformer(), Transformers
+						.<CPCHCompileSpec> noOpTransformer(),
+				objectFileExtension, useCommandFile);
+	}
 
-    private static class CPCHCompileArgsTransformer extends GccCompilerArgsTransformer<CPCHCompileSpec> {
-        protected String getLanguage() {
-            return "c-header";
-        }
-    }
+	private static class CPCHCompileArgsTransformer extends
+			GccCompilerArgsTransformer<CPCHCompileSpec> {
+		protected String getLanguage() {
+			return "c-header";
+		}
+	}
 }

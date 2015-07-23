@@ -27,12 +27,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class CPCHCompiler extends VisualCppNativeCompiler<CPCHCompileSpec> {
-    public CPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, Transformer<CPCHCompileSpec, CPCHCompileSpec> specTransformer, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineToolInvocationWorker, invocationContext, new VisualCppPCHCompilerArgsTransformer<CPCHCompileSpec>(), specTransformer, objectFileExtension, useCommandFile);
-    }
+	public CPCHCompiler(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
+			CommandLineToolContext invocationContext,
+			Transformer<CPCHCompileSpec, CPCHCompileSpec> specTransformer,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineToolInvocationWorker,
+				invocationContext,
+				new VisualCppPCHCompilerArgsTransformer<CPCHCompileSpec>(),
+				specTransformer, objectFileExtension, useCommandFile);
+	}
 
-    @Override
-    protected List<String> getOutputArgs(CPCHCompileSpec spec, File outputFile) {
-        return Collections.singletonList("/Fp" + outputFile.getAbsolutePath());
-    }
+	@Override
+	protected List<String> getOutputArgs(CPCHCompileSpec spec, File outputFile) {
+		return Collections.singletonList("/Fp" + outputFile.getAbsolutePath());
+	}
 }

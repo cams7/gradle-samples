@@ -16,55 +16,55 @@
 package org.gradle.nativeplatform.platform.internal;
 
 public class DefaultArchitecture implements ArchitectureInternal {
-    private final String name;
+	private final String name;
 
-    public DefaultArchitecture(String name) {
-        this.name = name;
-    }
+	public DefaultArchitecture(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return getDisplayName();
-    }
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 
-    public String getDisplayName() {
-        return String.format("architecture '%s'", name);
-    }
+	public String getDisplayName() {
+		return String.format("architecture '%s'", name);
+	}
 
-    public boolean isI386() {
-        return Architectures.X86.isAlias(name);
-    }
+	public boolean isI386() {
+		return Architectures.X86.isAlias(name);
+	}
 
-    public boolean isAmd64() {
-        return Architectures.X86_64.isAlias(name);
-    }
+	public boolean isAmd64() {
+		return Architectures.X86_64.isAlias(name);
+	}
 
-    public boolean isIa64() {
-        return Architectures.IA_64.isAlias(name);
-    }
+	public boolean isIa64() {
+		return Architectures.IA_64.isAlias(name);
+	}
 
-    public boolean isArm() {
-        return Architectures.ARM_V7.isAlias(name);
-    }
+	public boolean isArm() {
+		return Architectures.ARM_V7.isAlias(name);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DefaultArchitecture other = (DefaultArchitecture) o;
-        return name.equals(other.name);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		DefaultArchitecture other = (DefaultArchitecture) o;
+		return name.equals(other.name);
+	}
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 }

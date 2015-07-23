@@ -26,24 +26,27 @@ import java.io.IOException;
 import java.util.Set;
 
 public class PrefixHeaderFileGeneratorUtil {
-    public static void generatePCHFile(Set<String> headers, File headerFile) {
-        if (!headerFile.getParentFile().exists()) {
-            headerFile.getParentFile().mkdirs();
-        }
+	public static void generatePCHFile(Set<String> headers, File headerFile) {
+		if (!headerFile.getParentFile().exists()) {
+			headerFile.getParentFile().mkdirs();
+		}
 
-        try {
-            FileUtils.writeLines(headerFile, CollectionUtils.collect(CollectionUtils.toList(headers), new Transformer<String, String>() {
-                @Override
-                public String transform(String header) {
-                    if (header.startsWith("<")) {
-                        return "#include ".concat(header);
-                    } else {
-                        return "#include \"".concat(header).concat("\"");
-                    }
-                }
-            }));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+		try {
+			FileUtils.writeLines(headerFile, CollectionUtils.collect(
+					CollectionUtils.toList(headers),
+					new Transformer<String, String>() {
+						@Override
+						public String transform(String header) {
+							if (header.startsWith("<")) {
+								return "#include ".concat(header);
+							} else {
+								return "#include \"".concat(header)
+										.concat("\"");
+							}
+						}
+					}));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 }

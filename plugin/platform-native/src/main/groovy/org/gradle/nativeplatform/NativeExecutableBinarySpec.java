@@ -27,47 +27,48 @@ import java.io.File;
  * An binary built by Gradle for a native application.
  */
 @Incubating
-public interface NativeExecutableBinarySpec extends NativeBinarySpec, ApplicationBinarySpec {
-    /**
-     * Provides access to key tasks used for building the binary.
-     */
-    public interface TasksCollection extends BinaryTasksCollection {
-        /**
-         * The link task.
-         */
-        Task getLink();
+public interface NativeExecutableBinarySpec extends NativeBinarySpec,
+		ApplicationBinarySpec {
+	/**
+	 * Provides access to key tasks used for building the binary.
+	 */
+	public interface TasksCollection extends BinaryTasksCollection {
+		/**
+		 * The link task.
+		 */
+		Task getLink();
 
-        /**
-         * The install task.
-         */
-        Task getInstall();
-    }
+		/**
+		 * The install task.
+		 */
+		Task getInstall();
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    NativeExecutableSpec getApplication();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	NativeExecutableSpec getApplication();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    NativeExecutableSpec getComponent();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	NativeExecutableSpec getComponent();
 
-    /**
-     * The executable file.
-     */
-    File getExecutableFile();
+	/**
+	 * The executable file.
+	 */
+	File getExecutableFile();
 
-    /**
-     * The executable file.
-     */
-    void setExecutableFile(File executableFile);
+	/**
+	 * The executable file.
+	 */
+	void setExecutableFile(File executableFile);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    TasksCollection getTasks();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TasksCollection getTasks();
 }

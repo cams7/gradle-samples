@@ -25,42 +25,47 @@ import org.gradle.nativeplatform.platform.NativePlatform;
 
 import java.io.File;
 
-public class DefaultPrebuiltSharedLibraryBinary extends AbstractPrebuiltLibraryBinary implements PrebuiltSharedLibraryBinary {
-    private File sharedLibraryFile;
-    private File sharedLibraryLinkFile;
+public class DefaultPrebuiltSharedLibraryBinary extends
+		AbstractPrebuiltLibraryBinary implements PrebuiltSharedLibraryBinary {
+	private File sharedLibraryFile;
+	private File sharedLibraryLinkFile;
 
-    public DefaultPrebuiltSharedLibraryBinary(String name, PrebuiltLibrary library, BuildType buildType, NativePlatform targetPlatform, Flavor flavor) {
-        super(name, library, buildType, targetPlatform, flavor);
-    }
+	public DefaultPrebuiltSharedLibraryBinary(String name,
+			PrebuiltLibrary library, BuildType buildType,
+			NativePlatform targetPlatform, Flavor flavor) {
+		super(name, library, buildType, targetPlatform, flavor);
+	}
 
-    public String getDisplayName() {
-        return String.format("shared library '%s'", getName());
-    }
+	public String getDisplayName() {
+		return String.format("shared library '%s'", getName());
+	}
 
-    public void setSharedLibraryFile(File sharedLibraryFile) {
-        this.sharedLibraryFile = sharedLibraryFile;
-    }
+	public void setSharedLibraryFile(File sharedLibraryFile) {
+		this.sharedLibraryFile = sharedLibraryFile;
+	}
 
-    public File getSharedLibraryFile() {
-        return sharedLibraryFile;
-    }
+	public File getSharedLibraryFile() {
+		return sharedLibraryFile;
+	}
 
-    public void setSharedLibraryLinkFile(File sharedLibraryLinkFile) {
-        this.sharedLibraryLinkFile = sharedLibraryLinkFile;
-    }
+	public void setSharedLibraryLinkFile(File sharedLibraryLinkFile) {
+		this.sharedLibraryLinkFile = sharedLibraryLinkFile;
+	}
 
-    public File getSharedLibraryLinkFile() {
-        if (sharedLibraryLinkFile != null) {
-            return sharedLibraryLinkFile;
-        }
-        return sharedLibraryFile;
-    }
+	public File getSharedLibraryLinkFile() {
+		if (sharedLibraryLinkFile != null) {
+			return sharedLibraryLinkFile;
+		}
+		return sharedLibraryFile;
+	}
 
-    public FileCollection getLinkFiles() {
-        return createFileCollection(getSharedLibraryLinkFile(), "Shared library link file");
-    }
+	public FileCollection getLinkFiles() {
+		return createFileCollection(getSharedLibraryLinkFile(),
+				"Shared library link file");
+	}
 
-    public FileCollection getRuntimeFiles() {
-        return createFileCollection(getSharedLibraryFile(), "Shared library runtime file");
-    }
+	public FileCollection getRuntimeFiles() {
+		return createFileCollection(getSharedLibraryFile(),
+				"Shared library runtime file");
+	}
 }

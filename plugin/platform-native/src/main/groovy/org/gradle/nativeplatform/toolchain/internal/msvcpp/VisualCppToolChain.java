@@ -34,106 +34,126 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class VisualCppToolChain extends ExtendableToolChain<VisualCppPlatformToolChain> implements VisualCpp, NativeToolChainInternal {
+public class VisualCppToolChain extends
+		ExtendableToolChain<VisualCppPlatformToolChain> implements VisualCpp,
+		NativeToolChainInternal {
 
-    private final String name;
-    private final OperatingSystem operatingSystem;
-    private final FileResolver fileResolver;
+	private final String name;
+	private final OperatingSystem operatingSystem;
+	@SuppressWarnings("unused")
+	private final FileResolver fileResolver;
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(VisualCppToolChain.class);
+	protected static final Logger LOGGER = LoggerFactory
+			.getLogger(VisualCppToolChain.class);
 
-    public static final String DEFAULT_NAME = "visualCpp";
+	public static final String DEFAULT_NAME = "visualCpp";
 
-    private final ExecActionFactory execActionFactory;
-    private final VisualStudioLocator visualStudioLocator;
-    private final WindowsSdkLocator windowsSdkLocator;
-    private final Instantiator instantiator;
-    private File installDir;
-    private File windowsSdkDir;
-    private VisualCppInstall visualCpp;
-    private WindowsSdk windowsSdk;
-    private ToolChainAvailability availability;
+	private final ExecActionFactory execActionFactory;
+	private final VisualStudioLocator visualStudioLocator;
+	private final WindowsSdkLocator windowsSdkLocator;
+	private final Instantiator instantiator;
+	private File installDir;
+	private File windowsSdkDir;
+	private VisualCppInstall visualCpp;
+	private WindowsSdk windowsSdk;
+	private ToolChainAvailability availability;
 
-    public VisualCppToolChain(String name, BuildOperationProcessor buildOperationProcessor, OperatingSystem operatingSystem, FileResolver fileResolver, ExecActionFactory execActionFactory,
-                              VisualStudioLocator visualStudioLocator, WindowsSdkLocator windowsSdkLocator, Instantiator instantiator) {
-        super(name, buildOperationProcessor, operatingSystem, fileResolver);
+	public VisualCppToolChain(String name,
+			BuildOperationProcessor buildOperationProcessor,
+			OperatingSystem operatingSystem, FileResolver fileResolver,
+			ExecActionFactory execActionFactory,
+			VisualStudioLocator visualStudioLocator,
+			WindowsSdkLocator windowsSdkLocator, Instantiator instantiator) {
+		super(name, buildOperationProcessor, operatingSystem, fileResolver);
 
-        this.name = name;
-        this.operatingSystem = operatingSystem;
-        this.fileResolver = fileResolver;
-        this.execActionFactory = execActionFactory;
-        this.visualStudioLocator = visualStudioLocator;
-        this.windowsSdkLocator = windowsSdkLocator;
-        this.instantiator = instantiator;
-    }
+		this.name = name;
+		this.operatingSystem = operatingSystem;
+		this.fileResolver = fileResolver;
+		this.execActionFactory = execActionFactory;
+		this.visualStudioLocator = visualStudioLocator;
+		this.windowsSdkLocator = windowsSdkLocator;
+		this.instantiator = instantiator;
+	}
 
-    protected String getTypeName() {
-        return "Visual Studio";
-    }
+	protected String getTypeName() {
+		return "Visual Studio";
+	}
 
-    public File getInstallDir() {
-        return installDir;
-    }
+	public File getInstallDir() {
+		return installDir;
+	}
 
-    public void setInstallDir(Object installDirPath) {
-        this.installDir = resolve(installDirPath);
-    }
+	public void setInstallDir(Object installDirPath) {
+		this.installDir = resolve(installDirPath);
+	}
 
-    public File getWindowsSdkDir() {
-        return windowsSdkDir;
-    }
+	public File getWindowsSdkDir() {
+		return windowsSdkDir;
+	}
 
-    public void setWindowsSdkDir(Object windowsSdkDirPath) {
-        this.windowsSdkDir = resolve(windowsSdkDirPath);
-    }
+	public void setWindowsSdkDir(Object windowsSdkDirPath) {
+		this.windowsSdkDir = resolve(windowsSdkDirPath);
+	}
 
-    public PlatformToolProvider select(NativePlatformInternal targetPlatform) {
-        ToolChainAvailability result = new ToolChainAvailability();
-        result.mustBeAvailable(getAvailability());
-        if (visualCpp != null && !visualCpp.isSupportedPlatform(targetPlatform)) {
-            result.unavailable(String.format("Don't know how to build for platform '%s'.", targetPlatform.getName()));
-        }
-        if (!result.isAvailable()) {
-            return new UnavailablePlatformToolProvider(targetPlatform.getOperatingSystem(), result);
-        }
+	public PlatformToolProvider select(NativePlatformInternal targetPlatform) {
+		ToolChainAvailability result = new ToolChainAvailability();
+		result.mustBeAvailable(getAvailability());
+		if (visualCpp != null && !visualCpp.isSupportedPlatform(targetPlatform)) {
+			result.unavailable(String.format(
+					"Don't know how to build for platform '%s'.",
+					targetPlatform.getName()));
+		}
+		if (!result.isAvailable()) {
+			return new UnavailablePlatformToolProvider(
+					targetPlatform.getOperatingSystem(), result);
+		}
 
-        DefaultVisualCppPlatformToolChain configurableToolChain = instantiator.newInstance(DefaultVisualCppPlatformToolChain.class, targetPlatform, instantiator);
-        configureActions.execute(configurableToolChain);
+		DefaultVisualCppPlatformToolChain configurableToolChain = instantiator
+				.newInstance(DefaultVisualCppPlatformToolChain.class,
+						targetPlatform, instantiator);
+		configureActions.execute(configurableToolChain);
 
-        return new VisualCppPlatformToolProvider(buildOperationProcessor, targetPlatform.getOperatingSystem(), configurableToolChain.tools, visualCpp, windowsSdk, targetPlatform, execActionFactory);
-    }
+		return new VisualCppPlatformToolProvider(buildOperationProcessor,
+				targetPlatform.getOperatingSystem(),
+				configurableToolChain.tools, visualCpp, windowsSdk,
+				targetPlatform, execActionFactory);
+	}
 
-    private ToolChainAvailability getAvailability() {
-        if (availability == null) {
-            availability = new ToolChainAvailability();
-            checkAvailable(availability);
-        }
-        return availability;
-    }
+	private ToolChainAvailability getAvailability() {
+		if (availability == null) {
+			availability = new ToolChainAvailability();
+			checkAvailable(availability);
+		}
+		return availability;
+	}
 
-    private void checkAvailable(ToolChainAvailability availability) {
-        if (!operatingSystem.isWindows()) {
-            availability.unavailable("Visual Studio is not available on this operating system.");
-            return;
-        }
-        VisualStudioLocator.SearchResult visualStudioSearchResult = visualStudioLocator.locateVisualStudioInstalls(installDir);
-        availability.mustBeAvailable(visualStudioSearchResult);
-        if (visualStudioSearchResult.isAvailable()) {
-            visualCpp = visualStudioSearchResult.getVisualStudio().getVisualCpp();
-        }
-        WindowsSdkLocator.SearchResult windowsSdkSearchResult = windowsSdkLocator.locateWindowsSdks(windowsSdkDir);
-        availability.mustBeAvailable(windowsSdkSearchResult);
-        if (windowsSdkSearchResult.isAvailable()) {
-            windowsSdk = windowsSdkSearchResult.getSdk();
-        }
-    }
+	private void checkAvailable(ToolChainAvailability availability) {
+		if (!operatingSystem.isWindows()) {
+			availability
+					.unavailable("Visual Studio is not available on this operating system.");
+			return;
+		}
+		VisualStudioLocator.SearchResult visualStudioSearchResult = visualStudioLocator
+				.locateVisualStudioInstalls(installDir);
+		availability.mustBeAvailable(visualStudioSearchResult);
+		if (visualStudioSearchResult.isAvailable()) {
+			visualCpp = visualStudioSearchResult.getVisualStudio()
+					.getVisualCpp();
+		}
+		WindowsSdkLocator.SearchResult windowsSdkSearchResult = windowsSdkLocator
+				.locateWindowsSdks(windowsSdkDir);
+		availability.mustBeAvailable(windowsSdkSearchResult);
+		if (windowsSdkSearchResult.isAvailable()) {
+			windowsSdk = windowsSdkSearchResult.getSdk();
+		}
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getDisplayName() {
-        return String.format("Tool chain '%s' (%s)", getName(), getTypeName());
-    }
+	public String getDisplayName() {
+		return String.format("Tool chain '%s' (%s)", getName(), getTypeName());
+	}
 
 }

@@ -19,25 +19,27 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.language.base.internal.compile.Compiler;
 
-public class BuildOperationLoggingCompilerDecorator<T extends BinaryToolSpec> implements Compiler<T> {
+public class BuildOperationLoggingCompilerDecorator<T extends BinaryToolSpec>
+		implements Compiler<T> {
 
-    private final Compiler<? super T> delegate;
+	private final Compiler<? super T> delegate;
 
-    private BuildOperationLoggingCompilerDecorator(Compiler<? super T> delegate) {
-        this.delegate = delegate;
-    }
+	private BuildOperationLoggingCompilerDecorator(Compiler<? super T> delegate) {
+		this.delegate = delegate;
+	}
 
-    public static <T extends BinaryToolSpec> Compiler<T> wrap(Compiler<T> delegate) {
-        return new BuildOperationLoggingCompilerDecorator<T>(delegate);
-    }
+	public static <T extends BinaryToolSpec> Compiler<T> wrap(
+			Compiler<T> delegate) {
+		return new BuildOperationLoggingCompilerDecorator<T>(delegate);
+	}
 
-    @Override
-    public WorkResult execute(T spec) {
-        spec.getOperationLogger().start();
-        try {
-            return delegate.execute(spec);
-        } finally {
-            spec.getOperationLogger().done();
-        }
-    }
+	@Override
+	public WorkResult execute(T spec) {
+		spec.getOperationLogger().start();
+		try {
+			return delegate.execute(spec);
+		} finally {
+			spec.getOperationLogger().done();
+		}
+	}
 }

@@ -26,30 +26,34 @@ import org.gradle.nativeplatform.platform.NativePlatform;
 
 import java.io.File;
 
-public class DefaultPrebuiltStaticLibraryBinary extends AbstractPrebuiltLibraryBinary implements PrebuiltStaticLibraryBinary {
-    private File staticLibraryFile;
+public class DefaultPrebuiltStaticLibraryBinary extends
+		AbstractPrebuiltLibraryBinary implements PrebuiltStaticLibraryBinary {
+	private File staticLibraryFile;
 
-    public DefaultPrebuiltStaticLibraryBinary(String name, PrebuiltLibrary library, BuildType buildType, NativePlatform targetPlatform, Flavor flavor) {
-        super(name, library, buildType, targetPlatform, flavor);
-    }
+	public DefaultPrebuiltStaticLibraryBinary(String name,
+			PrebuiltLibrary library, BuildType buildType,
+			NativePlatform targetPlatform, Flavor flavor) {
+		super(name, library, buildType, targetPlatform, flavor);
+	}
 
-    public String getDisplayName() {
-        return String.format("static library '%s'", getName());
-    }
+	public String getDisplayName() {
+		return String.format("static library '%s'", getName());
+	}
 
-    public void setStaticLibraryFile(File staticLibraryFile) {
-        this.staticLibraryFile = staticLibraryFile;
-    }
+	public void setStaticLibraryFile(File staticLibraryFile) {
+		this.staticLibraryFile = staticLibraryFile;
+	}
 
-    public File getStaticLibraryFile() {
-        return staticLibraryFile;
-    }
+	public File getStaticLibraryFile() {
+		return staticLibraryFile;
+	}
 
-    public FileCollection getLinkFiles() {
-        return createFileCollection(getStaticLibraryFile(), "Static library file");
-    }
+	public FileCollection getLinkFiles() {
+		return createFileCollection(getStaticLibraryFile(),
+				"Static library file");
+	}
 
-    public FileCollection getRuntimeFiles() {
-        return new SimpleFileCollection();
-    }
+	public FileCollection getRuntimeFiles() {
+		return new SimpleFileCollection();
+	}
 }

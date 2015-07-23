@@ -19,5 +19,5 @@ package org.gradle.nativeplatform.platform.internal;
 import org.gradle.nativeplatform.platform.OperatingSystem;
 
 public interface OperatingSystemInternal extends OperatingSystem {
-    org.gradle.internal.os.OperatingSystem getInternalOs();
+	org.gradle.internal.os.OperatingSystem getInternalOs();
 }

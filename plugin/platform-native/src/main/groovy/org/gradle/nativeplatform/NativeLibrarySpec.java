@@ -22,19 +22,23 @@ import org.gradle.platform.base.LibrarySpec;
  * Definition of a native library component that is to be built by Gradle.
  */
 @Incubating
-public interface NativeLibrarySpec extends LibrarySpec, NativeComponentSpec, TargetedNativeComponent {
-    /**
-     * Converts this library to a native library requirement that uses the shared library variant. This is the default.
-     */
-    NativeLibraryRequirement getShared();
+public interface NativeLibrarySpec extends LibrarySpec, NativeComponentSpec,
+		TargetedNativeComponent {
+	/**
+	 * Converts this library to a native library requirement that uses the
+	 * shared library variant. This is the default.
+	 */
+	NativeLibraryRequirement getShared();
 
-    /**
-     * Converts this library to a native library requirement that uses the static library variant.
-     */
-    NativeLibraryRequirement getStatic();
+	/**
+	 * Converts this library to a native library requirement that uses the
+	 * static library variant.
+	 */
+	NativeLibraryRequirement getStatic();
 
-    /**
-     * Converts this library to a native library requirement that uses the api library linkage.
-     */
-    NativeLibraryRequirement getApi();
+	/**
+	 * Converts this library to a native library requirement that uses the api
+	 * library linkage.
+	 */
+	NativeLibraryRequirement getApi();
 }

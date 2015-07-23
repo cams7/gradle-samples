@@ -22,11 +22,13 @@ import org.gradle.internal.exceptions.Contextual;
 @Contextual
 class LibraryResolveException extends DefaultMultiCauseException {
 
-    public LibraryResolveException(String message) {
-        super(message);
-    }
+	private static final long serialVersionUID = 1L;
 
-    LibraryResolveException(String message, Iterable<? extends Throwable> causes) {
-        super(message, causes);
-    }
+	public LibraryResolveException(String message) {
+		super(message);
+	}
+
+	LibraryResolveException(String message, Iterable<? extends Throwable> causes) {
+		super(message, causes);
+	}
 }

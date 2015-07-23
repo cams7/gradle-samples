@@ -36,76 +36,76 @@ import javax.inject.Inject
 @Incubating
 @ParallelizableTask
 class CreateStaticLibrary extends DefaultTask implements ObjectFilesToBinary {
-    private FileCollection source
+	private FileCollection source
 
-    @Inject
-    CreateStaticLibrary() {
-        source = project.files()
-        inputs.property("outputType") {
-            NativeToolChainInternal.Identifier.identify((NativeToolChainInternal) toolChain, (NativePlatformInternal) targetPlatform)
-        }
-    }
+	@Inject
+	CreateStaticLibrary() {
+		source = project.files()
+		inputs.property("outputType") {
+			NativeToolChainInternal.Identifier.identify((NativeToolChainInternal) toolChain, (NativePlatformInternal) targetPlatform)
+		}
+	}
 
-    /**
-     * The tool chain used for creating the static library.
-     */
-    NativeToolChain toolChain
+	/**
+	 * The tool chain used for creating the static library.
+	 */
+	NativeToolChain toolChain
 
-    /**
-     * The platform being targeted.
-     */
-    NativePlatform targetPlatform
+	/**
+	 * The platform being targeted.
+	 */
+	NativePlatform targetPlatform
 
-    /**
-     * The file where the output binary will be located.
-     */
-    @OutputFile
-    File outputFile
+	/**
+	 * The file where the output binary will be located.
+	 */
+	@OutputFile
+	File outputFile
 
-    /**
-     * The source object files to be passed to the archiver.
-     */
-    @InputFiles
-    @SkipWhenEmpty
-    // Can't use field due to GRADLE-2026
-    FileCollection getSource() {
-        source
-    }
+	/**
+	 * The source object files to be passed to the archiver.
+	 */
+	@InputFiles
+	@SkipWhenEmpty
+	// Can't use field due to GRADLE-2026
+	FileCollection getSource() {
+		source
+	}
 
-    /**
-     * Adds a set of object files to be linked.
-     * <p>
-     * The provided source object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
-     */
-    void source(Object source) {
-        this.source.from source
-    }
+	/**
+	 * Adds a set of object files to be linked.
+	 * <p>
+	 * The provided source object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
+	 */
+	void source(Object source) {
+		this.source.from source
+	}
 
-    /**
-     * Additional arguments passed to the archiver.
-     */
-    @Input
-    List<String> staticLibArgs
+	/**
+	 * Additional arguments passed to the archiver.
+	 */
+	@Input
+	List<String> staticLibArgs
 
-    @Inject
-    public BuildOperationLoggerFactory getOperationLoggerFactory() {
-        throw new UnsupportedOperationException();
-    }
+	@Inject
+	public BuildOperationLoggerFactory getOperationLoggerFactory() {
+		throw new UnsupportedOperationException();
+	}
 
-    @TaskAction
-    void link() {
+	@TaskAction
+	void link() {
 
-        def spec = new DefaultStaticLibraryArchiverSpec()
-        spec.tempDir = getTemporaryDir()
-        spec.outputFile = getOutputFile()
-        spec.objectFiles getSource()
-        spec.args getStaticLibArgs()
+		def spec = new DefaultStaticLibraryArchiverSpec()
+		spec.tempDir = getTemporaryDir()
+		spec.outputFile = getOutputFile()
+		spec.objectFiles getSource()
+		spec.args getStaticLibArgs()
 
-        def operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir())
-        spec.operationLogger = operationLogger
+		def operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir())
+		spec.operationLogger = operationLogger
 
-        def result = BuildOperationLoggingCompilerDecorator.wrap(toolChain.select(targetPlatform).newCompiler(spec.getClass())).execute(spec)
-        didWork = result.didWork
-    }
+		def result = BuildOperationLoggingCompilerDecorator.wrap(toolChain.select(targetPlatform).newCompiler(spec.getClass())).execute(spec)
+		didWork = result.didWork
+	}
 
 }

@@ -26,9 +26,9 @@ import org.gradle.nativeplatform.toolchain.plugins.MicrosoftVisualCppPlugin;
  * Registers the standard tool chains.
  */
 public class StandardToolChainsPlugin implements Plugin<Project> {
-    public void apply(Project project) {
-        project.getPluginManager().apply(MicrosoftVisualCppPlugin.class);
-        project.getPluginManager().apply(GccCompilerPlugin.class);
-        project.getPluginManager().apply(ClangCompilerPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(MicrosoftVisualCppPlugin.class);
+		project.getPluginManager().apply(GccCompilerPlugin.class);
+		project.getPluginManager().apply(ClangCompilerPlugin.class);
+	}
 }

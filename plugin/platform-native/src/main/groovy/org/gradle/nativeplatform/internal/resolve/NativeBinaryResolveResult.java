@@ -28,47 +28,53 @@ import java.util.Collection;
 import java.util.List;
 
 public class NativeBinaryResolveResult {
-    private final NativeBinarySpec target;
-    private final List<NativeBinaryRequirementResolveResult> resolutions = new ArrayList<NativeBinaryRequirementResolveResult>();
+	private final NativeBinarySpec target;
+	private final List<NativeBinaryRequirementResolveResult> resolutions = new ArrayList<NativeBinaryRequirementResolveResult>();
 
-    public NativeBinaryResolveResult(NativeBinarySpec target, Collection<?> libs) {
-        this.target = target;
-        for (Object lib : libs) {
-            resolutions.add(new NativeBinaryRequirementResolveResult(lib));
-        }
-    }
+	public NativeBinaryResolveResult(NativeBinarySpec target, Collection<?> libs) {
+		this.target = target;
+		for (Object lib : libs) {
+			resolutions.add(new NativeBinaryRequirementResolveResult(lib));
+		}
+	}
 
-    public NativeBinarySpec getTarget() {
-        return target;
-    }
+	public NativeBinarySpec getTarget() {
+		return target;
+	}
 
-    public List<NativeBinaryRequirementResolveResult> getAllResolutions() {
-        return resolutions;
-    }
+	public List<NativeBinaryRequirementResolveResult> getAllResolutions() {
+		return resolutions;
+	}
 
-    public List<NativeDependencySet> getAllResults() {
-        return CollectionUtils.collect(getAllResolutions(), new Transformer<NativeDependencySet, NativeBinaryRequirementResolveResult>() {
-            public NativeDependencySet transform(NativeBinaryRequirementResolveResult original) {
-                return original.getNativeDependencySet();
-            }
-        });
-    }
+	public List<NativeDependencySet> getAllResults() {
+		return CollectionUtils
+				.collect(
+						getAllResolutions(),
+						new Transformer<NativeDependencySet, NativeBinaryRequirementResolveResult>() {
+							public NativeDependencySet transform(
+									NativeBinaryRequirementResolveResult original) {
+								return original.getNativeDependencySet();
+							}
+						});
+	}
 
-    public List<NativeLibraryBinary> getAllLibraryBinaries() {
-        List<NativeLibraryBinary> result = new ArrayList<NativeLibraryBinary>();
-        for (NativeBinaryRequirementResolveResult resolution : getAllResolutions()) {
-            if (resolution.getLibraryBinary() != null) {
-                result.add(resolution.getLibraryBinary());
-            }
-        }
-        return result;
-    }
+	public List<NativeLibraryBinary> getAllLibraryBinaries() {
+		List<NativeLibraryBinary> result = new ArrayList<NativeLibraryBinary>();
+		for (NativeBinaryRequirementResolveResult resolution : getAllResolutions()) {
+			if (resolution.getLibraryBinary() != null) {
+				result.add(resolution.getLibraryBinary());
+			}
+		}
+		return result;
+	}
 
-    public List<NativeBinaryRequirementResolveResult> getPendingResolutions() {
-        return CollectionUtils.filter(resolutions, new Spec<NativeBinaryRequirementResolveResult>() {
-            public boolean isSatisfiedBy(NativeBinaryRequirementResolveResult element) {
-                return !element.isComplete();
-            }
-        });
-    }
+	public List<NativeBinaryRequirementResolveResult> getPendingResolutions() {
+		return CollectionUtils.filter(resolutions,
+				new Spec<NativeBinaryRequirementResolveResult>() {
+					public boolean isSatisfiedBy(
+							NativeBinaryRequirementResolveResult element) {
+						return !element.isComplete();
+					}
+				});
+	}
 }

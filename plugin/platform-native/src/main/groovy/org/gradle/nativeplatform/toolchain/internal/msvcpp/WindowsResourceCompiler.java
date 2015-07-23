@@ -24,25 +24,39 @@ import org.gradle.nativeplatform.toolchain.internal.compilespec.WindowsResourceC
 
 import java.util.List;
 
-class WindowsResourceCompiler extends VisualCppNativeCompiler<WindowsResourceCompileSpec> {
+class WindowsResourceCompiler extends
+		VisualCppNativeCompiler<WindowsResourceCompileSpec> {
 
-    WindowsResourceCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, Transformer<WindowsResourceCompileSpec, WindowsResourceCompileSpec> specTransformer, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineTool, invocationContext, new RcCompilerArgsTransformer(), specTransformer, objectFileExtension, useCommandFile);
-    }
+	WindowsResourceCompiler(
+			BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineTool,
+			CommandLineToolContext invocationContext,
+			Transformer<WindowsResourceCompileSpec, WindowsResourceCompileSpec> specTransformer,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineTool, invocationContext,
+				new RcCompilerArgsTransformer(), specTransformer,
+				objectFileExtension, useCommandFile);
+	}
 
-    @Override
-    protected Iterable<String> buildPerFileArgs(List<String> genericArgs, List<String> sourceArgs, List<String> outputArgs, List<String> pchArgs) {
-        // RC has position sensitive arguments, the output args need to appear before the source file
-        return Iterables.concat(genericArgs, outputArgs, sourceArgs);
-    }
+	@Override
+	protected Iterable<String> buildPerFileArgs(List<String> genericArgs,
+			List<String> sourceArgs, List<String> outputArgs,
+			List<String> pchArgs) {
+		// RC has position sensitive arguments, the output args need to appear
+		// before the source file
+		return Iterables.concat(genericArgs, outputArgs, sourceArgs);
+	}
 
-    private static class RcCompilerArgsTransformer extends VisualCppCompilerArgsTransformer<WindowsResourceCompileSpec> {
-        protected void addToolSpecificArgs(WindowsResourceCompileSpec spec, List<String> args) {
-            args.add(getLanguageOption());
-            args.add("/nologo");
-        }
-        protected String getLanguageOption() {
-            return "/r";
-        }
-    }
+	private static class RcCompilerArgsTransformer extends
+			VisualCppCompilerArgsTransformer<WindowsResourceCompileSpec> {
+		protected void addToolSpecificArgs(WindowsResourceCompileSpec spec,
+				List<String> args) {
+			args.add(getLanguageOption());
+			args.add("/nologo");
+		}
+
+		protected String getLanguageOption() {
+			return "/r";
+		}
+	}
 }

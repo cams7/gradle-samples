@@ -20,6 +20,7 @@ import org.gradle.nativeplatform.internal.BinaryToolSpec;
 
 import java.util.List;
 
-public interface ArgsTransformer<T extends BinaryToolSpec> extends Transformer<List<String>, T> {
+public interface ArgsTransformer<T extends BinaryToolSpec> extends
+		Transformer<List<String>, T> {
 
 }

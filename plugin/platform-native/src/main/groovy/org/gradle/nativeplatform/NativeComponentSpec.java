@@ -19,17 +19,20 @@ import org.gradle.api.Incubating;
 import org.gradle.platform.base.ComponentSpec;
 
 /**
- * Definition of a software component that is to be built by Gradle to run a on JVM platform.
+ * Definition of a software component that is to be built by Gradle to run a on
+ * JVM platform.
  */
 @Incubating
 public interface NativeComponentSpec extends ComponentSpec {
-    /**
-     * The name that is used to construct the output file names when building this component.
-     */
-    String getBaseName();
+	/**
+	 * The name that is used to construct the output file names when building
+	 * this component.
+	 */
+	String getBaseName();
 
-    /**
-     * Sets the name that is used to construct the output file names when building this component.
-     */
-    void setBaseName(String baseName);
+	/**
+	 * Sets the name that is used to construct the output file names when
+	 * building this component.
+	 */
+	void setBaseName(String baseName);
 }

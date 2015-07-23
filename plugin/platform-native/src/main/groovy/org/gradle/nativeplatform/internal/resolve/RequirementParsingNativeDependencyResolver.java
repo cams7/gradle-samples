@@ -19,20 +19,25 @@ package org.gradle.nativeplatform.internal.resolve;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 
-public class RequirementParsingNativeDependencyResolver implements NativeDependencyResolver {
-    private final NotationParser<Object, NativeLibraryRequirement> parser = NativeDependencyNotationParser.parser();
+public class RequirementParsingNativeDependencyResolver implements
+		NativeDependencyResolver {
+	private final NotationParser<Object, NativeLibraryRequirement> parser = NativeDependencyNotationParser
+			.parser();
 
-    private final NativeDependencyResolver delegate;
+	private final NativeDependencyResolver delegate;
 
-    public RequirementParsingNativeDependencyResolver(NativeDependencyResolver delegate) {
-        this.delegate = delegate;
-    }
+	public RequirementParsingNativeDependencyResolver(
+			NativeDependencyResolver delegate) {
+		this.delegate = delegate;
+	}
 
-    public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
-        for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult.getPendingResolutions()) {
-            NativeLibraryRequirement requirement = parser.parseNotation(resolution.getInput());
-            resolution.setRequirement(requirement);
-        }
-        delegate.resolve(nativeBinaryResolveResult);
-    }
+	public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
+		for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult
+				.getPendingResolutions()) {
+			NativeLibraryRequirement requirement = parser
+					.parseNotation(resolution.getInput());
+			resolution.setRequirement(requirement);
+		}
+		delegate.resolve(nativeBinaryResolveResult);
+	}
 }

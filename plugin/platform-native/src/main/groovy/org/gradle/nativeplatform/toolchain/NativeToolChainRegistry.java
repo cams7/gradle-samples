@@ -26,5 +26,7 @@ import org.gradle.platform.base.ToolChainRegistry;
  */
 @Incubating
 @HasInternalProtocol
-public interface NativeToolChainRegistry extends ExtensiblePolymorphicDomainObjectContainer<NativeToolChain>, ToolChainRegistry<NativePlatform, NativeToolChain> {
+public interface NativeToolChainRegistry extends
+		ExtensiblePolymorphicDomainObjectContainer<NativeToolChain>,
+		ToolChainRegistry<NativePlatform, NativeToolChain> {
 }

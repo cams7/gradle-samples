@@ -29,35 +29,37 @@ import org.gradle.platform.base.internal.BinarySpecInternal;
 import java.io.File;
 import java.util.Collection;
 
-public interface NativeBinarySpecInternal extends NativeBinarySpec, BinarySpecInternal {
-    void setComponent(NativeComponentSpec component);
+public interface NativeBinarySpecInternal extends NativeBinarySpec,
+		BinarySpecInternal {
+	void setComponent(NativeComponentSpec component);
 
-    void setFlavor(Flavor flavor);
+	void setFlavor(Flavor flavor);
 
-    void setToolChain(NativeToolChain toolChain);
+	void setToolChain(NativeToolChain toolChain);
 
-    void setTargetPlatform(NativePlatform targetPlatform);
+	void setTargetPlatform(NativePlatform targetPlatform);
 
-    void setBuildType(BuildType buildType);
+	void setBuildType(BuildType buildType);
 
-    BinaryNamingScheme getNamingScheme();
+	BinaryNamingScheme getNamingScheme();
 
-    void setNamingScheme(BinaryNamingScheme namingScheme);
+	void setNamingScheme(BinaryNamingScheme namingScheme);
 
-    PlatformToolProvider getPlatformToolProvider();
+	PlatformToolProvider getPlatformToolProvider();
 
-    void setPlatformToolProvider(PlatformToolProvider toolProvider);
+	void setPlatformToolProvider(PlatformToolProvider toolProvider);
 
-    void setResolver(NativeDependencyResolver resolver);
+	void setResolver(NativeDependencyResolver resolver);
 
-    File getPrimaryOutput();
+	File getPrimaryOutput();
 
-    Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet);
+	Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet);
 
-    Collection<NativeLibraryBinary> getDependentBinaries();
+	Collection<NativeLibraryBinary> getDependentBinaries();
 
-    /**
-     * Adds some files to include as input to the link/assemble step of this binary.
-     */
-    void binaryInputs(FileCollection files);
+	/**
+	 * Adds some files to include as input to the link/assemble step of this
+	 * binary.
+	 */
+	void binaryInputs(FileCollection files);
 }

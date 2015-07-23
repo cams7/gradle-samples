@@ -25,24 +25,29 @@ import java.util.List;
 
 public class NativeDependencyResolverServices {
 
-    public ProjectLocator createProjectLocator(ProjectFinder projectFinder, DependencyMetaDataProvider metaDataProvider) {
-        String currentProjectPath = metaDataProvider.getModule().getProjectPath();
-        return new DefaultProjectLocator(currentProjectPath, projectFinder);
-    }
+	public ProjectLocator createProjectLocator(ProjectFinder projectFinder,
+			DependencyMetaDataProvider metaDataProvider) {
+		String currentProjectPath = metaDataProvider.getModule()
+				.getProjectPath();
+		return new DefaultProjectLocator(currentProjectPath, projectFinder);
+	}
 
-    public LibraryBinaryLocator createLibraryBinaryLocator(ProjectLocator projectLocator) {
-        List<LibraryBinaryLocator> locators = new ArrayList<LibraryBinaryLocator>();
-        locators.add(new ProjectLibraryBinaryLocator(projectLocator));
-        locators.add(new PrebuiltLibraryBinaryLocator(projectLocator));
-        return new ChainedLibraryBinaryLocator(locators);
-    }
+	public LibraryBinaryLocator createLibraryBinaryLocator(
+			ProjectLocator projectLocator) {
+		List<LibraryBinaryLocator> locators = new ArrayList<LibraryBinaryLocator>();
+		locators.add(new ProjectLibraryBinaryLocator(projectLocator));
+		locators.add(new PrebuiltLibraryBinaryLocator(projectLocator));
+		return new ChainedLibraryBinaryLocator(locators);
+	}
 
-    public NativeDependencyResolver createResolver(LibraryBinaryLocator locator, Instantiator instantiator) {
-        NativeDependencyResolver resolver = new LibraryNativeDependencyResolver(locator, instantiator);
-        resolver = new ApiRequirementNativeDependencyResolver(resolver);
-        resolver = new RequirementParsingNativeDependencyResolver(resolver);
-        resolver = new SourceSetNativeDependencyResolver(resolver);
-        return new InputHandlingNativeDependencyResolver(resolver);
-    }
+	public NativeDependencyResolver createResolver(
+			LibraryBinaryLocator locator, Instantiator instantiator) {
+		NativeDependencyResolver resolver = new LibraryNativeDependencyResolver(
+				locator, instantiator);
+		resolver = new ApiRequirementNativeDependencyResolver(resolver);
+		resolver = new RequirementParsingNativeDependencyResolver(resolver);
+		resolver = new SourceSetNativeDependencyResolver(resolver);
+		return new InputHandlingNativeDependencyResolver(resolver);
+	}
 
 }

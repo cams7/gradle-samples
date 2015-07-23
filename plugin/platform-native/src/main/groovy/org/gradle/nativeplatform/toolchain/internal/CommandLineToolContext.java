@@ -24,13 +24,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface CommandLineToolContext {
-    List<File> getPath();
+	List<File> getPath();
 
-    Map<String, String> getEnvironment();
+	Map<String, String> getEnvironment();
 
-    Action<List<String>> getArgAction();
+	Action<List<String>> getArgAction();
 
-    CommandLineToolInvocation createInvocation(String description, File workingDirectory, Iterable<String> args, BuildOperationLogger oplogger);
-    CommandLineToolInvocation createInvocation(String description, Iterable<String> args, BuildOperationLogger oplogger);
+	CommandLineToolInvocation createInvocation(String description,
+			File workingDirectory, Iterable<String> args,
+			BuildOperationLogger oplogger);
+
+	CommandLineToolInvocation createInvocation(String description,
+			Iterable<String> args, BuildOperationLogger oplogger);
 
 }

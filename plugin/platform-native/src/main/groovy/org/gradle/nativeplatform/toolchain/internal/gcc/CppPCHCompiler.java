@@ -22,14 +22,22 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
 
-public class CppPCHCompiler extends GccCompatibleNativeCompiler<CppPCHCompileSpec> {
-    public CppPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineTool, invocationContext, new CppPCHCompileArgsTransformer(), Transformers.<CppPCHCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
-    }
+public class CppPCHCompiler extends
+		GccCompatibleNativeCompiler<CppPCHCompileSpec> {
+	public CppPCHCompiler(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineTool,
+			CommandLineToolContext invocationContext,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineTool, invocationContext,
+				new CppPCHCompileArgsTransformer(), Transformers
+						.<CppPCHCompileSpec> noOpTransformer(),
+				objectFileExtension, useCommandFile);
+	}
 
-    private static class CppPCHCompileArgsTransformer extends GccCompilerArgsTransformer<CppPCHCompileSpec> {
-        protected String getLanguage() {
-            return "c++-header";
-        }
-    }
+	private static class CppPCHCompileArgsTransformer extends
+			GccCompilerArgsTransformer<CppPCHCompileSpec> {
+		protected String getLanguage() {
+			return "c++-header";
+		}
+	}
 }

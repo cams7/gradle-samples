@@ -19,14 +19,16 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.nativeplatform.StaticLibraryBinarySpec;
 
-public class StaticLibraryBinaryRenderer extends AbstractNativeBinaryRenderer<StaticLibraryBinarySpec> {
-    @Override
-    public Class<StaticLibraryBinarySpec> getTargetType() {
-        return StaticLibraryBinarySpec.class;
-    }
+public class StaticLibraryBinaryRenderer extends
+		AbstractNativeBinaryRenderer<StaticLibraryBinarySpec> {
+	@Override
+	public Class<StaticLibraryBinarySpec> getTargetType() {
+		return StaticLibraryBinarySpec.class;
+	}
 
-    @Override
-    protected void renderOutputs(StaticLibraryBinarySpec binary, TextReportBuilder builder) {
-        builder.item("static library file", binary.getStaticLibraryFile());
-    }
+	@Override
+	protected void renderOutputs(StaticLibraryBinarySpec binary,
+			TextReportBuilder builder) {
+		builder.item("static library file", binary.getStaticLibraryFile());
+	}
 }

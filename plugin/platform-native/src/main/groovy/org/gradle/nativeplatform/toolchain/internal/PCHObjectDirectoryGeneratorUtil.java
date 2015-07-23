@@ -23,17 +23,20 @@ import java.io.File;
 import java.io.IOException;
 
 public class PCHObjectDirectoryGeneratorUtil {
-    public static File generatePCHObjectDirectory(File tempDir, File prefixHeaderFile, File preCompiledHeaderObjectFile) {
-        File generatedDir = new File(tempDir, "preCompiledHeaders");
-        generatedDir.mkdirs();
-        File generatedHeader = new File(generatedDir, prefixHeaderFile.getName());
-        File generatedPCH = new File(generatedDir, preCompiledHeaderObjectFile.getName());
-        try {
-            FileUtils.copyFile(prefixHeaderFile, generatedHeader);
-            FileUtils.copyFile(preCompiledHeaderObjectFile, generatedPCH);
-            return generatedDir;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+	public static File generatePCHObjectDirectory(File tempDir,
+			File prefixHeaderFile, File preCompiledHeaderObjectFile) {
+		File generatedDir = new File(tempDir, "preCompiledHeaders");
+		generatedDir.mkdirs();
+		File generatedHeader = new File(generatedDir,
+				prefixHeaderFile.getName());
+		File generatedPCH = new File(generatedDir,
+				preCompiledHeaderObjectFile.getName());
+		try {
+			FileUtils.copyFile(prefixHeaderFile, generatedHeader);
+			FileUtils.copyFile(preCompiledHeaderObjectFile, generatedPCH);
+			return generatedDir;
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 }

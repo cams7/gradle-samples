@@ -28,23 +28,23 @@ import org.gradle.nativeplatform.toolchain.internal.msvcpp.DefaultVisualStudioLo
 import org.gradle.nativeplatform.toolchain.internal.msvcpp.DefaultWindowsSdkLocator;
 
 public class NativeBinaryServices implements PluginServiceRegistry {
-    public void registerGlobalServices(ServiceRegistration registration) {
-        registration.add(SharedLibraryBinaryRenderer.class);
-        registration.add(StaticLibraryBinaryRenderer.class);
-        registration.add(NativeExecutableBinaryRenderer.class);
-        registration.add(NativeTestSuiteBinaryRenderer.class);
-    }
+	public void registerGlobalServices(ServiceRegistration registration) {
+		registration.add(SharedLibraryBinaryRenderer.class);
+		registration.add(StaticLibraryBinaryRenderer.class);
+		registration.add(NativeExecutableBinaryRenderer.class);
+		registration.add(NativeTestSuiteBinaryRenderer.class);
+	}
 
-    public void registerBuildServices(ServiceRegistration registration) {
-        registration.add(DefaultVisualStudioLocator.class);
-        registration.add(DefaultWindowsSdkLocator.class);
-        registration.add(CompilerMetaDataProviderFactory.class);
-    }
+	public void registerBuildServices(ServiceRegistration registration) {
+		registration.add(DefaultVisualStudioLocator.class);
+		registration.add(DefaultWindowsSdkLocator.class);
+		registration.add(CompilerMetaDataProviderFactory.class);
+	}
 
-    public void registerGradleServices(ServiceRegistration registration) {
-    }
+	public void registerGradleServices(ServiceRegistration registration) {
+	}
 
-    public void registerProjectServices(ServiceRegistration registration) {
-        registration.addProvider(new NativeDependencyResolverServices());
-    }
+	public void registerProjectServices(ServiceRegistration registration) {
+		registration.addProvider(new NativeDependencyResolverServices());
+	}
 }

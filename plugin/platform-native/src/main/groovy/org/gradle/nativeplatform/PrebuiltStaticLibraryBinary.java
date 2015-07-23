@@ -25,8 +25,8 @@ import java.io.File;
  */
 @Incubating
 public interface PrebuiltStaticLibraryBinary extends StaticLibraryBinary {
-    /**
-     * The static library binary file.
-     */
-    void setStaticLibraryFile(File staticLibraryFile);
+	/**
+	 * The static library binary file.
+	 */
+	void setStaticLibraryFile(File staticLibraryFile);
 }

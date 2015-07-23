@@ -25,13 +25,13 @@ import java.io.File;
  */
 @Incubating
 public interface PrebuiltSharedLibraryBinary extends SharedLibraryBinary {
-    /**
-     * The shared library file.
-     */
-    void setSharedLibraryFile(File sharedLibraryFile);
+	/**
+	 * The shared library file.
+	 */
+	void setSharedLibraryFile(File sharedLibraryFile);
 
-    /**
-     * The shared library link file.
-     */
-    void setSharedLibraryLinkFile(File sharedLibraryLinkFile);
+	/**
+	 * The shared library link file.
+	 */
+	void setSharedLibraryLinkFile(File sharedLibraryLinkFile);
 }

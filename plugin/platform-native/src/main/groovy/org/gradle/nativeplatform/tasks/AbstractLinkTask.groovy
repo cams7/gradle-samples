@@ -33,98 +33,98 @@ import javax.inject.Inject
 
 @Incubating
 abstract class AbstractLinkTask extends DefaultTask implements ObjectFilesToBinary {
-    @Inject
-    AbstractLinkTask() {
-        libs = project.files()
-        source = project.files()
-        inputs.property("outputType") {
-            NativeToolChainInternal.Identifier.identify((NativeToolChainInternal) toolChain, (NativePlatformInternal) targetPlatform)
-        }
-    }
+	@Inject
+	AbstractLinkTask() {
+		libs = project.files()
+		source = project.files()
+		inputs.property("outputType") {
+			NativeToolChainInternal.Identifier.identify((NativeToolChainInternal) toolChain, (NativePlatformInternal) targetPlatform)
+		}
+	}
 
-    /**
-     * The tool chain used for linking.
-     */
-    NativeToolChain toolChain
-    NativePlatform targetPlatform
+	/**
+	 * The tool chain used for linking.
+	 */
+	NativeToolChain toolChain
+	NativePlatform targetPlatform
 
-    // To pick up auxiliary files produced alongside the main output file
-    @OutputDirectory
-    File getDestinationDir() {
-        return getOutputFile().parentFile
-    }
+	// To pick up auxiliary files produced alongside the main output file
+	@OutputDirectory
+	File getDestinationDir() {
+		return getOutputFile().parentFile
+	}
 
-    /**
-     * The file where the linked binary will be located.
-     */
-    @OutputFile
-    File outputFile
+	/**
+	 * The file where the linked binary will be located.
+	 */
+	@OutputFile
+	File outputFile
 
-    /**
-     * Additional arguments passed to the linker.
-     */
-    @Input
-    List<String> linkerArgs
+	/**
+	 * Additional arguments passed to the linker.
+	 */
+	@Input
+	List<String> linkerArgs
 
-    /**
-     * The source object files to be passed to the linker.
-     */
-    @InputFiles
-    FileCollection source
+	/**
+	 * The source object files to be passed to the linker.
+	 */
+	@InputFiles
+	FileCollection source
 
-    /**
-     * The library files to be passed to the linker.
-     */
-    @InputFiles
-    FileCollection libs
+	/**
+	 * The library files to be passed to the linker.
+	 */
+	@InputFiles
+	FileCollection libs
 
-    /**
-     * Adds a set of object files to be linked.
-     * The provided source object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
-     */
-    void source(Object source) {
-        this.source.from source
-    }
+	/**
+	 * Adds a set of object files to be linked.
+	 * The provided source object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
+	 */
+	void source(Object source) {
+		this.source.from source
+	}
 
-    /**
-     * Adds a set of library files to be linked.
-     * The provided libs object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
-     */
-    void lib(Object libs) {
-        this.libs.from libs
-    }
+	/**
+	 * Adds a set of library files to be linked.
+	 * The provided libs object is evaluated as per {@link org.gradle.api.Project#files(Object ...)}.
+	 */
+	void lib(Object libs) {
+		this.libs.from libs
+	}
 
-    @Inject
-    public BuildOperationLoggerFactory getOperationLoggerFactory() {
-        throw new UnsupportedOperationException();
-    }
+	@Inject
+	public BuildOperationLoggerFactory getOperationLoggerFactory() {
+		throw new UnsupportedOperationException();
+	}
 
-    @TaskAction
-    void link() {
-        def cleaner = new SimpleStaleClassCleaner(getOutputs())
-        cleaner.setDestinationDir(getDestinationDir())
-        cleaner.execute()
+	@TaskAction
+	void link() {
+		def cleaner = new SimpleStaleClassCleaner(getOutputs())
+		cleaner.setDestinationDir(getDestinationDir())
+		cleaner.execute()
 
-        if (source.empty) {
-            didWork = false
-            return
-        }
+		if (source.empty) {
+			didWork = false
+			return
+		}
 
-        def spec = createLinkerSpec()
-        spec.targetPlatform = getTargetPlatform()
-        spec.tempDir = getTemporaryDir()
-        spec.outputFile = getOutputFile()
+		def spec = createLinkerSpec()
+		spec.targetPlatform = getTargetPlatform()
+		spec.tempDir = getTemporaryDir()
+		spec.outputFile = getOutputFile()
 
-        spec.objectFiles getSource()
-        spec.libraries getLibs()
-        spec.args getLinkerArgs()
+		spec.objectFiles getSource()
+		spec.libraries getLibs()
+		spec.args getLinkerArgs()
 
-        def operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir())
-        spec.operationLogger = operationLogger
+		def operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir())
+		spec.operationLogger = operationLogger
 
-        def result = BuildOperationLoggingCompilerDecorator.wrap(toolChain.select(targetPlatform).newCompiler(spec.getClass())).execute(spec)
-        didWork = result.didWork
-    }
+		def result = BuildOperationLoggingCompilerDecorator.wrap(toolChain.select(targetPlatform).newCompiler(spec.getClass())).execute(spec)
+		didWork = result.didWork
+	}
 
-    protected abstract LinkerSpec createLinkerSpec();
+	protected abstract LinkerSpec createLinkerSpec();
 }

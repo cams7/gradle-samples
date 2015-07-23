@@ -26,45 +26,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultMutableCommandLineToolContext implements MutableCommandLineToolContext {
-    private Action<List<String>> postArgsAction = Actions.doNothing();
-    private final Map<String, String> environment = new HashMap<String, String>();
-    private final List<File> path = new ArrayList<File>();
+public class DefaultMutableCommandLineToolContext implements
+		MutableCommandLineToolContext {
+	private Action<List<String>> postArgsAction = Actions.doNothing();
+	private final Map<String, String> environment = new HashMap<String, String>();
+	private final List<File> path = new ArrayList<File>();
 
-    public void setArgAction(Action<List<String>> argAction) {
-        postArgsAction = argAction;
-    }
+	public void setArgAction(Action<List<String>> argAction) {
+		postArgsAction = argAction;
+	}
 
-    public void addPath(File pathEntry) {
-        this.path.add(pathEntry);
-    }
+	public void addPath(File pathEntry) {
+		this.path.add(pathEntry);
+	}
 
-    public void addPath(List<File> path) {
-        this.path.addAll(path);
-    }
+	public void addPath(List<File> path) {
+		this.path.addAll(path);
+	}
 
-    public List<File> getPath() {
-        return path;
-    }
+	public List<File> getPath() {
+		return path;
+	}
 
-    public Map<String, String> getEnvironment() {
-        return environment;
-    }
+	public Map<String, String> getEnvironment() {
+		return environment;
+	}
 
-    public Action<List<String>> getArgAction() {
-        return postArgsAction;
-    }
+	public Action<List<String>> getArgAction() {
+		return postArgsAction;
+	}
 
-    public void addEnvironmentVar(String key, String value) {
-        this.environment.put(key, value);
-    }
+	public void addEnvironmentVar(String key, String value) {
+		this.environment.put(key, value);
+	}
 
-    public CommandLineToolInvocation createInvocation(String description, File workDirectory, Iterable<String> args, BuildOperationLogger oplogger) {
-        return new DefaultCommandLineToolInvocation(description, workDirectory, args, this, oplogger);
-    }
+	public CommandLineToolInvocation createInvocation(String description,
+			File workDirectory, Iterable<String> args,
+			BuildOperationLogger oplogger) {
+		return new DefaultCommandLineToolInvocation(description, workDirectory,
+				args, this, oplogger);
+	}
 
-    public CommandLineToolInvocation createInvocation(String description, Iterable<String> args, BuildOperationLogger oplogger) {
-        File currentWorkingDirectory = null;
-        return createInvocation(description, currentWorkingDirectory, args, oplogger);
-    }
+	public CommandLineToolInvocation createInvocation(String description,
+			Iterable<String> args, BuildOperationLogger oplogger) {
+		File currentWorkingDirectory = null;
+		return createInvocation(description, currentWorkingDirectory, args,
+				oplogger);
+	}
 }

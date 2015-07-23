@@ -22,27 +22,27 @@ import org.gradle.util.VersionNumber;
 import java.io.File;
 
 public class VisualStudioInstall implements Named {
-    private final VisualCppInstall visualCppInstall;
-    private final File baseDir;
+	private final VisualCppInstall visualCppInstall;
+	private final File baseDir;
 
-    public VisualStudioInstall(File baseDir,  VisualCppInstall visualCppInstall) {
-        this.baseDir = baseDir;
-        this.visualCppInstall = visualCppInstall;
-    }
+	public VisualStudioInstall(File baseDir, VisualCppInstall visualCppInstall) {
+		this.baseDir = baseDir;
+		this.visualCppInstall = visualCppInstall;
+	}
 
-    public String getName() {
-        return visualCppInstall.getName();
-    }
+	public String getName() {
+		return visualCppInstall.getName();
+	}
 
-    public VersionNumber getVersion() {
-        return visualCppInstall.getVersion();
-    }
+	public VersionNumber getVersion() {
+		return visualCppInstall.getVersion();
+	}
 
-    public File getVisualStudioDir() {
-        return baseDir;
-    }
+	public File getVisualStudioDir() {
+		return baseDir;
+	}
 
-    public VisualCppInstall getVisualCpp() {
-        return visualCppInstall;
-    }
+	public VisualCppInstall getVisualCpp() {
+		return visualCppInstall;
+	}
 }

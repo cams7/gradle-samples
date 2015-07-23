@@ -19,6 +19,7 @@ package org.gradle.nativeplatform.test.internal;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
 import org.gradle.nativeplatform.test.NativeTestSuiteBinarySpec;
 
-public interface NativeTestSuiteBinarySpecInternal extends NativeTestSuiteBinarySpec, NativeBinarySpecInternal {
-    void setTestedBinary(NativeBinarySpecInternal testedBinary);
+public interface NativeTestSuiteBinarySpecInternal extends
+		NativeTestSuiteBinarySpec, NativeBinarySpecInternal {
+	void setTestedBinary(NativeBinarySpecInternal testedBinary);
 }

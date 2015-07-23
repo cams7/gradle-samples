@@ -21,11 +21,11 @@ import java.util.List;
 
 public interface StaticLibraryArchiverSpec extends BinaryToolSpec {
 
-    File getOutputFile();
+	File getOutputFile();
 
-    void setOutputFile(File outputFile);
+	void setOutputFile(File outputFile);
 
-    List<File> getObjectFiles();
+	List<File> getObjectFiles();
 
-    void objectFiles(Iterable<File> source);
+	void objectFiles(Iterable<File> source);
 }

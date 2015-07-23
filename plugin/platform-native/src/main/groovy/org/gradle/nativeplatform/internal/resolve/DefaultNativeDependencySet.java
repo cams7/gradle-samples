@@ -21,21 +21,21 @@ import org.gradle.nativeplatform.NativeDependencySet;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 
 public class DefaultNativeDependencySet implements NativeDependencySet {
-    private final NativeLibraryBinary binary;
+	private final NativeLibraryBinary binary;
 
-    public DefaultNativeDependencySet(NativeLibraryBinary binary) {
-        this.binary = binary;
-    }
+	public DefaultNativeDependencySet(NativeLibraryBinary binary) {
+		this.binary = binary;
+	}
 
-    public FileCollection getIncludeRoots() {
-        return binary.getHeaderDirs();
-    }
+	public FileCollection getIncludeRoots() {
+		return binary.getHeaderDirs();
+	}
 
-    public FileCollection getLinkFiles() {
-        return binary.getLinkFiles();
-    }
+	public FileCollection getLinkFiles() {
+		return binary.getLinkFiles();
+	}
 
-    public FileCollection getRuntimeFiles() {
-        return binary.getRuntimeFiles();
-    }
+	public FileCollection getRuntimeFiles() {
+		return binary.getRuntimeFiles();
+	}
 }

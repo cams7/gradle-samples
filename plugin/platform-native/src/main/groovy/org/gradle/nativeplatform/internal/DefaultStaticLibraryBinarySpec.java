@@ -31,70 +31,75 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DefaultStaticLibraryBinarySpec extends AbstractNativeLibraryBinarySpec implements StaticLibraryBinary, StaticLibraryBinarySpecInternal {
-    private final List<FileCollection> additionalLinkFiles = new ArrayList<FileCollection>();
-    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
-    private File staticLibraryFile;
+public class DefaultStaticLibraryBinarySpec extends
+		AbstractNativeLibraryBinarySpec implements StaticLibraryBinary,
+		StaticLibraryBinarySpecInternal {
+	private final List<FileCollection> additionalLinkFiles = new ArrayList<FileCollection>();
+	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
+			super.getTasks());
+	private File staticLibraryFile;
 
-    public File getStaticLibraryFile() {
-        return staticLibraryFile;
-    }
+	public File getStaticLibraryFile() {
+		return staticLibraryFile;
+	}
 
-    public void setStaticLibraryFile(File staticLibraryFile) {
-        this.staticLibraryFile = staticLibraryFile;
-    }
+	public void setStaticLibraryFile(File staticLibraryFile) {
+		this.staticLibraryFile = staticLibraryFile;
+	}
 
-    public File getPrimaryOutput() {
-        return getStaticLibraryFile();
-    }
+	public File getPrimaryOutput() {
+		return getStaticLibraryFile();
+	}
 
-    public void additionalLinkFiles(FileCollection files) {
-        this.additionalLinkFiles.add(files);
-    }
+	public void additionalLinkFiles(FileCollection files) {
+		this.additionalLinkFiles.add(files);
+	}
 
-    public FileCollection getLinkFiles() {
-        return new StaticLibraryLinkOutputs();
-    }
+	public FileCollection getLinkFiles() {
+		return new StaticLibraryLinkOutputs();
+	}
 
-    public FileCollection getRuntimeFiles() {
-        return new SimpleFileCollection();
-    }
+	public FileCollection getRuntimeFiles() {
+		return new SimpleFileCollection();
+	}
 
-    @Override
-    protected ObjectFilesToBinary getCreateOrLink() {
-        return tasks.getCreateStaticLib();
-    }
+	@Override
+	protected ObjectFilesToBinary getCreateOrLink() {
+		return tasks.getCreateStaticLib();
+	}
 
-    public StaticLibraryBinarySpec.TasksCollection getTasks() {
-        return tasks;
-    }
+	public StaticLibraryBinarySpec.TasksCollection getTasks() {
+		return tasks;
+	}
 
-    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements StaticLibraryBinarySpec.TasksCollection {
-        public DefaultTasksCollection(BinaryTasksCollection delegate) {
-            super(delegate);
-        }
+	private static class DefaultTasksCollection extends
+			BinaryTasksCollectionWrapper implements
+			StaticLibraryBinarySpec.TasksCollection {
+		public DefaultTasksCollection(BinaryTasksCollection delegate) {
+			super(delegate);
+		}
 
-        public CreateStaticLibrary getCreateStaticLib() {
-            return findSingleTaskWithType(CreateStaticLibrary.class);
-        }
-    }
+		public CreateStaticLibrary getCreateStaticLib() {
+			return findSingleTaskWithType(CreateStaticLibrary.class);
+		}
+	}
 
-    private class StaticLibraryLinkOutputs extends LibraryOutputs {
-        @Override
-        protected boolean hasOutputs() {
-            return hasSources() || !additionalLinkFiles.isEmpty();
-        }
+	private class StaticLibraryLinkOutputs extends LibraryOutputs {
+		@Override
+		protected boolean hasOutputs() {
+			return hasSources() || !additionalLinkFiles.isEmpty();
+		}
 
-        @Override
-        protected Set<File> getOutputs() {
-            Set<File> allFiles = new LinkedHashSet<File>();
-            if (hasSources()) {
-                allFiles.add(getStaticLibraryFile());
-            }
-            for (FileCollection resourceSet : additionalLinkFiles) {
-                allFiles.addAll(resourceSet.getFiles());
-            }
-            return allFiles;
-        }
-    }
+		@Override
+		protected Set<File> getOutputs() {
+			Set<File> allFiles = new LinkedHashSet<File>();
+			if (hasSources()) {
+				allFiles.add(getStaticLibraryFile());
+			}
+			for (FileCollection resourceSet : additionalLinkFiles) {
+				allFiles.addAll(resourceSet.getFiles());
+			}
+			return allFiles;
+		}
+	}
 }

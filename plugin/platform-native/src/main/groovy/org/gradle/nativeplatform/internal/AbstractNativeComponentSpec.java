@@ -25,20 +25,22 @@ import org.gradle.util.GUtil;
 
 import java.util.Set;
 
-public abstract class AbstractNativeComponentSpec extends BaseComponentSpec implements NativeComponentSpec, ComponentSpecInternal {
-    private String baseName;
+public abstract class AbstractNativeComponentSpec extends BaseComponentSpec
+		implements NativeComponentSpec, ComponentSpecInternal {
+	private String baseName;
 
-    public String getBaseName() {
-        return GUtil.elvis(baseName, getName());
-    }
+	public String getBaseName() {
+		return GUtil.elvis(baseName, getName());
+	}
 
-    public void setBaseName(String baseName) {
-        this.baseName = baseName;
-    }
+	public void setBaseName(String baseName) {
+		this.baseName = baseName;
+	}
 
-    public Set<Class<? extends TransformationFileType>> getInputTypes() {
-        Set<Class<? extends TransformationFileType>> inputTypes = Sets.newHashSet();
-        inputTypes.add(ObjectFile.class);
-        return inputTypes;
-    }
+	public Set<Class<? extends TransformationFileType>> getInputTypes() {
+		Set<Class<? extends TransformationFileType>> inputTypes = Sets
+				.newHashSet();
+		inputTypes.add(ObjectFile.class);
+		return inputTypes;
+	}
 }

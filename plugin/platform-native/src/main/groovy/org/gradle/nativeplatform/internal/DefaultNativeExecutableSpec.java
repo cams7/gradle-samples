@@ -17,9 +17,10 @@ package org.gradle.nativeplatform.internal;
 
 import org.gradle.nativeplatform.NativeExecutableSpec;
 
-public class DefaultNativeExecutableSpec extends AbstractTargetedNativeComponentSpec implements NativeExecutableSpec {
+public class DefaultNativeExecutableSpec extends
+		AbstractTargetedNativeComponentSpec implements NativeExecutableSpec {
 
-    public String getDisplayName() {
-        return String.format("native executable '%s'", getName());
-    }
+	public String getDisplayName() {
+		return String.format("native executable '%s'", getName());
+	}
 }

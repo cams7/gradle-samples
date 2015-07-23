@@ -27,46 +27,57 @@ import org.gradle.nativeplatform.toolchain.internal.tools.DefaultCommandLineTool
 import java.util.HashMap;
 import java.util.Map;
 
-public class DefaultVisualCppPlatformToolChain implements VisualCppPlatformToolChain {
-    private final NativePlatform platform;
-    protected final Map<ToolType, CommandLineToolConfigurationInternal> tools;
+public class DefaultVisualCppPlatformToolChain implements
+		VisualCppPlatformToolChain {
+	private final NativePlatform platform;
+	protected final Map<ToolType, CommandLineToolConfigurationInternal> tools;
 
-    public DefaultVisualCppPlatformToolChain(NativePlatform platform, Instantiator instantiator) {
-        this.platform = platform;
-        tools = new HashMap<ToolType, CommandLineToolConfigurationInternal>();
-        tools.put(ToolType.C_COMPILER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.C_COMPILER));
-        tools.put(ToolType.CPP_COMPILER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.CPP_COMPILER));
-        tools.put(ToolType.LINKER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.LINKER));
-        tools.put(ToolType.STATIC_LIB_ARCHIVER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.STATIC_LIB_ARCHIVER));
-        tools.put(ToolType.ASSEMBLER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.ASSEMBLER));
-        tools.put(ToolType.WINDOW_RESOURCES_COMPILER, instantiator.newInstance(DefaultCommandLineToolConfiguration.class, ToolType.WINDOW_RESOURCES_COMPILER));
-    }
+	public DefaultVisualCppPlatformToolChain(NativePlatform platform,
+			Instantiator instantiator) {
+		this.platform = platform;
+		tools = new HashMap<ToolType, CommandLineToolConfigurationInternal>();
+		tools.put(ToolType.C_COMPILER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class, ToolType.C_COMPILER));
+		tools.put(ToolType.CPP_COMPILER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class,
+				ToolType.CPP_COMPILER));
+		tools.put(ToolType.LINKER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class, ToolType.LINKER));
+		tools.put(ToolType.STATIC_LIB_ARCHIVER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class,
+				ToolType.STATIC_LIB_ARCHIVER));
+		tools.put(ToolType.ASSEMBLER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class, ToolType.ASSEMBLER));
+		tools.put(ToolType.WINDOW_RESOURCES_COMPILER, instantiator.newInstance(
+				DefaultCommandLineToolConfiguration.class,
+				ToolType.WINDOW_RESOURCES_COMPILER));
+	}
 
-    public CommandLineToolConfiguration getcCompiler() {
-        return tools.get(ToolType.C_COMPILER);
-    }
+	public CommandLineToolConfiguration getcCompiler() {
+		return tools.get(ToolType.C_COMPILER);
+	}
 
-    public CommandLineToolConfiguration getCppCompiler() {
-        return tools.get(ToolType.CPP_COMPILER);
-    }
+	public CommandLineToolConfiguration getCppCompiler() {
+		return tools.get(ToolType.CPP_COMPILER);
+	}
 
-    public CommandLineToolConfiguration getRcCompiler() {
-        return tools.get(ToolType.WINDOW_RESOURCES_COMPILER);
-    }
+	public CommandLineToolConfiguration getRcCompiler() {
+		return tools.get(ToolType.WINDOW_RESOURCES_COMPILER);
+	}
 
-    public CommandLineToolConfiguration getAssembler() {
-        return tools.get(ToolType.ASSEMBLER);
-    }
+	public CommandLineToolConfiguration getAssembler() {
+		return tools.get(ToolType.ASSEMBLER);
+	}
 
-    public CommandLineToolConfiguration getLinker() {
-        return tools.get(ToolType.LINKER);
-    }
+	public CommandLineToolConfiguration getLinker() {
+		return tools.get(ToolType.LINKER);
+	}
 
-    public CommandLineToolConfiguration getStaticLibArchiver() {
-        return tools.get(ToolType.STATIC_LIB_ARCHIVER);
-    }
+	public CommandLineToolConfiguration getStaticLibArchiver() {
+		return tools.get(ToolType.STATIC_LIB_ARCHIVER);
+	}
 
-    public NativePlatform getPlatform() {
-        return platform;
-    }
+	public NativePlatform getPlatform() {
+		return platform;
+	}
 }

@@ -21,9 +21,9 @@ import java.io.File;
 
 public interface VisualStudioLocator {
 
-    SearchResult locateVisualStudioInstalls(File candidate);
+	SearchResult locateVisualStudioInstalls(File candidate);
 
-    interface SearchResult extends ToolSearchResult {
-        VisualStudioInstall getVisualStudio();
-    }
+	interface SearchResult extends ToolSearchResult {
+		VisualStudioInstall getVisualStudio();
+	}
 }

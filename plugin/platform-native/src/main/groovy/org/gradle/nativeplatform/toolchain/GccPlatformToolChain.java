@@ -23,38 +23,38 @@ import org.gradle.api.Incubating;
  */
 @Incubating
 public interface GccPlatformToolChain extends NativePlatformToolChain {
-    /**
-     * Returns the settings to use for the C compiler.
-     */
-    GccCommandLineToolConfiguration getcCompiler();
+	/**
+	 * Returns the settings to use for the C compiler.
+	 */
+	GccCommandLineToolConfiguration getcCompiler();
 
-    /**
-     * Returns the settings to use for the C++ compiler.
-     */
-    GccCommandLineToolConfiguration getCppCompiler();
+	/**
+	 * Returns the settings to use for the C++ compiler.
+	 */
+	GccCommandLineToolConfiguration getCppCompiler();
 
-    /**
-     * Returns the settings to use for the Objective-C compiler.
-     */
-    GccCommandLineToolConfiguration getObjcCompiler();
+	/**
+	 * Returns the settings to use for the Objective-C compiler.
+	 */
+	GccCommandLineToolConfiguration getObjcCompiler();
 
-    /**
-     * Returns the settings to use for the Objective-C++ compiler.
-     */
-    GccCommandLineToolConfiguration getObjcppCompiler();
+	/**
+	 * Returns the settings to use for the Objective-C++ compiler.
+	 */
+	GccCommandLineToolConfiguration getObjcppCompiler();
 
-    /**
-     * Returns the settings to use for the assembler.
-     */
-    GccCommandLineToolConfiguration getAssembler();
+	/**
+	 * Returns the settings to use for the assembler.
+	 */
+	GccCommandLineToolConfiguration getAssembler();
 
-    /**
-     * Returns the settings to use for the linker.
-     */
-    GccCommandLineToolConfiguration getLinker();
+	/**
+	 * Returns the settings to use for the linker.
+	 */
+	GccCommandLineToolConfiguration getLinker();
 
-    /**
-     * Returns the settings to use for the archiver.
-     */
-    GccCommandLineToolConfiguration getStaticLibArchiver();
+	/**
+	 * Returns the settings to use for the archiver.
+	 */
+	GccCommandLineToolConfiguration getStaticLibArchiver();
 }

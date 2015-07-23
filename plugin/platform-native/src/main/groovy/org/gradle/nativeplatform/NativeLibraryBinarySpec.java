@@ -19,18 +19,20 @@ package org.gradle.nativeplatform;
 import org.gradle.platform.base.LibraryBinarySpec;
 
 /**
- * Represents a binary artifact that is the result of building a native library component.
+ * Represents a binary artifact that is the result of building a native library
+ * component.
  */
-public interface NativeLibraryBinarySpec extends NativeBinarySpec, LibraryBinarySpec {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    NativeLibrarySpec getLibrary();
+public interface NativeLibraryBinarySpec extends NativeBinarySpec,
+		LibraryBinarySpec {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	NativeLibrarySpec getLibrary();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    NativeLibrarySpec getComponent();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	NativeLibrarySpec getComponent();
 }

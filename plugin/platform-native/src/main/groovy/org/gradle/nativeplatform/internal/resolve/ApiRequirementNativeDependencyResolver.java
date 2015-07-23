@@ -22,83 +22,95 @@ import org.gradle.nativeplatform.NativeDependencySet;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 
 /**
- * Adapts an 'api' library requirement to a default linkage, and then wraps the result so that only headers are provided.
+ * Adapts an 'api' library requirement to a default linkage, and then wraps the
+ * result so that only headers are provided.
  */
-public class ApiRequirementNativeDependencyResolver implements NativeDependencyResolver {
-    private final NativeDependencyResolver delegate;
+public class ApiRequirementNativeDependencyResolver implements
+		NativeDependencyResolver {
+	private final NativeDependencyResolver delegate;
 
-    public ApiRequirementNativeDependencyResolver(NativeDependencyResolver delegate) {
-        this.delegate = delegate;
-    }
+	public ApiRequirementNativeDependencyResolver(
+			NativeDependencyResolver delegate) {
+		this.delegate = delegate;
+	}
 
-    public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
-        for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult.getAllResolutions()) {
-            String linkage = getLinkage(resolution);
-            if ("api".equals(linkage)) {
-                resolution.setRequirement(new ApiAdaptedNativeLibraryRequirement(resolution.getRequirement()));
-            }
-        }
+	public void resolve(NativeBinaryResolveResult nativeBinaryResolveResult) {
+		for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult
+				.getAllResolutions()) {
+			String linkage = getLinkage(resolution);
+			if ("api".equals(linkage)) {
+				resolution
+						.setRequirement(new ApiAdaptedNativeLibraryRequirement(
+								resolution.getRequirement()));
+			}
+		}
 
-        delegate.resolve(nativeBinaryResolveResult);
+		delegate.resolve(nativeBinaryResolveResult);
 
-        for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult.getAllResolutions()) {
-            if (resolution.getRequirement() instanceof ApiAdaptedNativeLibraryRequirement) {
-                ApiAdaptedNativeLibraryRequirement adaptedRequirement = (ApiAdaptedNativeLibraryRequirement) resolution.getRequirement();
-                resolution.setRequirement(adaptedRequirement.getOriginal());
-//                resolution.setLibraryBinary(null);
-                resolution.setNativeDependencySet(new ApiNativeDependencySet(resolution.getNativeDependencySet()));
-            }
-        }
-    }
+		for (NativeBinaryRequirementResolveResult resolution : nativeBinaryResolveResult
+				.getAllResolutions()) {
+			if (resolution.getRequirement() instanceof ApiAdaptedNativeLibraryRequirement) {
+				ApiAdaptedNativeLibraryRequirement adaptedRequirement = (ApiAdaptedNativeLibraryRequirement) resolution
+						.getRequirement();
+				resolution.setRequirement(adaptedRequirement.getOriginal());
+				// resolution.setLibraryBinary(null);
+				resolution.setNativeDependencySet(new ApiNativeDependencySet(
+						resolution.getNativeDependencySet()));
+			}
+		}
+	}
 
-    private String getLinkage(NativeBinaryRequirementResolveResult resolution) {
-        if (resolution.getRequirement() == null) {
-            return null;
-        }
-        return resolution.getRequirement().getLinkage();
-    }
+	private String getLinkage(NativeBinaryRequirementResolveResult resolution) {
+		if (resolution.getRequirement() == null) {
+			return null;
+		}
+		return resolution.getRequirement().getLinkage();
+	}
 
-    private static class ApiAdaptedNativeLibraryRequirement implements NativeLibraryRequirement {
-        private final NativeLibraryRequirement original;
-        public ApiAdaptedNativeLibraryRequirement(NativeLibraryRequirement original) {
-            this.original = original;
-        }
+	private static class ApiAdaptedNativeLibraryRequirement implements
+			NativeLibraryRequirement {
+		private final NativeLibraryRequirement original;
 
-        public NativeLibraryRequirement getOriginal() {
-            return original;
-        }
+		public ApiAdaptedNativeLibraryRequirement(
+				NativeLibraryRequirement original) {
+			this.original = original;
+		}
 
-        public String getProjectPath() {
-            return original.getProjectPath();
-        }
+		public NativeLibraryRequirement getOriginal() {
+			return original;
+		}
 
-        public String getLibraryName() {
-            return original.getLibraryName();
-        }
+		public String getProjectPath() {
+			return original.getProjectPath();
+		}
 
-        public String getLinkage() {
-            // Rely on the default linkage for providing the headers
-            return null;
-        }
-    }
+		public String getLibraryName() {
+			return original.getLibraryName();
+		}
 
-    private static class ApiNativeDependencySet implements NativeDependencySet {
-        private final NativeDependencySet delegate;
+		public String getLinkage() {
+			// Rely on the default linkage for providing the headers
+			return null;
+		}
+	}
 
-        public ApiNativeDependencySet(NativeDependencySet delegate) {
-            this.delegate = delegate;
-        }
+	private static class ApiNativeDependencySet implements NativeDependencySet {
+		private final NativeDependencySet delegate;
 
-        public FileCollection getIncludeRoots() {
-            return delegate.getIncludeRoots();
-        }
+		public ApiNativeDependencySet(NativeDependencySet delegate) {
+			this.delegate = delegate;
+		}
 
-        public FileCollection getLinkFiles() {
-            return new SimpleFileCollection();
-        }
+		public FileCollection getIncludeRoots() {
+			return delegate.getIncludeRoots();
+		}
 
-        public FileCollection getRuntimeFiles() {
-            return new SimpleFileCollection();
-        }
-    }
+		public FileCollection getLinkFiles() {
+			return new SimpleFileCollection();
+		}
+
+		public FileCollection getRuntimeFiles() {
+			return new SimpleFileCollection();
+		}
+	}
 }

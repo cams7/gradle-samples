@@ -19,23 +19,23 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.nativeplatform.Flavor;
 
 public class DefaultFlavor implements Flavor {
-    public static final String DEFAULT = "default";
-    private final String name;
+	public static final String DEFAULT = "default";
+	private final String name;
 
-    public DefaultFlavor(String name) {
-        this.name = name;
-    }
+	public DefaultFlavor(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return getDisplayName();
-    }
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 
-    public String getDisplayName() {
-        return String.format("flavor '%s'", name);
-    }
+	public String getDisplayName() {
+		return String.format("flavor '%s'", name);
+	}
 }

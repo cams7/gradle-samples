@@ -24,20 +24,23 @@ import org.gradle.nativeplatform.NativeBinarySpec;
 
 import java.util.Map;
 
-public class ToolSettingNativeBinaryInitializer implements Action<NativeBinarySpec> {
-    private final LanguageTransformContainer languageTransforms;
+public class ToolSettingNativeBinaryInitializer implements
+		Action<NativeBinarySpec> {
+	private final LanguageTransformContainer languageTransforms;
 
-    public ToolSettingNativeBinaryInitializer(LanguageTransformContainer languageTransforms) {
-        this.languageTransforms = languageTransforms;
-    }
+	public ToolSettingNativeBinaryInitializer(
+			LanguageTransformContainer languageTransforms) {
+		this.languageTransforms = languageTransforms;
+	}
 
-    // TODO:DAZ This should only add tools for transforms that apply.
-    public void execute(NativeBinarySpec nativeBinary) {
-        for (LanguageTransform<?, ?> language : languageTransforms) {
-            Map<String, Class<?>> binaryTools = language.getBinaryTools();
-            for (String toolName : binaryTools.keySet()) {
-                ((ExtensionAware) nativeBinary).getExtensions().create(toolName, binaryTools.get(toolName));
-            }
-        }
-    }
+	// TODO:DAZ This should only add tools for transforms that apply.
+	public void execute(NativeBinarySpec nativeBinary) {
+		for (LanguageTransform<?, ?> language : languageTransforms) {
+			Map<String, Class<?>> binaryTools = language.getBinaryTools();
+			for (String toolName : binaryTools.keySet()) {
+				((ExtensionAware) nativeBinary).getExtensions().create(
+						toolName, binaryTools.get(toolName));
+			}
+		}
+	}
 }

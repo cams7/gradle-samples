@@ -29,34 +29,44 @@ import java.io.File;
 import java.io.IOException;
 
 public class VisualCppPCHSourceFileGeneratorUtil {
-    private static SourceFileExtensionCalculator calculator = new SourceFileExtensionCalculator();
+	private static SourceFileExtensionCalculator calculator = new SourceFileExtensionCalculator();
 
-    public static <T extends NativeCompileSpec> File generatePCHSourceFile(T original, File sourceFile) {
-        File generatedSourceDir = new File(original.getTempDir(), "pchGeneratedSource");
-        generatedSourceDir.mkdirs();
-        File generatedSource = new File(generatedSourceDir, FilenameUtils.removeExtension(sourceFile.getName()).concat(calculator.transform(original.getClass())));
-        File headerFileCopy = new File(generatedSourceDir, sourceFile.getName());
-        try {
-            FileUtils.copyFile(sourceFile, headerFileCopy);
-            FileUtils.writeStringToFile(generatedSource, "#include \"".concat(headerFileCopy.getName()).concat("\""));
-            return generatedSource;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+	public static <T extends NativeCompileSpec> File generatePCHSourceFile(
+			T original, File sourceFile) {
+		File generatedSourceDir = new File(original.getTempDir(),
+				"pchGeneratedSource");
+		generatedSourceDir.mkdirs();
+		File generatedSource = new File(generatedSourceDir, FilenameUtils
+				.removeExtension(sourceFile.getName()).concat(
+						calculator.transform(original.getClass())));
+		File headerFileCopy = new File(generatedSourceDir, sourceFile.getName());
+		try {
+			FileUtils.copyFile(sourceFile, headerFileCopy);
+			FileUtils
+					.writeStringToFile(generatedSource,
+							"#include \"".concat(headerFileCopy.getName())
+									.concat("\""));
+			return generatedSource;
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
-    static class SourceFileExtensionCalculator implements Transformer<String, Class<? extends NativeCompileSpec>> {
-        @Override
-        public String transform(Class<? extends NativeCompileSpec> specClass) {
-            if (CPCHCompileSpec.class.isAssignableFrom(specClass)) {
-                return ".c";
-            }
+	static class SourceFileExtensionCalculator implements
+			Transformer<String, Class<? extends NativeCompileSpec>> {
+		@Override
+		public String transform(Class<? extends NativeCompileSpec> specClass) {
+			if (CPCHCompileSpec.class.isAssignableFrom(specClass)) {
+				return ".c";
+			}
 
-            if (CppPCHCompileSpec.class.isAssignableFrom(specClass)) {
-                return ".cpp";
-            }
+			if (CppPCHCompileSpec.class.isAssignableFrom(specClass)) {
+				return ".cpp";
+			}
 
-            throw new GradleException("Cannot determine source file extension for spec with type ".concat(specClass.getSimpleName()));
-        }
-    }
+			throw new GradleException(
+					"Cannot determine source file extension for spec with type "
+							.concat(specClass.getSimpleName()));
+		}
+	}
 }

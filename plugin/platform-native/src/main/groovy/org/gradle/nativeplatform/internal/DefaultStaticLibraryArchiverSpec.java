@@ -20,26 +20,27 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultStaticLibraryArchiverSpec extends AbstractBinaryToolSpec implements StaticLibraryArchiverSpec {
+public class DefaultStaticLibraryArchiverSpec extends AbstractBinaryToolSpec
+		implements StaticLibraryArchiverSpec {
 
-    private final List<File> objectFiles = new ArrayList<File>();
-    private File outputFile;
+	private final List<File> objectFiles = new ArrayList<File>();
+	private File outputFile;
 
-    public List<File> getObjectFiles() {
-        return objectFiles;
-    }
+	public List<File> getObjectFiles() {
+		return objectFiles;
+	}
 
-    public void objectFiles(Iterable<File> objectFiles) {
-        for (File objectFile : objectFiles) {
-            this.objectFiles.add(objectFile);
-        }
-    }
+	public void objectFiles(Iterable<File> objectFiles) {
+		for (File objectFile : objectFiles) {
+			this.objectFiles.add(objectFile);
+		}
+	}
 
-    public File getOutputFile() {
-        return outputFile;
-    }
+	public File getOutputFile() {
+		return outputFile;
+	}
 
-    public void setOutputFile(File outputFile) {
-        this.outputFile = outputFile;
-    }
+	public void setOutputFile(File outputFile) {
+		this.outputFile = outputFile;
+	}
 }

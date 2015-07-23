@@ -18,22 +18,22 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.nativeplatform.BuildType;
 
 public class DefaultBuildType implements BuildType {
-    private final String name;
+	private final String name;
 
-    public DefaultBuildType(String name) {
-        this.name = name;
-    }
+	public DefaultBuildType(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return getDisplayName();
-    }
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 
-    public String getDisplayName() {
-        return String.format("build type '%s'", name);
-    }
+	public String getDisplayName() {
+		return String.format("build type '%s'", name);
+	}
 }

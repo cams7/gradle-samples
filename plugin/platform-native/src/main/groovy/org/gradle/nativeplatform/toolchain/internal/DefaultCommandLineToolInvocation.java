@@ -22,42 +22,44 @@ import java.util.List;
 import java.util.Map;
 
 class DefaultCommandLineToolInvocation implements CommandLineToolInvocation {
-    private String description;
-    private final File workDirectory;
-    private final Iterable<String> args;
-    private final CommandLineToolContext context;
-    private final BuildOperationLogger oplogger;
+	private String description;
+	private final File workDirectory;
+	private final Iterable<String> args;
+	private final CommandLineToolContext context;
+	private final BuildOperationLogger oplogger;
 
-    DefaultCommandLineToolInvocation(String description, File workDirectory, Iterable<String> args, CommandLineToolContext context, BuildOperationLogger oplogger) {
-        this.description = description;
-        this.workDirectory = workDirectory;
-        this.args = args;
-        this.context = context;
-        this.oplogger = oplogger;
-    }
+	DefaultCommandLineToolInvocation(String description, File workDirectory,
+			Iterable<String> args, CommandLineToolContext context,
+			BuildOperationLogger oplogger) {
+		this.description = description;
+		this.workDirectory = workDirectory;
+		this.args = args;
+		this.context = context;
+		this.oplogger = oplogger;
+	}
 
-    public Iterable<String> getArgs() {
-        return args;
-    }
+	public Iterable<String> getArgs() {
+		return args;
+	}
 
-    @Override
-    public BuildOperationLogger getLogger() {
-        return oplogger;
-    }
+	@Override
+	public BuildOperationLogger getLogger() {
+		return oplogger;
+	}
 
-    public File getWorkDirectory() {
-        return workDirectory;
-    }
+	public File getWorkDirectory() {
+		return workDirectory;
+	}
 
-    public List<File> getPath() {
-        return context.getPath();
-    }
+	public List<File> getPath() {
+		return context.getPath();
+	}
 
-    public Map<String, String> getEnvironment() {
-        return context.getEnvironment();
-    }
+	public Map<String, String> getEnvironment() {
+		return context.getEnvironment();
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 }

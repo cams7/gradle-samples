@@ -24,77 +24,81 @@ import org.gradle.nativeplatform.toolchain.internal.tools.ToolRegistry;
 
 import java.util.*;
 
-public class DefaultGccPlatformToolChain implements GccPlatformToolChain, ToolRegistry {
-    private final NativePlatform platform;
-    private boolean canUseCommandFile = true;
-    private List<String> compilerProbeArgs = new ArrayList<String>();
-    private final Map<ToolType, GccCommandLineToolConfigurationInternal> tools = new HashMap<ToolType, GccCommandLineToolConfigurationInternal>();
+public class DefaultGccPlatformToolChain implements GccPlatformToolChain,
+		ToolRegistry {
+	private final NativePlatform platform;
+	private boolean canUseCommandFile = true;
+	private List<String> compilerProbeArgs = new ArrayList<String>();
+	private final Map<ToolType, GccCommandLineToolConfigurationInternal> tools = new HashMap<ToolType, GccCommandLineToolConfigurationInternal>();
 
-    public DefaultGccPlatformToolChain(NativePlatform platform) {
-        this.platform = platform;
-    }
+	public DefaultGccPlatformToolChain(NativePlatform platform) {
+		this.platform = platform;
+	}
 
-    public boolean isCanUseCommandFile() {
-        return canUseCommandFile;
-    }
+	public boolean isCanUseCommandFile() {
+		return canUseCommandFile;
+	}
 
-    public void setCanUseCommandFile(boolean canUseCommandFile) {
-        this.canUseCommandFile = canUseCommandFile;
-    }
+	public void setCanUseCommandFile(boolean canUseCommandFile) {
+		this.canUseCommandFile = canUseCommandFile;
+	}
 
-    public List<String> getCompilerProbeArgs() {
-        return compilerProbeArgs;
-    }
+	public List<String> getCompilerProbeArgs() {
+		return compilerProbeArgs;
+	}
 
-    public void compilerProbeArgs(String... args) {
-        this.compilerProbeArgs.addAll(Arrays.asList(args));
-    }
+	public void compilerProbeArgs(String... args) {
+		this.compilerProbeArgs.addAll(Arrays.asList(args));
+	}
 
-    public GccCommandLineToolConfigurationInternal getTool(ToolType toolType) {
-        return tools.get(toolType);
-    }
+	public GccCommandLineToolConfigurationInternal getTool(ToolType toolType) {
+		return tools.get(toolType);
+	}
 
-    public Collection<GccCommandLineToolConfigurationInternal> getTools() {
-        return tools.values();
-    }
+	public Collection<GccCommandLineToolConfigurationInternal> getTools() {
+		return tools.values();
+	}
 
-    public Collection<GccCommandLineToolConfigurationInternal> getCompilers() {
-        return Arrays.asList(tools.get(ToolType.C_COMPILER), tools.get(ToolType.CPP_COMPILER), tools.get(ToolType.OBJECTIVEC_COMPILER), tools.get(ToolType.OBJECTIVECPP_COMPILER));
-    }
+	public Collection<GccCommandLineToolConfigurationInternal> getCompilers() {
+		return Arrays.asList(tools.get(ToolType.C_COMPILER),
+				tools.get(ToolType.CPP_COMPILER),
+				tools.get(ToolType.OBJECTIVEC_COMPILER),
+				tools.get(ToolType.OBJECTIVECPP_COMPILER));
+	}
 
-    public void add(DefaultGccCommandLineToolConfiguration tool) {
-        tools.put(tool.getToolType(), tool);
-    }
+	public void add(DefaultGccCommandLineToolConfiguration tool) {
+		tools.put(tool.getToolType(), tool);
+	}
 
-    public NativePlatform getPlatform() {
-        return platform;
-    }
+	public NativePlatform getPlatform() {
+		return platform;
+	}
 
-    public GccCommandLineToolConfigurationInternal getcCompiler() {
-        return tools.get(ToolType.C_COMPILER);
-    }
+	public GccCommandLineToolConfigurationInternal getcCompiler() {
+		return tools.get(ToolType.C_COMPILER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getCppCompiler() {
-        return tools.get(ToolType.CPP_COMPILER);
-    }
+	public GccCommandLineToolConfigurationInternal getCppCompiler() {
+		return tools.get(ToolType.CPP_COMPILER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getObjcCompiler() {
-        return tools.get(ToolType.OBJECTIVEC_COMPILER);
-    }
+	public GccCommandLineToolConfigurationInternal getObjcCompiler() {
+		return tools.get(ToolType.OBJECTIVEC_COMPILER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getObjcppCompiler() {
-        return tools.get(ToolType.OBJECTIVECPP_COMPILER);
-    }
+	public GccCommandLineToolConfigurationInternal getObjcppCompiler() {
+		return tools.get(ToolType.OBJECTIVECPP_COMPILER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getAssembler() {
-        return tools.get(ToolType.ASSEMBLER);
-    }
+	public GccCommandLineToolConfigurationInternal getAssembler() {
+		return tools.get(ToolType.ASSEMBLER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getLinker() {
-        return tools.get(ToolType.LINKER);
-    }
+	public GccCommandLineToolConfigurationInternal getLinker() {
+		return tools.get(ToolType.LINKER);
+	}
 
-    public GccCommandLineToolConfigurationInternal getStaticLibArchiver() {
-        return tools.get(ToolType.STATIC_LIB_ARCHIVER);
-    }
+	public GccCommandLineToolConfigurationInternal getStaticLibArchiver() {
+		return tools.get(ToolType.STATIC_LIB_ARCHIVER);
+	}
 }

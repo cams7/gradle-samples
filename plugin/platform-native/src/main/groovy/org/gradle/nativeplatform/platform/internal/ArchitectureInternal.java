@@ -18,13 +18,15 @@ package org.gradle.nativeplatform.platform.internal;
 import org.gradle.nativeplatform.platform.Architecture;
 
 public interface ArchitectureInternal extends Architecture {
-    enum InstructionSet { X86, ITANIUM, PPC, SPARC, ARM }
+	enum InstructionSet {
+		X86, ITANIUM, PPC, SPARC, ARM
+	}
 
-    boolean isI386();
+	boolean isI386();
 
-    boolean isAmd64();
+	boolean isAmd64();
 
-    boolean isIa64();
+	boolean isIa64();
 
-    boolean isArm();
+	boolean isArm();
 }

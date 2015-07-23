@@ -19,15 +19,15 @@ package org.gradle.nativeplatform.toolchain.internal;
 import org.gradle.platform.base.internal.toolchain.ToolProvider;
 
 public interface PlatformToolProvider extends ToolProvider {
-    String getObjectFileExtension();
+	String getObjectFileExtension();
 
-    String getPCHFileExtension();
+	String getPCHFileExtension();
 
-    String getExecutableName(String executablePath);
+	String getExecutableName(String executablePath);
 
-    String getSharedLibraryName(String libraryPath);
+	String getSharedLibraryName(String libraryPath);
 
-    String getSharedLibraryLinkFileName(String libraryPath);
+	String getSharedLibraryLinkFileName(String libraryPath);
 
-    String getStaticLibraryName(String libraryPath);
+	String getStaticLibraryName(String libraryPath);
 }

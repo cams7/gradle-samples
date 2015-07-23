@@ -25,85 +25,105 @@ import org.gradle.util.GUtil;
 import java.util.Set;
 
 class DefaultLibraryResolver {
-    private final Instantiator instantiator;
-    private final NativeLibraryRequirement requirement;
-    private final NativeBinarySpec context;
-    private final LibraryBinaryLocator libraryBinaryLocator;
+	@SuppressWarnings("unused")
+	private final Instantiator instantiator;
+	private final NativeLibraryRequirement requirement;
+	private final NativeBinarySpec context;
+	private final LibraryBinaryLocator libraryBinaryLocator;
 
-    public DefaultLibraryResolver(LibraryBinaryLocator libraryBinaryLocator, Instantiator instantiator, NativeLibraryRequirement requirement, NativeBinarySpec context) {
-        this.instantiator = instantiator;
-        this.requirement = requirement;
-        this.context = context;
-        this.libraryBinaryLocator = libraryBinaryLocator;
-    }
+	public DefaultLibraryResolver(LibraryBinaryLocator libraryBinaryLocator,
+			Instantiator instantiator, NativeLibraryRequirement requirement,
+			NativeBinarySpec context) {
+		this.instantiator = instantiator;
+		this.requirement = requirement;
+		this.context = context;
+		this.libraryBinaryLocator = libraryBinaryLocator;
+	}
 
-    public NativeLibraryBinary resolveLibraryBinary() {
-        return new LibraryResolution()
-                .withFlavor(context.getFlavor())
-                .withPlatform(context.getTargetPlatform())
-                .withBuildType(context.getBuildType())
-                .resolveLibrary(libraryBinaryLocator.getBinaries(requirement));
-    }
+	public NativeLibraryBinary resolveLibraryBinary() {
+		return new LibraryResolution().withFlavor(context.getFlavor())
+				.withPlatform(context.getTargetPlatform())
+				.withBuildType(context.getBuildType())
+				.resolveLibrary(libraryBinaryLocator.getBinaries(requirement));
+	}
 
-    private class LibraryResolution {
-        private Flavor flavor;
-        private NativePlatform platform;
-        private BuildType buildType;
+	private class LibraryResolution {
+		private Flavor flavor;
+		private NativePlatform platform;
+		private BuildType buildType;
 
-        public LibraryResolution withFlavor(Flavor flavor) {
-            this.flavor = flavor;
-            return this;
-        }
+		public LibraryResolution withFlavor(Flavor flavor) {
+			this.flavor = flavor;
+			return this;
+		}
 
-        public LibraryResolution withPlatform(NativePlatform platform) {
-            this.platform = platform;
-            return this;
-        }
+		public LibraryResolution withPlatform(NativePlatform platform) {
+			this.platform = platform;
+			return this;
+		}
 
-        public LibraryResolution withBuildType(BuildType buildType) {
-            this.buildType = buildType;
-            return this;
-        }
+		public LibraryResolution withBuildType(BuildType buildType) {
+			this.buildType = buildType;
+			return this;
+		}
 
-        public NativeDependencySet resolve(DomainObjectSet<NativeLibraryBinary> allBinaries) {
-            NativeLibraryBinary resolve = resolveLibrary(allBinaries);
-            return new DefaultNativeDependencySet(resolve);
-        }
+		@SuppressWarnings("unused")
+		public NativeDependencySet resolve(
+				DomainObjectSet<NativeLibraryBinary> allBinaries) {
+			NativeLibraryBinary resolve = resolveLibrary(allBinaries);
+			return new DefaultNativeDependencySet(resolve);
+		}
 
-        public NativeLibraryBinary resolveLibrary(DomainObjectSet<NativeLibraryBinary> allBinaries) {
-            Class<? extends NativeLibraryBinary> type = getTypeForLinkage(requirement.getLinkage());
-            DomainObjectSet<? extends NativeLibraryBinary> candidateBinaries = allBinaries.withType(type);
-            return resolve(candidateBinaries);
-        }
+		public NativeLibraryBinary resolveLibrary(
+				DomainObjectSet<NativeLibraryBinary> allBinaries) {
+			Class<? extends NativeLibraryBinary> type = getTypeForLinkage(requirement
+					.getLinkage());
+			DomainObjectSet<? extends NativeLibraryBinary> candidateBinaries = allBinaries
+					.withType(type);
+			return resolve(candidateBinaries);
+		}
 
-        private Class<? extends NativeLibraryBinary> getTypeForLinkage(String linkage) {
-            if ("static".equals(linkage)) {
-                return StaticLibraryBinary.class;
-            }
-            if ("shared".equals(linkage) || linkage == null) {
-                return SharedLibraryBinary.class;
-            }
-            throw new InvalidUserDataException("Not a valid linkage: " + linkage);
-        }
+		private Class<? extends NativeLibraryBinary> getTypeForLinkage(
+				String linkage) {
+			if ("static".equals(linkage)) {
+				return StaticLibraryBinary.class;
+			}
+			if ("shared".equals(linkage) || linkage == null) {
+				return SharedLibraryBinary.class;
+			}
+			throw new InvalidUserDataException("Not a valid linkage: "
+					+ linkage);
+		}
 
-        private NativeLibraryBinary resolve(Set<? extends NativeLibraryBinary> candidates) {
-            for (NativeLibraryBinary candidate : candidates) {
-                if (flavor != null && !flavor.getName().equals(candidate.getFlavor().getName())) {
-                    continue;
-                }
-                if (platform != null && !platform.getName().equals(candidate.getTargetPlatform().getName())) {
-                    continue;
-                }
-                if (buildType != null && !buildType.getName().equals(candidate.getBuildType().getName())) {
-                    continue;
-                }
+		private NativeLibraryBinary resolve(
+				Set<? extends NativeLibraryBinary> candidates) {
+			for (NativeLibraryBinary candidate : candidates) {
+				if (flavor != null
+						&& !flavor.getName().equals(
+								candidate.getFlavor().getName())) {
+					continue;
+				}
+				if (platform != null
+						&& !platform.getName().equals(
+								candidate.getTargetPlatform().getName())) {
+					continue;
+				}
+				if (buildType != null
+						&& !buildType.getName().equals(
+								candidate.getBuildType().getName())) {
+					continue;
+				}
 
-                return candidate;
-            }
+				return candidate;
+			}
 
-            String typeName = GUtil.elvis(requirement.getLinkage(), "shared");
-            throw new LibraryResolveException(String.format("No %s library binary available for library '%s' with [flavor: '%s', platform: '%s', buildType: '%s']",
-                    typeName, requirement.getLibraryName(), flavor.getName(), platform.getName(), buildType.getName()));
-        }
-    }
+			String typeName = GUtil.elvis(requirement.getLinkage(), "shared");
+			throw new LibraryResolveException(
+					String.format(
+							"No %s library binary available for library '%s' with [flavor: '%s', platform: '%s', buildType: '%s']",
+							typeName, requirement.getLibraryName(),
+							flavor.getName(), platform.getName(),
+							buildType.getName()));
+		}
+	}
 }

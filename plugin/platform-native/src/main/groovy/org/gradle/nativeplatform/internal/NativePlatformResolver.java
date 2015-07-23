@@ -26,24 +26,26 @@ import org.gradle.util.CollectionUtils;
 import java.util.Set;
 
 public class NativePlatformResolver implements PlatformResolver<NativePlatform> {
-    private final Set<NativePlatform> nativePlatforms = Sets.newHashSet();
+	private final Set<NativePlatform> nativePlatforms = Sets.newHashSet();
 
-    public NativePlatformResolver() {
-        nativePlatforms.addAll(NativePlatforms.defaultPlatformDefinitions());
-    }
+	public NativePlatformResolver() {
+		nativePlatforms.addAll(NativePlatforms.defaultPlatformDefinitions());
+	}
 
-    public Class<NativePlatform> getType() {
-        return NativePlatform.class;
-    }
+	public Class<NativePlatform> getType() {
+		return NativePlatform.class;
+	}
 
-    @Override
-    public NativePlatform resolve(final PlatformRequirement platformRequirement) {
-        NativePlatforms.defaultPlatformDefinitions();
-        return CollectionUtils.findFirst(nativePlatforms, new Spec<NativePlatform>() {
-            @Override
-            public boolean isSatisfiedBy(NativePlatform element) {
-                return element.getName().equals(platformRequirement.getPlatformName());
-            }
-        });
-    }
+	@Override
+	public NativePlatform resolve(final PlatformRequirement platformRequirement) {
+		NativePlatforms.defaultPlatformDefinitions();
+		return CollectionUtils.findFirst(nativePlatforms,
+				new Spec<NativePlatform>() {
+					@Override
+					public boolean isSatisfiedBy(NativePlatform element) {
+						return element.getName().equals(
+								platformRequirement.getPlatformName());
+					}
+				});
+	}
 }

@@ -26,13 +26,15 @@ import org.gradle.api.file.SourceDirectorySet;
  */
 @Incubating
 public interface PrebuiltLibrary extends Named, NativeLibrary {
-    /**
-     * The binaries that are built for this component. You can use this to configure the binaries for this component.
-     */
-    DomainObjectSet<NativeLibraryBinary> getBinaries();
+	/**
+	 * The binaries that are built for this component. You can use this to
+	 * configure the binaries for this component.
+	 */
+	DomainObjectSet<NativeLibraryBinary> getBinaries();
 
-    /**
-     * The headers exported by this library. These headers will be added to all binaries for this library.
-     */
-    SourceDirectorySet getHeaders();
+	/**
+	 * The headers exported by this library. These headers will be added to all
+	 * binaries for this library.
+	 */
+	SourceDirectorySet getHeaders();
 }

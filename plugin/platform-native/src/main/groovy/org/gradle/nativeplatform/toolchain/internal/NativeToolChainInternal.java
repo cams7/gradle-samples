@@ -20,20 +20,25 @@ import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.platform.base.internal.toolchain.ToolChainInternal;
 
-public interface NativeToolChainInternal extends NativeToolChain, ToolChainInternal<NativePlatformInternal> {
-    /**
-     * Locates the tools that can target the given platform.
-     */
-    PlatformToolProvider select(NativePlatformInternal targetPlatform);
+public interface NativeToolChainInternal extends NativeToolChain,
+		ToolChainInternal<NativePlatformInternal> {
+	/**
+	 * Locates the tools that can target the given platform.
+	 */
+	PlatformToolProvider select(NativePlatformInternal targetPlatform);
 
-    /**
-     * Returns a unique, opaque, getOutputType for the output produced by this toolchain on the current operating system.
-     */
-    String getOutputType();
+	/**
+	 * Returns a unique, opaque, getOutputType for the output produced by this
+	 * toolchain on the current operating system.
+	 */
+	String getOutputType();
 
-    public static class Identifier {
-        public static String identify(NativeToolChainInternal toolChain, NativePlatformInternal platform) {
-            return String.format("%s:%s:%s", toolChain.getOutputType(), platform.getArchitecture().getName(), platform.getOperatingSystem().getName());
-        }
-    }
+	public static class Identifier {
+		public static String identify(NativeToolChainInternal toolChain,
+				NativePlatformInternal platform) {
+			return String.format("%s:%s:%s", toolChain.getOutputType(),
+					platform.getArchitecture().getName(), platform
+							.getOperatingSystem().getName());
+		}
+	}
 }

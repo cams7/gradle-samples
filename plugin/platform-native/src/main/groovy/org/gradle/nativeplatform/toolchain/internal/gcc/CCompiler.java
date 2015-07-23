@@ -24,13 +24,20 @@ import org.gradle.nativeplatform.toolchain.internal.compilespec.CCompileSpec;
 
 class CCompiler extends GccCompatibleNativeCompiler<CCompileSpec> {
 
-    CCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineToolInvocationWorker, invocationContext, new CCompileArgsTransformer(), Transformers.<CCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
-    }
+	CCompiler(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
+			CommandLineToolContext invocationContext,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineToolInvocationWorker,
+				invocationContext, new CCompileArgsTransformer(), Transformers
+						.<CCompileSpec> noOpTransformer(), objectFileExtension,
+				useCommandFile);
+	}
 
-    private static class CCompileArgsTransformer extends GccCompilerArgsTransformer<CCompileSpec> {
-        protected String getLanguage() {
-            return "c";
-        }
-    }
+	private static class CCompileArgsTransformer extends
+			GccCompilerArgsTransformer<CCompileSpec> {
+		protected String getLanguage() {
+			return "c";
+		}
+	}
 }

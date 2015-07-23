@@ -26,25 +26,26 @@ import org.gradle.nativeplatform.PrebuiltLibrary;
 
 public class DefaultPrebuiltLibrary implements PrebuiltLibrary {
 
-    private final String name;
-    private final SourceDirectorySet headers;
-    private final DomainObjectSet<NativeLibraryBinary> binaries;
+	private final String name;
+	private final SourceDirectorySet headers;
+	private final DomainObjectSet<NativeLibraryBinary> binaries;
 
-    public DefaultPrebuiltLibrary(String name, FileResolver fileResolver) {
-        this.name = name;
-        headers = new DefaultSourceDirectorySet("headers", fileResolver);
-        binaries = new DefaultDomainObjectSet<NativeLibraryBinary>(NativeLibraryBinary.class);
-    }
+	public DefaultPrebuiltLibrary(String name, FileResolver fileResolver) {
+		this.name = name;
+		headers = new DefaultSourceDirectorySet("headers", fileResolver);
+		binaries = new DefaultDomainObjectSet<NativeLibraryBinary>(
+				NativeLibraryBinary.class);
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public SourceDirectorySet getHeaders() {
-        return headers;
-    }
+	public SourceDirectorySet getHeaders() {
+		return headers;
+	}
 
-    public DomainObjectSet<NativeLibraryBinary> getBinaries() {
-        return binaries;
-    }
+	public DomainObjectSet<NativeLibraryBinary> getBinaries() {
+		return binaries;
+	}
 }

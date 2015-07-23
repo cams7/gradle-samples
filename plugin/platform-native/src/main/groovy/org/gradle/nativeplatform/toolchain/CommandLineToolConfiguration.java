@@ -26,8 +26,9 @@ import java.util.List;
  */
 @Incubating
 public interface CommandLineToolConfiguration {
-    /**
-     * Adds an action that will be applied to the command-line arguments prior to execution.
-     */
-    void withArguments(Action<? super List<String>> arguments);
+	/**
+	 * Adds an action that will be applied to the command-line arguments prior
+	 * to execution.
+	 */
+	void withArguments(Action<? super List<String>> arguments);
 }

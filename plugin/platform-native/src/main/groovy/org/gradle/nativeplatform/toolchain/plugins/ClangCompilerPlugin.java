@@ -35,31 +35,46 @@ import org.gradle.nativeplatform.toolchain.internal.gcc.version.CompilerMetaData
 import org.gradle.process.internal.ExecActionFactory;
 
 /**
- * A {@link Plugin} which makes the <a href="http://clang.llvm.org">Clang</a> compiler available for compiling C/C++ code.
+ * A {@link Plugin} which makes the <a href="http://clang.llvm.org">Clang</a>
+ * compiler available for compiling C/C++ code.
  */
 @Incubating
 public class ClangCompilerPlugin implements Plugin<Project> {
 
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+	}
 
-    static class Rules extends RuleSource {
-        @Defaults
-        public static void addToolChain(NativeToolChainRegistryInternal toolChainRegistry, ServiceRegistry serviceRegistry) {
-            final FileResolver fileResolver = serviceRegistry.get(FileResolver.class);
-            final ExecActionFactory execActionFactory = serviceRegistry.get(ExecActionFactory.class);
-            final Instantiator instantiator = serviceRegistry.get(Instantiator.class);
-            final BuildOperationProcessor buildOperationProcessor = serviceRegistry.get(BuildOperationProcessor.class);
-            final CompilerMetaDataProviderFactory metaDataProviderFactory = serviceRegistry.get(CompilerMetaDataProviderFactory.class);
+	static class Rules extends RuleSource {
+		@Defaults
+		public static void addToolChain(
+				NativeToolChainRegistryInternal toolChainRegistry,
+				ServiceRegistry serviceRegistry) {
+			final FileResolver fileResolver = serviceRegistry
+					.get(FileResolver.class);
+			final ExecActionFactory execActionFactory = serviceRegistry
+					.get(ExecActionFactory.class);
+			final Instantiator instantiator = serviceRegistry
+					.get(Instantiator.class);
+			final BuildOperationProcessor buildOperationProcessor = serviceRegistry
+					.get(BuildOperationProcessor.class);
+			final CompilerMetaDataProviderFactory metaDataProviderFactory = serviceRegistry
+					.get(CompilerMetaDataProviderFactory.class);
 
-            toolChainRegistry.registerFactory(Clang.class, new NamedDomainObjectFactory<Clang>() {
-                public Clang create(String name) {
-                    return instantiator.newInstance(ClangToolChain.class, name, buildOperationProcessor, OperatingSystem.current(), fileResolver, execActionFactory, metaDataProviderFactory, instantiator);
-                }
-            });
-            toolChainRegistry.registerDefaultToolChain(ClangToolChain.DEFAULT_NAME, Clang.class);
-        }
+			toolChainRegistry.registerFactory(Clang.class,
+					new NamedDomainObjectFactory<Clang>() {
+						public Clang create(String name) {
+							return instantiator.newInstance(
+									ClangToolChain.class, name,
+									buildOperationProcessor,
+									OperatingSystem.current(), fileResolver,
+									execActionFactory, metaDataProviderFactory,
+									instantiator);
+						}
+					});
+			toolChainRegistry.registerDefaultToolChain(
+					ClangToolChain.DEFAULT_NAME, Clang.class);
+		}
 
-    }
+	}
 }

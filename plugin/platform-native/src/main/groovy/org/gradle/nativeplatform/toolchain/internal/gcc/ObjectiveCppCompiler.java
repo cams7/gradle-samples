@@ -22,15 +22,23 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWor
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCppCompileSpec;
 
-class ObjectiveCppCompiler extends GccCompatibleNativeCompiler<ObjectiveCppCompileSpec> {
+class ObjectiveCppCompiler extends
+		GccCompatibleNativeCompiler<ObjectiveCppCompileSpec> {
 
-    ObjectiveCppCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
-        super(buildOperationProcessor, commandLineToolInvocationWorker, invocationContext, new ObjectiveCppCompileArgsTransformer(), Transformers.<ObjectiveCppCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
-    }
+	ObjectiveCppCompiler(BuildOperationProcessor buildOperationProcessor,
+			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
+			CommandLineToolContext invocationContext,
+			String objectFileExtension, boolean useCommandFile) {
+		super(buildOperationProcessor, commandLineToolInvocationWorker,
+				invocationContext, new ObjectiveCppCompileArgsTransformer(),
+				Transformers.<ObjectiveCppCompileSpec> noOpTransformer(),
+				objectFileExtension, useCommandFile);
+	}
 
-    private static class ObjectiveCppCompileArgsTransformer extends GccCompilerArgsTransformer<ObjectiveCppCompileSpec> {
-        protected String getLanguage() {
-            return "objective-c++";
-        }
-    }
+	private static class ObjectiveCppCompileArgsTransformer extends
+			GccCompilerArgsTransformer<ObjectiveCppCompileSpec> {
+		protected String getLanguage() {
+			return "objective-c++";
+		}
+	}
 }

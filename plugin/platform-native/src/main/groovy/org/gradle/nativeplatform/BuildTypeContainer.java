@@ -23,5 +23,6 @@ import org.gradle.api.NamedDomainObjectContainer;
  * A container of {@link BuildType}s.
  */
 @Incubating
-public interface BuildTypeContainer extends NamedDomainObjectContainer<BuildType> {
+public interface BuildTypeContainer extends
+		NamedDomainObjectContainer<BuildType> {
 }

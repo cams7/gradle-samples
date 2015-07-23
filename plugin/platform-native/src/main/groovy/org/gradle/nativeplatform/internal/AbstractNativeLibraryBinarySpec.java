@@ -29,75 +29,80 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public abstract class AbstractNativeLibraryBinarySpec extends AbstractNativeBinarySpec implements LibraryBinarySpec {
-    @Override
-    public NativeLibrarySpec getComponent() {
-        return (NativeLibrarySpec) super.getComponent();
-    }
+public abstract class AbstractNativeLibraryBinarySpec extends
+		AbstractNativeBinarySpec implements LibraryBinarySpec {
+	@Override
+	public NativeLibrarySpec getComponent() {
+		return (NativeLibrarySpec) super.getComponent();
+	}
 
-    @Override
-    public NativeLibrarySpec getLibrary() {
-        return getComponent();
-    }
+	@Override
+	public NativeLibrarySpec getLibrary() {
+		return getComponent();
+	}
 
-    protected boolean hasSources() {
-        for (LanguageSourceSet sourceSet : getSource()) {
-            if (!sourceSet.getSource().isEmpty()) {
-                return true;
-            }
-            if (sourceSet.hasBuildDependencies()) {
-                return true;
-            }
-        }
-        return false;
-    }
+	protected boolean hasSources() {
+		for (LanguageSourceSet sourceSet : getSource()) {
+			if (!sourceSet.getSource().isEmpty()) {
+				return true;
+			}
+			if (sourceSet.hasBuildDependencies()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public FileCollection getHeaderDirs() {
-        return new AbstractFileCollection() {
-            public String getDisplayName() {
-                return String.format("Headers for %s", getName());
-            }
+	public FileCollection getHeaderDirs() {
+		return new AbstractFileCollection() {
+			public String getDisplayName() {
+				return String.format("Headers for %s", getName());
+			}
 
-            public Set<File> getFiles() {
-                Set<File> headerDirs = new LinkedHashSet<File>();
-                for (HeaderExportingSourceSet sourceSet : getSource().withType(HeaderExportingSourceSet.class)) {
-                    headerDirs.addAll(sourceSet.getExportedHeaders().getSrcDirs());
-                }
-                return headerDirs;
-            }
+			public Set<File> getFiles() {
+				Set<File> headerDirs = new LinkedHashSet<File>();
+				for (HeaderExportingSourceSet sourceSet : getSource().withType(
+						HeaderExportingSourceSet.class)) {
+					headerDirs.addAll(sourceSet.getExportedHeaders()
+							.getSrcDirs());
+				}
+				return headerDirs;
+			}
 
-            @Override
-            public TaskDependency getBuildDependencies() {
-                DefaultTaskDependency dependency = new DefaultTaskDependency();
-                for (HeaderExportingSourceSet sourceSet : getSource().withType(HeaderExportingSourceSet.class)) {
-                    dependency.add(sourceSet.getBuildDependencies());
-                }
-                return dependency;
-            }
-        };
-    }
+			@Override
+			public TaskDependency getBuildDependencies() {
+				DefaultTaskDependency dependency = new DefaultTaskDependency();
+				for (HeaderExportingSourceSet sourceSet : getSource().withType(
+						HeaderExportingSourceSet.class)) {
+					dependency.add(sourceSet.getBuildDependencies());
+				}
+				return dependency;
+			}
+		};
+	}
 
-    protected abstract class LibraryOutputs extends AbstractFileCollection {
-        public final Set<File> getFiles() {
-            if (hasOutputs()) {
-                return getOutputs();
-            }
-            return Collections.emptySet();
-        }
+	protected abstract class LibraryOutputs extends AbstractFileCollection {
+		public final Set<File> getFiles() {
+			if (hasOutputs()) {
+				return getOutputs();
+			}
+			return Collections.emptySet();
+		}
 
-        public final String getDisplayName() {
-            return AbstractNativeLibraryBinarySpec.this.toString();
-        }
+		public final String getDisplayName() {
+			return AbstractNativeLibraryBinarySpec.this.toString();
+		}
 
-        public final TaskDependency getBuildDependencies() {
-            if (hasOutputs()) {
-                return AbstractNativeLibraryBinarySpec.this.getBuildDependencies();
-            }
-            return new DefaultTaskDependency();
-        }
+		public final TaskDependency getBuildDependencies() {
+			if (hasOutputs()) {
+				return AbstractNativeLibraryBinarySpec.this
+						.getBuildDependencies();
+			}
+			return new DefaultTaskDependency();
+		}
 
-        protected abstract boolean hasOutputs();
+		protected abstract boolean hasOutputs();
 
-        protected abstract Set<File> getOutputs();
-    }
+		protected abstract Set<File> getOutputs();
+	}
 }

@@ -21,5 +21,6 @@ import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 
 public interface LibraryBinaryLocator {
-    DomainObjectSet<NativeLibraryBinary> getBinaries(NativeLibraryRequirement requirement);
+	DomainObjectSet<NativeLibraryBinary> getBinaries(
+			NativeLibraryRequirement requirement);
 }

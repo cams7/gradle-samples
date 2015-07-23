@@ -27,53 +27,57 @@ import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
 import java.io.File;
 
-public class DefaultNativeExecutableBinarySpec extends AbstractNativeBinarySpec implements NativeExecutableBinary, NativeExecutableBinarySpecInternal {
-    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
-    private File executableFile;
+public class DefaultNativeExecutableBinarySpec extends AbstractNativeBinarySpec
+		implements NativeExecutableBinary, NativeExecutableBinarySpecInternal {
+	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
+			super.getTasks());
+	private File executableFile;
 
-    @Override
-    public NativeExecutableSpec getComponent() {
-        return (NativeExecutableSpec) super.getComponent();
-    }
+	@Override
+	public NativeExecutableSpec getComponent() {
+		return (NativeExecutableSpec) super.getComponent();
+	}
 
-    @Override
-    public NativeExecutableSpec getApplication() {
-        return getComponent();
-    }
+	@Override
+	public NativeExecutableSpec getApplication() {
+		return getComponent();
+	}
 
-    public File getExecutableFile() {
-        return executableFile;
-    }
+	public File getExecutableFile() {
+		return executableFile;
+	}
 
-    public void setExecutableFile(File executableFile) {
-        this.executableFile = executableFile;
-    }
+	public void setExecutableFile(File executableFile) {
+		this.executableFile = executableFile;
+	}
 
-    public File getPrimaryOutput() {
-        return getExecutableFile();
-    }
+	public File getPrimaryOutput() {
+		return getExecutableFile();
+	}
 
-    @Override
-    protected ObjectFilesToBinary getCreateOrLink() {
-        return tasks.getLink();
-    }
+	@Override
+	protected ObjectFilesToBinary getCreateOrLink() {
+		return tasks.getLink();
+	}
 
-    public NativeExecutableBinarySpec.TasksCollection getTasks() {
-        return tasks;
-    }
+	public NativeExecutableBinarySpec.TasksCollection getTasks() {
+		return tasks;
+	}
 
-    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements NativeExecutableBinarySpec.TasksCollection {
+	private static class DefaultTasksCollection extends
+			BinaryTasksCollectionWrapper implements
+			NativeExecutableBinarySpec.TasksCollection {
 
-        public DefaultTasksCollection(BinaryTasksCollection delegate) {
-            super(delegate);
-        }
+		public DefaultTasksCollection(BinaryTasksCollection delegate) {
+			super(delegate);
+		}
 
-        public LinkExecutable getLink() {
-            return findSingleTaskWithType(LinkExecutable.class);
-        }
+		public LinkExecutable getLink() {
+			return findSingleTaskWithType(LinkExecutable.class);
+		}
 
-        public InstallExecutable getInstall() {
-            return findSingleTaskWithType(InstallExecutable.class);
-        }
-    }
+		public InstallExecutable getInstall() {
+			return findSingleTaskWithType(InstallExecutable.class);
+		}
+	}
 }

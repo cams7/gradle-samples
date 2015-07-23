@@ -21,7 +21,8 @@ import org.gradle.nativeplatform.toolchain.CommandLineToolConfiguration;
 
 import java.util.List;
 
-public interface CommandLineToolConfigurationInternal extends CommandLineToolConfiguration{
+public interface CommandLineToolConfigurationInternal extends
+		CommandLineToolConfiguration {
 
-    public Action<List<String>> getArgAction();
+	public Action<List<String>> getArgAction();
 }

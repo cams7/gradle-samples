@@ -26,136 +26,148 @@ import org.gradle.nativeplatform.platform.internal.OperatingSystemInternal;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.*;
 import org.gradle.util.TreeVisitor;
 
-public abstract class AbstractPlatformToolProvider implements PlatformToolProvider {
-    protected final OperatingSystemInternal targetOperatingSystem;
-    protected final BuildOperationProcessor buildOperationProcessor;
+public abstract class AbstractPlatformToolProvider implements
+		PlatformToolProvider {
+	protected final OperatingSystemInternal targetOperatingSystem;
+	protected final BuildOperationProcessor buildOperationProcessor;
 
-    public AbstractPlatformToolProvider(BuildOperationProcessor buildOperationProcessor, OperatingSystemInternal targetOperatingSystem) {
-        this.targetOperatingSystem = targetOperatingSystem;
-        this.buildOperationProcessor = buildOperationProcessor;
-    }
+	public AbstractPlatformToolProvider(
+			BuildOperationProcessor buildOperationProcessor,
+			OperatingSystemInternal targetOperatingSystem) {
+		this.targetOperatingSystem = targetOperatingSystem;
+		this.buildOperationProcessor = buildOperationProcessor;
+	}
 
-    public boolean isAvailable() {
-        return true;
-    }
+	public boolean isAvailable() {
+		return true;
+	}
 
-    public void explain(TreeVisitor<? super String> visitor) {
-    }
+	public void explain(TreeVisitor<? super String> visitor) {
+	}
 
-    public String getExecutableName(String executablePath) {
-        return targetOperatingSystem.getInternalOs().getExecutableName(executablePath);
-    }
+	public String getExecutableName(String executablePath) {
+		return targetOperatingSystem.getInternalOs().getExecutableName(
+				executablePath);
+	}
 
-    public String getSharedLibraryName(String libraryPath) {
-        return targetOperatingSystem.getInternalOs().getSharedLibraryName(libraryPath);
-    }
+	public String getSharedLibraryName(String libraryPath) {
+		return targetOperatingSystem.getInternalOs().getSharedLibraryName(
+				libraryPath);
+	}
 
-    public String getSharedLibraryLinkFileName(String libraryPath) {
-        return targetOperatingSystem.getInternalOs().getSharedLibraryName(libraryPath);
-    }
+	public String getSharedLibraryLinkFileName(String libraryPath) {
+		return targetOperatingSystem.getInternalOs().getSharedLibraryName(
+				libraryPath);
+	}
 
-    public String getStaticLibraryName(String libraryPath) {
-        return targetOperatingSystem.getInternalOs().getStaticLibraryName(libraryPath);
-    }
+	public String getStaticLibraryName(String libraryPath) {
+		return targetOperatingSystem.getInternalOs().getStaticLibraryName(
+				libraryPath);
+	}
 
-    @Override
-    public <T> T get(Class<T> toolType) {
-        throw new IllegalArgumentException(String.format("Don't know how to provide tool of type %s.", toolType.getSimpleName()));
-    }
+	@Override
+	public <T> T get(Class<T> toolType) {
+		throw new IllegalArgumentException(String.format(
+				"Don't know how to provide tool of type %s.",
+				toolType.getSimpleName()));
+	}
 
-    public <T extends CompileSpec> org.gradle.language.base.internal.compile.Compiler<T> newCompiler(Class<T> spec) {
-        if (CppCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createCppCompiler());
-        }
-        if (CppPCHCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createCppPCHCompiler());
-        }
-        if (CCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createCCompiler());
-        }
-        if (CPCHCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createCPCHCompiler());
-        }
-        if (ObjectiveCppCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createObjectiveCppCompiler());
-        }
-        if (ObjectiveCppPCHCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createObjectiveCppPCHCompiler());
-        }
-        if (ObjectiveCCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createObjectiveCCompiler());
-        }
-        if (ObjectiveCPCHCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createObjectiveCPCHCompiler());
-        }
-        if (WindowsResourceCompileSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createWindowsResourceCompiler());
-        }
-        if (AssembleSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createAssembler());
-        }
-        if (LinkerSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createLinker());
-        }
-        if (StaticLibraryArchiverSpec.class.isAssignableFrom(spec)) {
-            return CompilerUtil.castCompiler(createStaticLibraryArchiver());
-        }
-        throw new IllegalArgumentException(String.format("Don't know how to compile from a spec of type %s.", spec.getClass().getSimpleName()));
-    }
+	public <T extends CompileSpec> org.gradle.language.base.internal.compile.Compiler<T> newCompiler(
+			Class<T> spec) {
+		if (CppCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createCppCompiler());
+		}
+		if (CppPCHCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createCppPCHCompiler());
+		}
+		if (CCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createCCompiler());
+		}
+		if (CPCHCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createCPCHCompiler());
+		}
+		if (ObjectiveCppCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createObjectiveCppCompiler());
+		}
+		if (ObjectiveCppPCHCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createObjectiveCppPCHCompiler());
+		}
+		if (ObjectiveCCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createObjectiveCCompiler());
+		}
+		if (ObjectiveCPCHCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createObjectiveCPCHCompiler());
+		}
+		if (WindowsResourceCompileSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createWindowsResourceCompiler());
+		}
+		if (AssembleSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createAssembler());
+		}
+		if (LinkerSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createLinker());
+		}
+		if (StaticLibraryArchiverSpec.class.isAssignableFrom(spec)) {
+			return CompilerUtil.castCompiler(createStaticLibraryArchiver());
+		}
+		throw new IllegalArgumentException(String.format(
+				"Don't know how to compile from a spec of type %s.", spec
+						.getClass().getSimpleName()));
+	}
 
-    protected final RuntimeException unavailableTool(String message) {
-        return new RuntimeException(message);
-    }
+	protected final RuntimeException unavailableTool(String message) {
+		return new RuntimeException(message);
+	}
 
-    protected Compiler<?> createCppCompiler() {
-        throw unavailableTool("C++ compiler is not available");
-    }
+	protected Compiler<?> createCppCompiler() {
+		throw unavailableTool("C++ compiler is not available");
+	}
 
-    protected Compiler<?> createCppPCHCompiler() {
-        throw unavailableTool("C++ pre-compiled header compiler is not available");
-    }
+	protected Compiler<?> createCppPCHCompiler() {
+		throw unavailableTool("C++ pre-compiled header compiler is not available");
+	}
 
-    protected Compiler<?> createCCompiler() {
-        throw unavailableTool("C compiler is not available");
-    }
+	protected Compiler<?> createCCompiler() {
+		throw unavailableTool("C compiler is not available");
+	}
 
-    protected Compiler<?> createCPCHCompiler() {
-        throw unavailableTool("C pre-compiled header compiler is not available");
-    }
+	protected Compiler<?> createCPCHCompiler() {
+		throw unavailableTool("C pre-compiled header compiler is not available");
+	}
 
-    protected Compiler<?> createObjectiveCppCompiler() {
-        throw unavailableTool("Obj-C++ compiler is not available");
-    }
+	protected Compiler<?> createObjectiveCppCompiler() {
+		throw unavailableTool("Obj-C++ compiler is not available");
+	}
 
-    protected Compiler<?> createObjectiveCppPCHCompiler() {
-        throw unavailableTool("Obj-C++ pre-compiled header compiler is not available");
-    }
+	protected Compiler<?> createObjectiveCppPCHCompiler() {
+		throw unavailableTool("Obj-C++ pre-compiled header compiler is not available");
+	}
 
-    protected Compiler<?> createObjectiveCCompiler() {
-        throw unavailableTool("Obj-C compiler is not available");
-    }
+	protected Compiler<?> createObjectiveCCompiler() {
+		throw unavailableTool("Obj-C compiler is not available");
+	}
 
-    protected Compiler<?> createObjectiveCPCHCompiler() {
-        throw unavailableTool("Obj-C compiler is not available");
-    }
+	protected Compiler<?> createObjectiveCPCHCompiler() {
+		throw unavailableTool("Obj-C compiler is not available");
+	}
 
-    protected Compiler<?> createWindowsResourceCompiler() {
-        throw unavailableTool("Windows resource compiler is not available");
-    }
+	protected Compiler<?> createWindowsResourceCompiler() {
+		throw unavailableTool("Windows resource compiler is not available");
+	}
 
-    protected Compiler<?> createAssembler() {
-        throw unavailableTool("Assembler is not available");
-    }
+	protected Compiler<?> createAssembler() {
+		throw unavailableTool("Assembler is not available");
+	}
 
-    protected Compiler<?> createLinker() {
-        throw unavailableTool("Linker is not available");
-    }
+	protected Compiler<?> createLinker() {
+		throw unavailableTool("Linker is not available");
+	}
 
-    protected Compiler<?> createStaticLibraryArchiver() {
-        throw unavailableTool("Static library archiver is not available");
-    }
+	protected Compiler<?> createStaticLibraryArchiver() {
+		throw unavailableTool("Static library archiver is not available");
+	}
 
-    public String getObjectFileExtension() {
-        return targetOperatingSystem.isWindows() ? ".obj" : ".o";
-    }
+	public String getObjectFileExtension() {
+		return targetOperatingSystem.isWindows() ? ".obj" : ".o";
+	}
 }

@@ -35,33 +35,47 @@ import org.gradle.nativeplatform.toolchain.internal.gcc.version.CompilerMetaData
 import org.gradle.process.internal.ExecActionFactory;
 
 /**
- * A {@link Plugin} which makes the <a href="http://gcc.gnu.org/">GNU GCC/G++ compiler</a> available for compiling C/C++ code.
+ * A {@link Plugin} which makes the <a href="http://gcc.gnu.org/">GNU GCC/G++
+ * compiler</a> available for compiling C/C++ code.
  */
 @Incubating
 public class GccCompilerPlugin implements Plugin<Project> {
 
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+	}
 
-    static class Rules extends RuleSource {
-        @Defaults
-        public static void addToolChain(NativeToolChainRegistryInternal toolChainRegistry, ServiceRegistry serviceRegistry) {
-            final FileResolver fileResolver = serviceRegistry.get(FileResolver.class);
-            final ExecActionFactory execActionFactory = serviceRegistry.get(ExecActionFactory.class);
-            final Instantiator instantiator = serviceRegistry.get(Instantiator.class);
+	static class Rules extends RuleSource {
+		@Defaults
+		public static void addToolChain(
+				NativeToolChainRegistryInternal toolChainRegistry,
+				ServiceRegistry serviceRegistry) {
+			final FileResolver fileResolver = serviceRegistry
+					.get(FileResolver.class);
+			final ExecActionFactory execActionFactory = serviceRegistry
+					.get(ExecActionFactory.class);
+			final Instantiator instantiator = serviceRegistry
+					.get(Instantiator.class);
 
-            final BuildOperationProcessor buildOperationProcessor = serviceRegistry.get(BuildOperationProcessor.class);
+			final BuildOperationProcessor buildOperationProcessor = serviceRegistry
+					.get(BuildOperationProcessor.class);
 
-            final CompilerMetaDataProviderFactory metaDataProviderFactory = serviceRegistry.get(CompilerMetaDataProviderFactory.class);
+			final CompilerMetaDataProviderFactory metaDataProviderFactory = serviceRegistry
+					.get(CompilerMetaDataProviderFactory.class);
 
-            toolChainRegistry.registerFactory(Gcc.class, new NamedDomainObjectFactory<Gcc>() {
-                public Gcc create(String name) {
-                    return instantiator.newInstance(GccToolChain.class, instantiator, name, buildOperationProcessor, OperatingSystem.current(), fileResolver, execActionFactory, metaDataProviderFactory);
-                }
-            });
-            toolChainRegistry.registerDefaultToolChain(GccToolChain.DEFAULT_NAME, Gcc.class);
-        }
+			toolChainRegistry.registerFactory(Gcc.class,
+					new NamedDomainObjectFactory<Gcc>() {
+						public Gcc create(String name) {
+							return instantiator.newInstance(GccToolChain.class,
+									instantiator, name,
+									buildOperationProcessor,
+									OperatingSystem.current(), fileResolver,
+									execActionFactory, metaDataProviderFactory);
+						}
+					});
+			toolChainRegistry.registerDefaultToolChain(
+					GccToolChain.DEFAULT_NAME, Gcc.class);
+		}
 
-    }
+	}
 }
