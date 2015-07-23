@@ -1,0 +1,14 @@
+buildscript {	                
+	repositories {
+		mavenCentral()
+		maven {url uri('../../repo')}
+	}
+	dependencies {
+		classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
+		classpath 'br.com.cams7.plugin:platform-native:1.0-SNAPSHOT'
+	}
+}
+
+apply {
+	plugin 'br.com.cams7.native-component'	
+}
