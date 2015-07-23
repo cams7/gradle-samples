@@ -22,18 +22,26 @@ import org.gradle.api.Project;
 import org.gradle.nativeplatform.plugins.NativeComponentPlugin;
 
 /**
- * A plugin for projects wishing to build native binary components from Objective-C sources.
+ * A plugin for projects wishing to build native binary components from
+ * Objective-C sources.
  *
- * <p>Automatically includes the {@link ObjectiveCLangPlugin} for core Objective-C support and the {@link org.gradle.nativeplatform.plugins.NativeComponentPlugin} for native component support.</p>
+ * <p>
+ * Automatically includes the {@link ObjectiveCLangPlugin} for core Objective-C
+ * support and the
+ * {@link org.gradle.nativeplatform.plugins.NativeComponentPlugin} for native
+ * component support.
+ * </p>
  *
- * <li>Creates a {@link org.gradle.language.objectivec.tasks.ObjectiveCCompile} task for each {@link org.gradle.language.objectivec.ObjectiveCSourceSet} to compile the Objective-C sources.</li>
+ * <li>Creates a {@link org.gradle.language.objectivec.tasks.ObjectiveCCompile}
+ * task for each {@link org.gradle.language.objectivec.ObjectiveCSourceSet} to
+ * compile the Objective-C sources.</li>
  */
 @Incubating
 public class ObjectiveCPlugin implements Plugin<Project> {
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-        project.getPluginManager().apply(ObjectiveCLangPlugin.class);
-        project.getPluginManager().apply(ObjectiveCLangPCHPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+		project.getPluginManager().apply(ObjectiveCLangPlugin.class);
+		project.getPluginManager().apply(ObjectiveCLangPCHPlugin.class);
+	}
 
 }

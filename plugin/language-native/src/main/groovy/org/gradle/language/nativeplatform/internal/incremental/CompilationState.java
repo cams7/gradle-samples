@@ -17,25 +17,31 @@ package org.gradle.language.nativeplatform.internal.incremental;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CompilationState implements Serializable {
-    List<File> sourceInputs = new ArrayList<File>();
-    Map<File, CompilationFileState> fileStates = new HashMap<File, CompilationFileState>();
 
-    public List<File> getSourceInputs() {
-        return sourceInputs;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void addSourceInput(File file) {
-        sourceInputs.add(file);
-    }
+	List<File> sourceInputs = new ArrayList<File>();
+	Map<File, CompilationFileState> fileStates = new HashMap<File, CompilationFileState>();
 
-    public CompilationFileState getState(File file) {
-        return fileStates.get(file);
-    }
+	public List<File> getSourceInputs() {
+		return sourceInputs;
+	}
 
-    public void setState(File file, CompilationFileState compilationFileState) {
-        fileStates.put(file, compilationFileState);
-    }
+	public void addSourceInput(File file) {
+		sourceInputs.add(file);
+	}
+
+	public CompilationFileState getState(File file) {
+		return fileStates.get(file);
+	}
+
+	public void setState(File file, CompilationFileState compilationFileState) {
+		fileStates.put(file, compilationFileState);
+	}
 }

@@ -22,17 +22,17 @@ import org.gradle.language.nativeplatform.internal.incremental.DefaultCompilatio
 import org.gradle.language.nativeplatform.internal.incremental.IncrementalCompilerBuilder;
 
 public class NativeLanguageServices implements PluginServiceRegistry {
-    public void registerGlobalServices(ServiceRegistration registration) {
-    }
+	public void registerGlobalServices(ServiceRegistration registration) {
+	}
 
-    public void registerBuildServices(ServiceRegistration registration) {
-    }
+	public void registerBuildServices(ServiceRegistration registration) {
+	}
 
-    public void registerGradleServices(ServiceRegistration registration) {
-        registration.add(DefaultCompilationStateCacheFactory.class);
-    }
+	public void registerGradleServices(ServiceRegistration registration) {
+		registration.add(DefaultCompilationStateCacheFactory.class);
+	}
 
-    public void registerProjectServices(ServiceRegistration registration) {
-        registration.add(IncrementalCompilerBuilder.class);
-    }
+	public void registerProjectServices(ServiceRegistration registration) {
+		registration.add(IncrementalCompilerBuilder.class);
+	}
 }

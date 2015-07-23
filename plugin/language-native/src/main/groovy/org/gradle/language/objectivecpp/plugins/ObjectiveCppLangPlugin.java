@@ -15,7 +15,8 @@
  */
 package org.gradle.language.objectivecpp.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -34,45 +35,46 @@ import org.gradle.model.RuleSource;
 import org.gradle.platform.base.LanguageType;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds core Objective-Cpp language support.
  */
 @Incubating
 public class ObjectiveCppLangPlugin implements Plugin<Project> {
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<ObjectiveCppSourceSet> builder) {
-            builder.setLanguageName("objcpp");
-            builder.defaultImplementation(DefaultObjectiveCppSourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<ObjectiveCppSourceSet> builder) {
+			builder.setLanguageName("objcpp");
+			builder.defaultImplementation(DefaultObjectiveCppSourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new ObjectiveCpp());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new ObjectiveCpp());
+		}
+	}
 
-    private static class ObjectiveCpp extends NativeLanguageTransform<ObjectiveCppSourceSet> {
-        public Class<ObjectiveCppSourceSet> getSourceSetType() {
-            return ObjectiveCppSourceSet.class;
-        }
+	private static class ObjectiveCpp extends
+			NativeLanguageTransform<ObjectiveCppSourceSet> {
+		public Class<ObjectiveCppSourceSet> getSourceSetType() {
+			return ObjectiveCppSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("objcppCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("objcppCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new CompileTaskConfig(this, ObjectiveCppCompile.class);
-        }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new CompileTaskConfig(this, ObjectiveCppCompile.class);
+		}
 
-    }
+	}
 }

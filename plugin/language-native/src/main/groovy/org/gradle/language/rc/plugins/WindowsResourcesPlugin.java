@@ -22,17 +22,24 @@ import org.gradle.api.Project;
 import org.gradle.nativeplatform.plugins.NativeComponentPlugin;
 
 /**
- * A plugin for projects wishing to build native binary components from Windows Resource sources.
+ * A plugin for projects wishing to build native binary components from Windows
+ * Resource sources.
  *
- * <p>Automatically includes the {@link WindowsResourceScriptPlugin} for core Windows Resource source support and the {@link NativeComponentPlugin} for native component support.</p>
+ * <p>
+ * Automatically includes the {@link WindowsResourceScriptPlugin} for core
+ * Windows Resource source support and the {@link NativeComponentPlugin} for
+ * native component support.
+ * </p>
  *
- * <li>Creates a {@link org.gradle.language.rc.tasks.WindowsResourceCompile} task for each {@link org.gradle.language.rc.WindowsResourceSet} to compile the sources.</li>
+ * <li>Creates a {@link org.gradle.language.rc.tasks.WindowsResourceCompile}
+ * task for each {@link org.gradle.language.rc.WindowsResourceSet} to compile
+ * the sources.</li>
  */
 @Incubating
 public class WindowsResourcesPlugin implements Plugin<Project> {
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-        project.getPluginManager().apply(WindowsResourceScriptPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+		project.getPluginManager().apply(WindowsResourceScriptPlugin.class);
+	}
 
 }

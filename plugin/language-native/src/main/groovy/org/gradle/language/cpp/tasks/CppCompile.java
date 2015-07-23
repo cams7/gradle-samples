@@ -17,8 +17,8 @@ package org.gradle.language.cpp.tasks;
 
 import org.gradle.api.Incubating;
 import org.gradle.api.tasks.ParallelizableTask;
-import org.gradle.language.nativeplatform.tasks.AbstractNativeCompileTask;
 import org.gradle.language.cpp.internal.DefaultCppCompileSpec;
+import org.gradle.language.nativeplatform.tasks.AbstractNativeCompileTask;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
 /**
@@ -27,9 +27,9 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 @Incubating
 @ParallelizableTask
 public class CppCompile extends AbstractNativeCompileTask {
-    @Override
-    protected NativeCompileSpec createCompileSpec() {
-        return new DefaultCppCompileSpec();
-    }
+	@Override
+	protected NativeCompileSpec createCompileSpec() {
+		return new DefaultCppCompileSpec();
+	}
 
 }

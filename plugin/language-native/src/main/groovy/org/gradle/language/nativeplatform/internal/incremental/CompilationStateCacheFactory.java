@@ -19,5 +19,5 @@ package org.gradle.language.nativeplatform.internal.incremental;
 import org.gradle.cache.PersistentStateCache;
 
 public interface CompilationStateCacheFactory {
-    PersistentStateCache<CompilationState> create(String taskPath);
+	PersistentStateCache<CompilationState> create(String taskPath);
 }

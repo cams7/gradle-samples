@@ -22,14 +22,15 @@ import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.ObjectFile;
 import org.gradle.platform.base.BinarySpec;
 
-public abstract class NativeLanguageTransform<U extends LanguageSourceSet> implements LanguageTransform<U, ObjectFile> {
+public abstract class NativeLanguageTransform<U extends LanguageSourceSet>
+		implements LanguageTransform<U, ObjectFile> {
 
-    public boolean applyToBinary(BinarySpec binary) {
-        return binary instanceof NativeBinarySpec;
-    }
+	public boolean applyToBinary(BinarySpec binary) {
+		return binary instanceof NativeBinarySpec;
+	}
 
-    public Class<ObjectFile> getOutputType() {
-        return ObjectFile.class;
-    }
+	public Class<ObjectFile> getOutputType() {
+		return ObjectFile.class;
+	}
 
 }

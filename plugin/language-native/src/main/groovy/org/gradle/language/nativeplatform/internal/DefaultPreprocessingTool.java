@@ -16,24 +16,25 @@
 
 package org.gradle.language.nativeplatform.internal;
 
-import org.gradle.nativeplatform.internal.DefaultTool;
-import org.gradle.language.PreprocessingTool;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DefaultPreprocessingTool extends DefaultTool implements PreprocessingTool {
-    private final Map<String, String> definitions = new LinkedHashMap<String, String>();
+import org.gradle.language.PreprocessingTool;
+import org.gradle.nativeplatform.internal.DefaultTool;
 
-    public Map<String, String> getMacros() {
-        return definitions;
-    }
+public class DefaultPreprocessingTool extends DefaultTool implements
+		PreprocessingTool {
+	private final Map<String, String> definitions = new LinkedHashMap<String, String>();
 
-    public void define(String name) {
-        definitions.put(name, null);
-    }
+	public Map<String, String> getMacros() {
+		return definitions;
+	}
 
-    public void define(String name, String definition) {
-        definitions.put(name, definition);
-    }
+	public void define(String name) {
+		definitions.put(name, null);
+	}
+
+	public void define(String name, String definition) {
+		definitions.put(name, definition);
+	}
 }

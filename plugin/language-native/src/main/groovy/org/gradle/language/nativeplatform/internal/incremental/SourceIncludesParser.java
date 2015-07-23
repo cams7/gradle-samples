@@ -15,12 +15,12 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-
 import java.io.File;
+
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
 
 public interface SourceIncludesParser {
 
-    SourceIncludes parseIncludes(File sourceFile);
+	SourceIncludes parseIncludes(File sourceFile);
 
 }

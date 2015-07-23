@@ -24,8 +24,8 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
  * Compiles C++ header source files into object files.
  */
 public class CppPreCompiledHeaderCompile extends AbstractNativePCHCompileTask {
-    @Override
-    protected NativeCompileSpec createCompileSpec() {
-        return new DefaultCppPCHCompileSpec();
-    }
+	@Override
+	protected NativeCompileSpec createCompileSpec() {
+		return new DefaultCppPCHCompileSpec();
+	}
 }

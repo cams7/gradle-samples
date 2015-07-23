@@ -15,7 +15,8 @@
  */
 package org.gradle.language.cpp.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -34,7 +35,7 @@ import org.gradle.model.RuleSource;
 import org.gradle.platform.base.LanguageType;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds core C++ language support.

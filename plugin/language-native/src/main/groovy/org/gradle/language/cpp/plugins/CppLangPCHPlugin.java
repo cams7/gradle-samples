@@ -16,7 +16,8 @@
 
 package org.gradle.language.cpp.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.cpp.CppSourceSet;
 import org.gradle.language.cpp.tasks.CppPreCompiledHeaderCompile;
@@ -27,7 +28,7 @@ import org.gradle.model.Mutate;
 import org.gradle.model.RuleSource;
 import org.gradle.nativeplatform.internal.pch.PreCompiledHeaderTransformContainer;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds support for compiling C++ pre-compiled headers.

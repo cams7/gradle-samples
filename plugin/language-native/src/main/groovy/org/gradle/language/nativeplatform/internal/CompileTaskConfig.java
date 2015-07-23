@@ -15,6 +15,12 @@
  */
 package org.gradle.language.nativeplatform.internal;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -41,96 +47,130 @@ import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
 import org.gradle.platform.base.BinarySpec;
 import org.gradle.util.CollectionUtils;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
 public class CompileTaskConfig implements SourceTransformTaskConfig {
 
-    private final LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform;
-    private final Class<? extends DefaultTask> taskType;
+	private final LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform;
+	private final Class<? extends DefaultTask> taskType;
 
-    public CompileTaskConfig(LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform, Class<? extends DefaultTask> taskType) {
-        this.languageTransform = languageTransform;
-        this.taskType = taskType;
-    }
+	public CompileTaskConfig(
+			LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform,
+			Class<? extends DefaultTask> taskType) {
+		this.languageTransform = languageTransform;
+		this.taskType = taskType;
+	}
 
-    public String getTaskPrefix() {
-        return "compile";
-    }
+	public String getTaskPrefix() {
+		return "compile";
+	}
 
-    public Class<? extends DefaultTask> getTaskType() {
-        return taskType;
-    }
+	public Class<? extends DefaultTask> getTaskType() {
+		return taskType;
+	}
 
-    public void configureTask(Task task, BinarySpec binary, LanguageSourceSet sourceSet) {
-        configureCompileTaskCommon((AbstractNativeCompileTask) task, (NativeBinarySpecInternal) binary, (LanguageSourceSetInternal) sourceSet);
-        configureCompileTask((AbstractNativeCompileTask) task, (NativeBinarySpecInternal) binary, (LanguageSourceSetInternal) sourceSet);
-    }
+	public void configureTask(Task task, BinarySpec binary,
+			LanguageSourceSet sourceSet) {
+		configureCompileTaskCommon((AbstractNativeCompileTask) task,
+				(NativeBinarySpecInternal) binary,
+				(LanguageSourceSetInternal) sourceSet);
+		configureCompileTask((AbstractNativeCompileTask) task,
+				(NativeBinarySpecInternal) binary,
+				(LanguageSourceSetInternal) sourceSet);
+	}
 
-    private void configureCompileTaskCommon(AbstractNativeCompileTask task, final NativeBinarySpecInternal binary, final LanguageSourceSetInternal sourceSet) {
-        task.setToolChain(binary.getToolChain());
-        task.setTargetPlatform(binary.getTargetPlatform());
-        task.setPositionIndependentCode(binary instanceof SharedLibraryBinarySpec);
+	private void configureCompileTaskCommon(AbstractNativeCompileTask task,
+			final NativeBinarySpecInternal binary,
+			final LanguageSourceSetInternal sourceSet) {
+		task.setToolChain(binary.getToolChain());
+		task.setTargetPlatform(binary.getTargetPlatform());
+		task.setPositionIndependentCode(binary instanceof SharedLibraryBinarySpec);
 
-        // TODO:DAZ Not sure if these both need to be lazy
-        task.includes(new Callable<Set<File>>() {
-            public Set<File> call() throws Exception {
-                return ((HeaderExportingSourceSet) sourceSet).getExportedHeaders().getSrcDirs();
-            }
-        });
-        task.includes(new Callable<List<FileCollection>>() {
-            public List<FileCollection> call() {
-                Collection<NativeDependencySet> libs = binary.getLibs((DependentSourceSet) sourceSet);
-                return CollectionUtils.collect(libs, new Transformer<FileCollection, NativeDependencySet>() {
-                    public FileCollection transform(NativeDependencySet original) {
-                        return original.getIncludeRoots();
-                    }
-                });
-            }
-        });
+		// TODO:DAZ Not sure if these both need to be lazy
+		task.includes(new Callable<Set<File>>() {
+			public Set<File> call() throws Exception {
+				return ((HeaderExportingSourceSet) sourceSet)
+						.getExportedHeaders().getSrcDirs();
+			}
+		});
+		task.includes(new Callable<List<FileCollection>>() {
+			public List<FileCollection> call() {
+				Collection<NativeDependencySet> libs = binary
+						.getLibs((DependentSourceSet) sourceSet);
+				return CollectionUtils.collect(libs,
+						new Transformer<FileCollection, NativeDependencySet>() {
+							public FileCollection transform(
+									NativeDependencySet original) {
+								return original.getIncludeRoots();
+							}
+						});
+			}
+		});
 
-        for (String toolName : languageTransform.getBinaryTools().keySet()) {
-            Tool tool = (Tool) ((ExtensionAware) binary).getExtensions().getByName(toolName);
-            if (tool instanceof PreprocessingTool) {
-                task.setMacros(((PreprocessingTool) tool).getMacros());
-            }
+		for (String toolName : languageTransform.getBinaryTools().keySet()) {
+			Tool tool = (Tool) ((ExtensionAware) binary).getExtensions()
+					.getByName(toolName);
+			if (tool instanceof PreprocessingTool) {
+				task.setMacros(((PreprocessingTool) tool).getMacros());
+			}
 
-            task.setCompilerArgs(tool.getArgs());
-        }
-    }
+			task.setCompilerArgs(tool.getArgs());
+		}
+	}
 
-    protected void configureCompileTask(AbstractNativeCompileTask task, final NativeBinarySpecInternal binary, final LanguageSourceSetInternal sourceSet) {
-        task.setDescription(String.format("Compiles the %s of %s", sourceSet, binary));
+	protected void configureCompileTask(AbstractNativeCompileTask task,
+			final NativeBinarySpecInternal binary,
+			final LanguageSourceSetInternal sourceSet) {
+		task.setDescription(String.format("Compiles the %s of %s", sourceSet,
+				binary));
 
-        task.source(sourceSet.getSource());
+		task.source(sourceSet.getSource());
 
-        final Project project = task.getProject();
-        task.setObjectFileDir(project.file(String.valueOf(project.getBuildDir()) + "/objs/" + binary.getNamingScheme().getOutputDirectoryBase() + "/" + sourceSet.getFullName()));
+		final Project project = task.getProject();
+		task.setObjectFileDir(project.file(String.valueOf(project.getBuildDir())
+				+ "/objs/"
+				+ binary.getNamingScheme().getOutputDirectoryBase()
+				+ "/" + sourceSet.getFullName()));
 
-        // If this task uses a pre-compiled header
-        if (sourceSet instanceof DependentSourceSet && !((DependentSourceSet) sourceSet).getPreCompiledHeaders().isEmpty()) {
-            task.setPrefixHeaderFile(((DependentSourceSet)sourceSet).getPrefixHeaderFile());
-            task.setPreCompiledHeaders(((DependentSourceSet) sourceSet).getPreCompiledHeaders());
-            task.preCompiledHeaderInclude(new Callable<FileCollection>() {
-                public FileCollection call() {
-                    Set<AbstractNativePCHCompileTask> pchTasks = binary.getTasks().withType(AbstractNativePCHCompileTask.class).matching(new Spec<AbstractNativePCHCompileTask>() {
-                        @Override
-                        public boolean isSatisfiedBy(AbstractNativePCHCompileTask pchCompileTask) {
-                            return ((DependentSourceSet) sourceSet).getPrefixHeaderFile().equals(pchCompileTask.getPrefixHeaderFile());
-                        }
-                    });
-                    if (!pchTasks.isEmpty()) {
-                        return pchTasks.iterator().next().getOutputs().getFiles().getAsFileTree().matching(new PatternSet().include("**/*.pch", "**/*.gch"));
-                    } else {
-                        return new SimpleFileCollection();
-                    }
-                }
-            });
-        }
+		// If this task uses a pre-compiled header
+		if (sourceSet instanceof DependentSourceSet
+				&& !((DependentSourceSet) sourceSet).getPreCompiledHeaders()
+						.isEmpty()) {
+			task.setPrefixHeaderFile(((DependentSourceSet) sourceSet)
+					.getPrefixHeaderFile());
+			task.setPreCompiledHeaders(((DependentSourceSet) sourceSet)
+					.getPreCompiledHeaders());
+			task.preCompiledHeaderInclude(new Callable<FileCollection>() {
+				public FileCollection call() {
+					Set<AbstractNativePCHCompileTask> pchTasks = binary
+							.getTasks()
+							.withType(AbstractNativePCHCompileTask.class)
+							.matching(new Spec<AbstractNativePCHCompileTask>() {
+								@Override
+								public boolean isSatisfiedBy(
+										AbstractNativePCHCompileTask pchCompileTask) {
+									return ((DependentSourceSet) sourceSet)
+											.getPrefixHeaderFile()
+											.equals(pchCompileTask
+													.getPrefixHeaderFile());
+								}
+							});
+					if (!pchTasks.isEmpty()) {
+						return pchTasks
+								.iterator()
+								.next()
+								.getOutputs()
+								.getFiles()
+								.getAsFileTree()
+								.matching(
+										new PatternSet().include("**/*.pch",
+												"**/*.gch"));
+					} else {
+						return new SimpleFileCollection();
+					}
+				}
+			});
+		}
 
-        binary.binaryInputs(task.getOutputs().getFiles().getAsFileTree().matching(new PatternSet().include("**/*.obj", "**/*.o")));
-    }
+		binary.binaryInputs(task.getOutputs().getFiles().getAsFileTree()
+				.matching(new PatternSet().include("**/*.obj", "**/*.o")));
+	}
 }

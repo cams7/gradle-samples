@@ -15,7 +15,8 @@
  */
 package org.gradle.language.rc.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -35,7 +36,7 @@ import org.gradle.platform.base.BinarySpec;
 import org.gradle.platform.base.LanguageType;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds core language support for Windows resource script files.
@@ -43,46 +44,48 @@ import java.util.Map;
 @Incubating
 public class WindowsResourceScriptPlugin implements Plugin<Project> {
 
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<WindowsResourceSet> builder) {
-            builder.setLanguageName("rc");
-            builder.defaultImplementation(DefaultWindowsResourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<WindowsResourceSet> builder) {
+			builder.setLanguageName("rc");
+			builder.defaultImplementation(DefaultWindowsResourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new WindowsResources());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new WindowsResources());
+		}
+	}
 
-    private static class WindowsResources extends NativeLanguageTransform<WindowsResourceSet> {
-        public Class<WindowsResourceSet> getSourceSetType() {
-            return WindowsResourceSet.class;
-        }
+	private static class WindowsResources extends
+			NativeLanguageTransform<WindowsResourceSet> {
+		public Class<WindowsResourceSet> getSourceSetType() {
+			return WindowsResourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("rcCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("rcCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new WindowsResourcesCompileTaskConfig();
-        }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new WindowsResourcesCompileTaskConfig();
+		}
 
-        @Override
-        public boolean applyToBinary(BinarySpec binary) {
-            return binary instanceof NativeBinarySpec && shouldProcessResources((NativeBinarySpec) binary);
-        }
+		@Override
+		public boolean applyToBinary(BinarySpec binary) {
+			return binary instanceof NativeBinarySpec
+					&& shouldProcessResources((NativeBinarySpec) binary);
+		}
 
-        private boolean shouldProcessResources(NativeBinarySpec binary) {
-            return binary.getTargetPlatform().getOperatingSystem().isWindows();
-        }
-    }
+		private boolean shouldProcessResources(NativeBinarySpec binary) {
+			return binary.getTargetPlatform().getOperatingSystem().isWindows();
+		}
+	}
 }

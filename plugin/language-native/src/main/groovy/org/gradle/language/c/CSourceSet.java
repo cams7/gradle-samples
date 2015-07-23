@@ -23,11 +23,14 @@ import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 /**
  * A set of C source files.
  *
- * <p>A C source set contains a set of source files, together with an optional set of exported header files.</p>
+ * <p>
+ * A C source set contains a set of source files, together with an optional set
+ * of exported header files.
+ * </p>
  *
  * <pre autoTested="true">
  * apply plugin: "c"
- *
+ * 
  * model {
  *     components {
  *         main(NativeLibrarySpec) {
@@ -48,5 +51,6 @@ import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
  * </pre>
  */
 @Incubating
-public interface CSourceSet extends HeaderExportingSourceSet, LanguageSourceSet, DependentSourceSet {
+public interface CSourceSet extends HeaderExportingSourceSet,
+		LanguageSourceSet, DependentSourceSet {
 }

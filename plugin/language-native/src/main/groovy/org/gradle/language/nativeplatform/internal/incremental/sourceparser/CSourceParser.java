@@ -24,10 +24,11 @@ import java.util.List;
  */
 public interface CSourceParser {
 
-    SourceDetails parseSource(File sourceFile);
+	SourceDetails parseSource(File sourceFile);
 
-    interface SourceDetails {
-        List<String> getIncludes();
-        List<String> getImports();
-    }
+	interface SourceDetails {
+		List<String> getIncludes();
+
+		List<String> getImports();
+	}
 }

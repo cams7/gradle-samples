@@ -15,67 +15,70 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
+
 class DefaultSourceIncludes implements SourceIncludes, Serializable {
-    private final List<String> quotedIncludes = new ArrayList<String>();
-    private final List<String> systemIncludes = new ArrayList<String>();
-    private final List<String> macroIncludes = new ArrayList<String>();
 
-    public void addAll(List<String> includes) {
-        for (String value : includes) {
-            if (value.startsWith("<") && value.endsWith(">")) {
-                systemIncludes.add(strip(value));
-            } else if (value.startsWith("\"") && value.endsWith("\"")) {
-                quotedIncludes.add(strip(value));
-            } else {
-                macroIncludes.add(value);
-            }
-        }
-    }
+	private static final long serialVersionUID = 1L;
 
-    private String strip(String include) {
-        return include.substring(1, include.length() - 1);
-    }
+	private final List<String> quotedIncludes = new ArrayList<String>();
+	private final List<String> systemIncludes = new ArrayList<String>();
+	private final List<String> macroIncludes = new ArrayList<String>();
 
-    public List<String> getQuotedIncludes() {
-        return quotedIncludes;
-    }
+	public void addAll(List<String> includes) {
+		for (String value : includes) {
+			if (value.startsWith("<") && value.endsWith(">")) {
+				systemIncludes.add(strip(value));
+			} else if (value.startsWith("\"") && value.endsWith("\"")) {
+				quotedIncludes.add(strip(value));
+			} else {
+				macroIncludes.add(value);
+			}
+		}
+	}
 
-    public List<String> getSystemIncludes() {
-        return systemIncludes;
-    }
+	private String strip(String include) {
+		return include.substring(1, include.length() - 1);
+	}
 
-    public List<String> getMacroIncludes() {
-        return macroIncludes;
-    }
+	public List<String> getQuotedIncludes() {
+		return quotedIncludes;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultSourceIncludes)) {
-            return false;
-        }
+	public List<String> getSystemIncludes() {
+		return systemIncludes;
+	}
 
-        DefaultSourceIncludes that = (DefaultSourceIncludes) o;
+	public List<String> getMacroIncludes() {
+		return macroIncludes;
+	}
 
-        return macroIncludes.equals(that.macroIncludes)
-                && quotedIncludes.equals(that.quotedIncludes)
-                && systemIncludes.equals(that.systemIncludes);
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DefaultSourceIncludes)) {
+			return false;
+		}
 
-    }
+		DefaultSourceIncludes that = (DefaultSourceIncludes) o;
 
-    @Override
-    public int hashCode() {
-        int result = quotedIncludes.hashCode();
-        result = 31 * result + systemIncludes.hashCode();
-        result = 31 * result + macroIncludes.hashCode();
-        return result;
-    }
+		return macroIncludes.equals(that.macroIncludes)
+				&& quotedIncludes.equals(that.quotedIncludes)
+				&& systemIncludes.equals(that.systemIncludes);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = quotedIncludes.hashCode();
+		result = 31 * result + systemIncludes.hashCode();
+		result = 31 * result + macroIncludes.hashCode();
+		return result;
+	}
 }

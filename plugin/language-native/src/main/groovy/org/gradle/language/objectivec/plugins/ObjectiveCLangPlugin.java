@@ -15,7 +15,8 @@
  */
 package org.gradle.language.objectivec.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -34,44 +35,45 @@ import org.gradle.model.RuleSource;
 import org.gradle.platform.base.LanguageType;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds core Objective-C language support.
  */
 @Incubating
 public class ObjectiveCLangPlugin implements Plugin<Project> {
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<ObjectiveCSourceSet> builder) {
-            builder.setLanguageName("objc");
-            builder.defaultImplementation(DefaultObjectiveCSourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<ObjectiveCSourceSet> builder) {
+			builder.setLanguageName("objc");
+			builder.defaultImplementation(DefaultObjectiveCSourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new ObjectiveC());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new ObjectiveC());
+		}
+	}
 
-    private static class ObjectiveC extends NativeLanguageTransform<ObjectiveCSourceSet> {
-        public Class<ObjectiveCSourceSet> getSourceSetType() {
-            return ObjectiveCSourceSet.class;
-        }
+	private static class ObjectiveC extends
+			NativeLanguageTransform<ObjectiveCSourceSet> {
+		public Class<ObjectiveCSourceSet> getSourceSetType() {
+			return ObjectiveCSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("objcCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("objcCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new CompileTaskConfig(this, ObjectiveCCompile.class);
-        }
-    }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new CompileTaskConfig(this, ObjectiveCCompile.class);
+		}
+	}
 }

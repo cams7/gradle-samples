@@ -15,11 +15,25 @@
  */
 package org.gradle.language.rc.tasks;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Incubating;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.tasks.*;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.ParallelizableTask;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.WorkResult;
 import org.gradle.api.tasks.incremental.IncrementalTaskInputs;
 import org.gradle.internal.Cast;
 import org.gradle.internal.operations.logging.BuildOperationLogger;
@@ -36,14 +50,6 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
 /**
  * Compiles Windows Resource scripts into .res files.
  */
@@ -51,147 +57,155 @@ import java.util.concurrent.Callable;
 @ParallelizableTask
 public class WindowsResourceCompile extends DefaultTask {
 
-    private NativeToolChainInternal toolChain;
-    private NativePlatformInternal targetPlatform;
-    private File outputDir;
-    private ConfigurableFileCollection includes;
-    private ConfigurableFileCollection source;
-    private Map<String, String> macros = new LinkedHashMap<String, String>();
-    private List<String> compilerArgs = new ArrayList<String>();
+	private NativeToolChainInternal toolChain;
+	private NativePlatformInternal targetPlatform;
+	private File outputDir;
+	private ConfigurableFileCollection includes;
+	private ConfigurableFileCollection source;
+	private Map<String, String> macros = new LinkedHashMap<String, String>();
+	private List<String> compilerArgs = new ArrayList<String>();
 
-    public WindowsResourceCompile() {
-        includes = getProject().files();
-        source = getProject().files();
-        getInputs().property("outputType", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return NativeToolChainInternal.Identifier.identify(toolChain, targetPlatform);
-            }
-        });
-    }
+	public WindowsResourceCompile() {
+		includes = getProject().files();
+		source = getProject().files();
+		getInputs().property("outputType", new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				return NativeToolChainInternal.Identifier.identify(toolChain,
+						targetPlatform);
+			}
+		});
+	}
 
-    @Inject
-    public IncrementalCompilerBuilder getIncrementalCompilerBuilder() {
-        throw new UnsupportedOperationException();
-    }
+	@Inject
+	public IncrementalCompilerBuilder getIncrementalCompilerBuilder() {
+		throw new UnsupportedOperationException();
+	}
 
-    @Inject
-    public BuildOperationLoggerFactory getOperationLoggerFactory() {
-        throw new UnsupportedOperationException();
-    }
+	@Inject
+	public BuildOperationLoggerFactory getOperationLoggerFactory() {
+		throw new UnsupportedOperationException();
+	}
 
-    @TaskAction
-    public void compile(IncrementalTaskInputs inputs) {
-        BuildOperationLogger operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir());
+	@TaskAction
+	public void compile(IncrementalTaskInputs inputs) {
+		BuildOperationLogger operationLogger = getOperationLoggerFactory()
+				.newOperationLogger(getName(), getTemporaryDir());
 
-        NativeCompileSpec spec = new DefaultWindowsResourceCompileSpec();
-        spec.setTempDir(getTemporaryDir());
-        spec.setObjectFileDir(getOutputDir());
-        spec.include(getIncludes());
-        spec.source(getSource());
-        spec.setMacros(getMacros());
-        spec.args(getCompilerArgs());
-        spec.setIncrementalCompile(inputs.isIncremental());
-        spec.setOperationLogger(operationLogger);
+		NativeCompileSpec spec = new DefaultWindowsResourceCompileSpec();
+		spec.setTempDir(getTemporaryDir());
+		spec.setObjectFileDir(getOutputDir());
+		spec.include(getIncludes());
+		spec.source(getSource());
+		spec.setMacros(getMacros());
+		spec.args(getCompilerArgs());
+		spec.setIncrementalCompile(inputs.isIncremental());
+		spec.setOperationLogger(operationLogger);
 
-        PlatformToolProvider platformToolProvider = toolChain.select(targetPlatform);
-        WorkResult result = doCompile(spec, platformToolProvider);
-        setDidWork(result.getDidWork());
-    }
+		PlatformToolProvider platformToolProvider = toolChain
+				.select(targetPlatform);
+		WorkResult result = doCompile(spec, platformToolProvider);
+		setDidWork(result.getDidWork());
+	}
 
-    private <T extends NativeCompileSpec> WorkResult doCompile(T spec, PlatformToolProvider platformToolProvider) {
-        Class<T> specType = Cast.uncheckedCast(spec.getClass());
-        Compiler<T> baseCompiler = platformToolProvider.newCompiler(specType);
-        Compiler<T> incrementalCompiler = getIncrementalCompilerBuilder().createIncrementalCompiler(this, baseCompiler, toolChain);
-        Compiler<T> loggingCompiler = BuildOperationLoggingCompilerDecorator.wrap(incrementalCompiler);
-        return CompilerUtil.castCompiler(loggingCompiler).execute(spec);
-    }
+	private <T extends NativeCompileSpec> WorkResult doCompile(T spec,
+			PlatformToolProvider platformToolProvider) {
+		Class<T> specType = Cast.uncheckedCast(spec.getClass());
+		Compiler<T> baseCompiler = platformToolProvider.newCompiler(specType);
+		Compiler<T> incrementalCompiler = getIncrementalCompilerBuilder()
+				.createIncrementalCompiler(this, baseCompiler, toolChain);
+		Compiler<T> loggingCompiler = BuildOperationLoggingCompilerDecorator
+				.wrap(incrementalCompiler);
+		return CompilerUtil.castCompiler(loggingCompiler).execute(spec);
+	}
 
-    /**
-     * The tool chain used for compilation.
-     */
-    public NativeToolChain getToolChain() {
-        return toolChain;
-    }
+	/**
+	 * The tool chain used for compilation.
+	 */
+	public NativeToolChain getToolChain() {
+		return toolChain;
+	}
 
-    public void setToolChain(NativeToolChain toolChain) {
-        this.toolChain = (NativeToolChainInternal) toolChain;
-    }
+	public void setToolChain(NativeToolChain toolChain) {
+		this.toolChain = (NativeToolChainInternal) toolChain;
+	}
 
-    /**
-     * The platform being targeted.
-     */
-    public NativePlatform getTargetPlatform() {
-        return targetPlatform;
-    }
+	/**
+	 * The platform being targeted.
+	 */
+	public NativePlatform getTargetPlatform() {
+		return targetPlatform;
+	}
 
-    public void setTargetPlatform(NativePlatform targetPlatform) {
-        this.targetPlatform = (NativePlatformInternal) targetPlatform;
-    }
+	public void setTargetPlatform(NativePlatform targetPlatform) {
+		this.targetPlatform = (NativePlatformInternal) targetPlatform;
+	}
 
-    /**
-     * The directory where object files will be generated.
-     */
-    @OutputDirectory
-    public File getOutputDir() {
-        return outputDir;
-    }
+	/**
+	 * The directory where object files will be generated.
+	 */
+	@OutputDirectory
+	public File getOutputDir() {
+		return outputDir;
+	}
 
-    public void setOutputDir(File outputDir) {
-        this.outputDir = outputDir;
-    }
+	public void setOutputDir(File outputDir) {
+		this.outputDir = outputDir;
+	}
 
-    /**
-     * Returns the header directories to be used for compilation.
-     */
-    @InputFiles
-    public FileCollection getIncludes() {
-        return includes;
-    }
+	/**
+	 * Returns the header directories to be used for compilation.
+	 */
+	@InputFiles
+	public FileCollection getIncludes() {
+		return includes;
+	}
 
-    /**
-     * Add directories where the compiler should search for header files.
-     */
-    public void includes(Object includeRoots) {
-        includes.from(includeRoots);
-    }
+	/**
+	 * Add directories where the compiler should search for header files.
+	 */
+	public void includes(Object includeRoots) {
+		includes.from(includeRoots);
+	}
 
-    /**
-     * Returns the source files to be compiled.
-     */
-    @InputFiles
-    public FileCollection getSource() {
-        return source;
-    }
+	/**
+	 * Returns the source files to be compiled.
+	 */
+	@InputFiles
+	public FileCollection getSource() {
+		return source;
+	}
 
-    /**
-     * Adds a set of source files to be compiled. The provided sourceFiles object is evaluated as per {@link org.gradle.api.Project#files(Object...)}.
-     */
-    public void source(Object sourceFiles) {
-        source.from(sourceFiles);
-    }
+	/**
+	 * Adds a set of source files to be compiled. The provided sourceFiles
+	 * object is evaluated as per
+	 * {@link org.gradle.api.Project#files(Object...)}.
+	 */
+	public void source(Object sourceFiles) {
+		source.from(sourceFiles);
+	}
 
-    /**
-     * Macros that should be defined for the compiler.
-     */
-    @Input
-    public Map<String, String> getMacros() {
-        return macros;
-    }
+	/**
+	 * Macros that should be defined for the compiler.
+	 */
+	@Input
+	public Map<String, String> getMacros() {
+		return macros;
+	}
 
-    public void setMacros(Map<String, String> macros) {
-        this.macros = macros;
-    }
+	public void setMacros(Map<String, String> macros) {
+		this.macros = macros;
+	}
 
-    /**
-     * Additional arguments to provide to the compiler.
-     */
-    @Input
-    public List<String> getCompilerArgs() {
-        return compilerArgs;
-    }
+	/**
+	 * Additional arguments to provide to the compiler.
+	 */
+	@Input
+	public List<String> getCompilerArgs() {
+		return compilerArgs;
+	}
 
-    public void setCompilerArgs(List<String> compilerArgs) {
-        this.compilerArgs = compilerArgs;
-    }
+	public void setCompilerArgs(List<String> compilerArgs) {
+		this.compilerArgs = compilerArgs;
+	}
 }

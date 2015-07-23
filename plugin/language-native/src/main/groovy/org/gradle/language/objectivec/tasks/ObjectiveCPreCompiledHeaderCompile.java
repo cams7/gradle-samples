@@ -23,9 +23,10 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 /**
  * Compiles Objective C header source files into object files.
  */
-public class ObjectiveCPreCompiledHeaderCompile extends AbstractNativePCHCompileTask {
-    @Override
-    protected NativeCompileSpec createCompileSpec() {
-        return new DefaultObjectiveCPCHCompileSpec();
-    }
+public class ObjectiveCPreCompiledHeaderCompile extends
+		AbstractNativePCHCompileTask {
+	@Override
+	protected NativeCompileSpec createCompileSpec() {
+		return new DefaultObjectiveCPCHCompileSpec();
+	}
 }

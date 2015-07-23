@@ -17,19 +17,21 @@
 package org.gradle.language.objectivec;
 
 import org.gradle.api.Incubating;
+import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.DependentSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
-import org.gradle.language.base.LanguageSourceSet;
-
 
 /**
  * A set of Objective-C source files.
  *
- * <p>An ObjectiveC source set contains a set of source files, together with an optional set of exported header files.</p>
+ * <p>
+ * An ObjectiveC source set contains a set of source files, together with an
+ * optional set of exported header files.
+ * </p>
  *
  * <pre autoTested="true">
  * apply plugin: "objective-c"
- *
+ * 
  * model {
  *     components {
  *         main(NativeLibrarySpec) {
@@ -50,6 +52,7 @@ import org.gradle.language.base.LanguageSourceSet;
  * </pre>
  */
 @Incubating
-public interface ObjectiveCSourceSet extends HeaderExportingSourceSet, LanguageSourceSet, DependentSourceSet {
+public interface ObjectiveCSourceSet extends HeaderExportingSourceSet,
+		LanguageSourceSet, DependentSourceSet {
 
 }

@@ -16,7 +16,8 @@
 
 package org.gradle.language.objectivec.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.nativeplatform.internal.DefaultPreprocessingTool;
 import org.gradle.language.nativeplatform.internal.NativeLanguageTransform;
@@ -27,32 +28,34 @@ import org.gradle.model.Mutate;
 import org.gradle.model.RuleSource;
 import org.gradle.nativeplatform.internal.pch.PreCompiledHeaderTransformContainer;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds support for compiling Objective C pre-compiled headers.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ObjectiveCLangPCHPlugin extends RuleSource {
-    @Mutate
-    void registerPreCompiledHeaderTask(PreCompiledHeaderTransformContainer pchTransformContainer) {
-        pchTransformContainer.add(new ObjectiveCPCH());
-    }
+	@Mutate
+	void registerPreCompiledHeaderTask(
+			PreCompiledHeaderTransformContainer pchTransformContainer) {
+		pchTransformContainer.add(new ObjectiveCPCH());
+	}
 
-    private static class ObjectiveCPCH extends NativeLanguageTransform<ObjectiveCSourceSet> {
-        public Class<ObjectiveCSourceSet> getSourceSetType() {
-            return ObjectiveCSourceSet.class;
-        }
+	private static class ObjectiveCPCH extends
+			NativeLanguageTransform<ObjectiveCSourceSet> {
+		public Class<ObjectiveCSourceSet> getSourceSetType() {
+			return ObjectiveCSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("objcCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("objcCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        @Override
-        public SourceTransformTaskConfig getTransformTask() {
-            return new PCHCompileTaskConfig(this, ObjectiveCPreCompiledHeaderCompile.class);
-        }
-    }
+		@Override
+		public SourceTransformTaskConfig getTransformTask() {
+			return new PCHCompileTaskConfig(this,
+					ObjectiveCPreCompiledHeaderCompile.class);
+		}
+	}
 }

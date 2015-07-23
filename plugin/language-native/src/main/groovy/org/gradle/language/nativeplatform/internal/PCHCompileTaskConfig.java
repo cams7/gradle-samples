@@ -29,30 +29,45 @@ import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
 import org.gradle.nativeplatform.tasks.PrefixHeaderFileGenerateTask;
 
 public class PCHCompileTaskConfig extends CompileTaskConfig {
-    public PCHCompileTaskConfig(LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform, Class<? extends DefaultTask> taskType) {
-        super(languageTransform, taskType);
-    }
+	public PCHCompileTaskConfig(
+			LanguageTransform<? extends LanguageSourceSet, ObjectFile> languageTransform,
+			Class<? extends DefaultTask> taskType) {
+		super(languageTransform, taskType);
+	}
 
-    @Override
-    protected void configureCompileTask(AbstractNativeCompileTask task, final NativeBinarySpecInternal binary, final LanguageSourceSetInternal languageSourceSet) {
-        // Note that the sourceSet is the sourceSet this pre-compiled header will be used with - it's not an
-        // input sourceSet to the compile task.
-        final DependentSourceSet sourceSet = (DependentSourceSet) languageSourceSet;
+	@Override
+	protected void configureCompileTask(AbstractNativeCompileTask task,
+			final NativeBinarySpecInternal binary,
+			final LanguageSourceSetInternal languageSourceSet) {
+		// Note that the sourceSet is the sourceSet this pre-compiled header
+		// will be used with - it's not an
+		// input sourceSet to the compile task.
+		final DependentSourceSet sourceSet = (DependentSourceSet) languageSourceSet;
 
-        task.setDescription(String.format("Compiles a pre-compiled header for the %s of %s", sourceSet, binary));
+		task.setDescription(String.format(
+				"Compiles a pre-compiled header for the %s of %s", sourceSet,
+				binary));
 
-        final Project project = task.getProject();
-        task.setPrefixHeaderFile(sourceSet.getPrefixHeaderFile());
-        task.setPreCompiledHeaders(sourceSet.getPreCompiledHeaders());
-        task.source(sourceSet.getPrefixHeaderFile());
+		final Project project = task.getProject();
+		task.setPrefixHeaderFile(sourceSet.getPrefixHeaderFile());
+		task.setPreCompiledHeaders(sourceSet.getPreCompiledHeaders());
+		task.source(sourceSet.getPrefixHeaderFile());
 
-        task.setObjectFileDir(project.file(String.valueOf(project.getBuildDir()) + "/objs/" + binary.getNamingScheme().getOutputDirectoryBase() + "/" + languageSourceSet.getFullName() + "PreCompiledHeader"));
+		task.setObjectFileDir(project.file(String.valueOf(project.getBuildDir())
+				+ "/objs/"
+				+ binary.getNamingScheme().getOutputDirectoryBase()
+				+ "/" + languageSourceSet.getFullName() + "PreCompiledHeader"));
 
-        task.dependsOn(project.getTasks().withType(PrefixHeaderFileGenerateTask.class).matching(new Spec<PrefixHeaderFileGenerateTask>() {
-            @Override
-            public boolean isSatisfiedBy(PrefixHeaderFileGenerateTask prefixHeaderFileGenerateTask) {
-                return prefixHeaderFileGenerateTask.getPrefixHeaderFile().equals(sourceSet.getPrefixHeaderFile());
-            }
-        }));
-    }
+		task.dependsOn(project.getTasks()
+				.withType(PrefixHeaderFileGenerateTask.class)
+				.matching(new Spec<PrefixHeaderFileGenerateTask>() {
+					@Override
+					public boolean isSatisfiedBy(
+							PrefixHeaderFileGenerateTask prefixHeaderFileGenerateTask) {
+						return prefixHeaderFileGenerateTask
+								.getPrefixHeaderFile().equals(
+										sourceSet.getPrefixHeaderFile());
+					}
+				}));
+	}
 }

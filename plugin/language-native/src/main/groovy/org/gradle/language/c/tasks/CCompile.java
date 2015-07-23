@@ -27,8 +27,8 @@ import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 @Incubating
 @ParallelizableTask
 public class CCompile extends AbstractNativeCompileTask {
-    @Override
-    protected NativeCompileSpec createCompileSpec() {
-        return new DefaultCCompileSpec();
-    }
+	@Override
+	protected NativeCompileSpec createCompileSpec() {
+		return new DefaultCCompileSpec();
+	}
 }

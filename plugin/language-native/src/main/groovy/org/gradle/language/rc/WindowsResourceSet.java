@@ -16,18 +16,21 @@
 package org.gradle.language.rc;
 
 import org.gradle.api.Incubating;
+import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 import org.gradle.language.nativeplatform.NativeResourceSet;
-import org.gradle.language.base.LanguageSourceSet;
 
 /**
  * A set of Windows Resource definition files.
  *
- * <p>A Windows Resource set contains a set of script files, together with an optional set of header files.</p>
+ * <p>
+ * A Windows Resource set contains a set of script files, together with an
+ * optional set of header files.
+ * </p>
  *
  * <pre autoTested="true">
  * apply plugin: "windows-resources"
- *
+ * 
  * model {
  *     components {
  *         main(NativeLibrarySpec) {
@@ -48,5 +51,6 @@ import org.gradle.language.base.LanguageSourceSet;
  * </pre>
  */
 @Incubating
-public interface WindowsResourceSet extends LanguageSourceSet, HeaderExportingSourceSet, NativeResourceSet {
+public interface WindowsResourceSet extends LanguageSourceSet,
+		HeaderExportingSourceSet, NativeResourceSet {
 }

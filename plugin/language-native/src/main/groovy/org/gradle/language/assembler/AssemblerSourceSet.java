@@ -23,7 +23,7 @@ import org.gradle.language.base.LanguageSourceSet;
  *
  * <pre autoTested="true">
  * apply plugin: "assembler"
- *
+ * 
  * model {
  *     components {
  *         main(NativeLibrarySpec) {

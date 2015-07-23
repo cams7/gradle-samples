@@ -15,7 +15,8 @@
  */
 package org.gradle.language.c.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -34,7 +35,7 @@ import org.gradle.model.RuleSource;
 import org.gradle.platform.base.LanguageType;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds core C language support.
@@ -42,37 +43,37 @@ import java.util.Map;
 @Incubating
 public class CLangPlugin implements Plugin<Project> {
 
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<CSourceSet> builder) {
-            builder.setLanguageName("c");
-            builder.defaultImplementation(DefaultCSourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<CSourceSet> builder) {
+			builder.setLanguageName("c");
+			builder.defaultImplementation(DefaultCSourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new C());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new C());
+		}
+	}
 
-    private static class C extends NativeLanguageTransform<CSourceSet> {
-        public Class<CSourceSet> getSourceSetType() {
-            return CSourceSet.class;
-        }
+	private static class C extends NativeLanguageTransform<CSourceSet> {
+		public Class<CSourceSet> getSourceSetType() {
+			return CSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("cCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("cCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new CompileTaskConfig(this, CCompile.class);
-        }
-    }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new CompileTaskConfig(this, CCompile.class);
+		}
+	}
 }

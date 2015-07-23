@@ -16,7 +16,8 @@
 
 package org.gradle.language.objectivecpp.plugins;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.nativeplatform.internal.DefaultPreprocessingTool;
 import org.gradle.language.nativeplatform.internal.NativeLanguageTransform;
@@ -27,32 +28,34 @@ import org.gradle.model.Mutate;
 import org.gradle.model.RuleSource;
 import org.gradle.nativeplatform.internal.pch.PreCompiledHeaderTransformContainer;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 /**
  * Adds support for compiling Objective C++ pre-compiled headers.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ObjectiveCppLangPCHPlugin extends RuleSource {
-    @Mutate
-    void registerPreCompiledHeaderTask(PreCompiledHeaderTransformContainer pchTransformContainer) {
-        pchTransformContainer.add(new ObjectiveCppPCH());
-    }
+	@Mutate
+	void registerPreCompiledHeaderTask(
+			PreCompiledHeaderTransformContainer pchTransformContainer) {
+		pchTransformContainer.add(new ObjectiveCppPCH());
+	}
 
-    private static class ObjectiveCppPCH extends NativeLanguageTransform<ObjectiveCppSourceSet> {
-        public Class<ObjectiveCppSourceSet> getSourceSetType() {
-            return ObjectiveCppSourceSet.class;
-        }
+	private static class ObjectiveCppPCH extends
+			NativeLanguageTransform<ObjectiveCppSourceSet> {
+		public Class<ObjectiveCppSourceSet> getSourceSetType() {
+			return ObjectiveCppSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("objcppCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("objcppCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        @Override
-        public SourceTransformTaskConfig getTransformTask() {
-            return new PCHCompileTaskConfig(this, ObjectiveCppPreCompiledHeaderCompile.class);
-        }
-    }
+		@Override
+		public SourceTransformTaskConfig getTransformTask() {
+			return new PCHCompileTaskConfig(this,
+					ObjectiveCppPreCompiledHeaderCompile.class);
+		}
+	}
 }

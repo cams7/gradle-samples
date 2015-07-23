@@ -16,156 +16,163 @@
 
 package org.gradle.language.nativeplatform.internal;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.gradle.internal.operations.logging.BuildOperationLogger;
 import org.gradle.nativeplatform.internal.AbstractBinaryToolSpec;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import java.io.File;
-import java.util.*;
+public abstract class AbstractNativeCompileSpec extends AbstractBinaryToolSpec
+		implements NativeCompileSpec {
 
-public abstract class AbstractNativeCompileSpec extends AbstractBinaryToolSpec implements NativeCompileSpec {
+	private List<File> includeRoots = new ArrayList<File>();
+	private List<File> sourceFiles = new ArrayList<File>();
+	private List<File> removedSourceFiles = new ArrayList<File>();
+	private boolean incrementalCompile;
+	private Map<String, String> macros = new LinkedHashMap<String, String>();
+	private File objectFileDir;
+	private boolean positionIndependentCode;
+	private BuildOperationLogger oplogger;
+	private File prefixHeaderFile;
+	private File preCompiledHeaderObjectFile;
+	private Map<File, SourceIncludes> sourceFileIncludes;
+	private Set<String> preCompiledHeaders;
 
-    private List<File> includeRoots = new ArrayList<File>();
-    private List<File> sourceFiles = new ArrayList<File>();
-    private List<File> removedSourceFiles = new ArrayList<File>();
-    private boolean incrementalCompile;
-    private Map<String, String> macros = new LinkedHashMap<String, String>();
-    private File objectFileDir;
-    private boolean positionIndependentCode;
-    private BuildOperationLogger oplogger;
-    private File prefixHeaderFile;
-    private File preCompiledHeaderObjectFile;
-    private Map<File, SourceIncludes> sourceFileIncludes;
-    private Set<String> preCompiledHeaders;
+	public List<File> getIncludeRoots() {
+		return includeRoots;
+	}
 
-    public List<File> getIncludeRoots() {
-        return includeRoots;
-    }
+	public void include(File... includeRoots) {
+		Collections.addAll(this.includeRoots, includeRoots);
+	}
 
-    public void include(File... includeRoots) {
-        Collections.addAll(this.includeRoots, includeRoots);
-    }
+	public void include(Iterable<File> includeRoots) {
+		addAll(this.includeRoots, includeRoots);
+	}
 
-    public void include(Iterable<File> includeRoots) {
-        addAll(this.includeRoots, includeRoots);
-    }
+	public List<File> getSourceFiles() {
+		return sourceFiles;
+	}
 
-    public List<File> getSourceFiles() {
-        return sourceFiles;
-    }
+	public void source(Iterable<File> sources) {
+		addAll(sourceFiles, sources);
+	}
 
-    public void source(Iterable<File> sources) {
-        addAll(sourceFiles, sources);
-    }
+	public void setSourceFiles(Collection<File> sources) {
+		sourceFiles.clear();
+		sourceFiles.addAll(sources);
+	}
 
-    public void setSourceFiles(Collection<File> sources) {
-        sourceFiles.clear();
-        sourceFiles.addAll(sources);
-    }
+	public List<File> getRemovedSourceFiles() {
+		return removedSourceFiles;
+	}
 
-    public List<File> getRemovedSourceFiles() {
-        return removedSourceFiles;
-    }
+	public void removedSource(Iterable<File> sources) {
+		addAll(removedSourceFiles, sources);
+	}
 
-    public void removedSource(Iterable<File> sources) {
-        addAll(removedSourceFiles, sources);
-    }
+	public void setRemovedSourceFiles(Collection<File> sources) {
+		removedSourceFiles.clear();
+		removedSourceFiles.addAll(sources);
+	}
 
-    public void setRemovedSourceFiles(Collection<File> sources) {
-        removedSourceFiles.clear();
-        removedSourceFiles.addAll(sources);
-    }
+	public boolean isIncrementalCompile() {
+		return incrementalCompile;
+	}
 
-    public boolean isIncrementalCompile() {
-        return incrementalCompile;
-    }
+	public void setIncrementalCompile(boolean flag) {
+		incrementalCompile = flag;
+	}
 
-    public void setIncrementalCompile(boolean flag) {
-        incrementalCompile = flag;
-    }
+	public File getObjectFileDir() {
+		return objectFileDir;
+	}
 
-    public File getObjectFileDir() {
-        return objectFileDir;
-    }
+	public void setObjectFileDir(File objectFileDir) {
+		this.objectFileDir = objectFileDir;
+	}
 
-    public void setObjectFileDir(File objectFileDir) {
-        this.objectFileDir = objectFileDir;
-    }
+	public Map<String, String> getMacros() {
+		return macros;
+	}
 
-    public Map<String, String> getMacros() {
-        return macros;
-    }
+	public void setMacros(Map<String, String> macros) {
+		this.macros = macros;
+	}
 
-    public void setMacros(Map<String, String> macros) {
-        this.macros = macros;
-    }
+	public void define(String name) {
+		macros.put(name, null);
+	}
 
-    public void define(String name) {
-        macros.put(name, null);
-    }
+	public void define(String name, String value) {
+		macros.put(name, value);
+	}
 
-    public void define(String name, String value) {
-        macros.put(name, value);
-    }
+	public boolean isPositionIndependentCode() {
+		return positionIndependentCode;
+	}
 
-    public boolean isPositionIndependentCode() {
-        return positionIndependentCode;
-    }
+	public void setPositionIndependentCode(boolean positionIndependentCode) {
+		this.positionIndependentCode = positionIndependentCode;
+	}
 
-    public void setPositionIndependentCode(boolean positionIndependentCode) {
-        this.positionIndependentCode = positionIndependentCode;
-    }
+	@Override
+	public File getPreCompiledHeaderObjectFile() {
+		return preCompiledHeaderObjectFile;
+	}
 
-    @Override
-    public File getPreCompiledHeaderObjectFile() {
-        return preCompiledHeaderObjectFile;
-    }
+	@Override
+	public void setPreCompiledHeaderObjectFile(File preCompiledHeaderObjectFile) {
+		this.preCompiledHeaderObjectFile = preCompiledHeaderObjectFile;
+	}
 
-    @Override
-    public void setPreCompiledHeaderObjectFile(File preCompiledHeaderObjectFile) {
-        this.preCompiledHeaderObjectFile = preCompiledHeaderObjectFile;
-    }
+	@Override
+	public File getPrefixHeaderFile() {
+		return prefixHeaderFile;
+	}
 
-    @Override
-    public File getPrefixHeaderFile() {
-        return prefixHeaderFile;
-    }
+	@Override
+	public void setPrefixHeaderFile(File pchFile) {
+		this.prefixHeaderFile = pchFile;
+	}
 
-    @Override
-    public void setPrefixHeaderFile(File pchFile) {
-        this.prefixHeaderFile = pchFile;
-    }
+	@Override
+	public Set<String> getPreCompiledHeaders() {
+		return preCompiledHeaders;
+	}
 
-    @Override
-    public Set<String> getPreCompiledHeaders() {
-        return preCompiledHeaders;
-    }
+	public void setPreCompiledHeaders(Set<String> preCompiledHeaders) {
+		this.preCompiledHeaders = preCompiledHeaders;
+	}
 
-    public void setPreCompiledHeaders(Set<String> preCompiledHeaders) {
-        this.preCompiledHeaders = preCompiledHeaders;
-    }
+	private void addAll(List<File> list, Iterable<File> iterable) {
+		for (File file : iterable) {
+			list.add(file);
+		}
+	}
 
-    private void addAll(List<File> list, Iterable<File> iterable) {
-        for (File file : iterable) {
-            list.add(file);
-        }
-    }
+	public BuildOperationLogger getOperationLogger() {
+		return oplogger;
+	}
 
-    public BuildOperationLogger getOperationLogger() {
-        return oplogger;
-    }
+	public void setOperationLogger(BuildOperationLogger oplogger) {
+		this.oplogger = oplogger;
+	}
 
-    public void setOperationLogger(BuildOperationLogger oplogger) {
-        this.oplogger = oplogger;
-    }
+	@Override
+	public Map<File, SourceIncludes> getSourceFileIncludes() {
+		return sourceFileIncludes;
+	}
 
-    @Override
-    public Map<File, SourceIncludes> getSourceFileIncludes() {
-        return sourceFileIncludes;
-    }
-
-    @Override
-    public void setSourceFileIncludes(Map<File, SourceIncludes> map) {
-        this.sourceFileIncludes = map;
-    }
+	@Override
+	public void setSourceFileIncludes(Map<File, SourceIncludes> map) {
+		this.sourceFileIncludes = map;
+	}
 }

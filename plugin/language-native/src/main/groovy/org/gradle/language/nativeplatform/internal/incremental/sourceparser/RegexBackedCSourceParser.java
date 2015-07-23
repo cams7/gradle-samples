@@ -16,66 +16,71 @@
 
 package org.gradle.language.nativeplatform.internal.incremental.sourceparser;
 
-import org.apache.commons.io.IOUtils;
-import org.gradle.api.UncheckedIOException;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
+import org.gradle.api.UncheckedIOException;
+
 public class RegexBackedCSourceParser implements CSourceParser {
-    private static final String INCLUDE_IMPORT_PATTERN = "#\\s*(include|import)\\s*((<[^>]+>)|(\"[^\"]+\")|(\\w+))";
-    private final Pattern includePattern;
+	private static final String INCLUDE_IMPORT_PATTERN = "#\\s*(include|import)\\s*((<[^>]+>)|(\"[^\"]+\")|(\\w+))";
+	private final Pattern includePattern;
 
-    public RegexBackedCSourceParser() {
-        this.includePattern = Pattern.compile(INCLUDE_IMPORT_PATTERN, Pattern.CASE_INSENSITIVE);
-    }
+	public RegexBackedCSourceParser() {
+		this.includePattern = Pattern.compile(INCLUDE_IMPORT_PATTERN,
+				Pattern.CASE_INSENSITIVE);
+	}
 
-    public SourceDetails parseSource(File sourceFile) {
-        DefaultSourceDetails sourceDetails = new DefaultSourceDetails();
-        parseFile(sourceFile, sourceDetails);
-        return sourceDetails;
-    }
+	public SourceDetails parseSource(File sourceFile) {
+		DefaultSourceDetails sourceDetails = new DefaultSourceDetails();
+		parseFile(sourceFile, sourceDetails);
+		return sourceDetails;
+	}
 
-    private void parseFile(File file, DefaultSourceDetails sourceDetails) {
-        try {
-            BufferedReader bf = new BufferedReader(new PreprocessingReader(new BufferedReader(new FileReader(file))));
+	private void parseFile(File file, DefaultSourceDetails sourceDetails) {
+		try {
+			BufferedReader bf = new BufferedReader(new PreprocessingReader(
+					new BufferedReader(new FileReader(file))));
 
-            try {
-                String line;
-                while ((line = bf.readLine()) != null) {
-                    Matcher m = includePattern.matcher(line.trim());
+			try {
+				String line;
+				while ((line = bf.readLine()) != null) {
+					Matcher m = includePattern.matcher(line.trim());
 
-                    if (m.matches()) {
-                        boolean isImport = "import".equals(m.group(1));
-                        String value = m.group(2);
-                        if (isImport) {
-                            sourceDetails.getImports().add(value);
-                        } else {
-                            sourceDetails.getIncludes().add(value);
-                        }
-                    }
-                }
-            } finally {
-                IOUtils.closeQuietly(bf);
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
+					if (m.matches()) {
+						boolean isImport = "import".equals(m.group(1));
+						String value = m.group(2);
+						if (isImport) {
+							sourceDetails.getImports().add(value);
+						} else {
+							sourceDetails.getIncludes().add(value);
+						}
+					}
+				}
+			} finally {
+				IOUtils.closeQuietly(bf);
+			}
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
 
-    private static class DefaultSourceDetails implements SourceDetails {
-        private final List<String> includes = new ArrayList<String>();
-        private final List<String> imports = new ArrayList<String>();
+	private static class DefaultSourceDetails implements SourceDetails {
+		private final List<String> includes = new ArrayList<String>();
+		private final List<String> imports = new ArrayList<String>();
 
-        public List<String> getIncludes() {
-            return includes;
-        }
+		public List<String> getIncludes() {
+			return includes;
+		}
 
-        public List<String> getImports() {
-            return imports;
-        }
-    }
+		public List<String> getImports() {
+			return imports;
+		}
+	}
 }

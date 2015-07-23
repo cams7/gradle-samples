@@ -23,28 +23,32 @@ import org.gradle.language.base.sources.BaseLanguageSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 
 /**
- * A convenience base class for implementing language source sets with dependencies and exported headers.
+ * A convenience base class for implementing language source sets with
+ * dependencies and exported headers.
  */
-public abstract class AbstractHeaderExportingSourceSet extends BaseLanguageSourceSet
-        implements HeaderExportingSourceSet, LanguageSourceSet {
+public abstract class AbstractHeaderExportingSourceSet extends
+		BaseLanguageSourceSet implements HeaderExportingSourceSet,
+		LanguageSourceSet {
 
-    private final DefaultSourceDirectorySet exportedHeaders;
-    private final DefaultSourceDirectorySet implicitHeaders;
+	private final DefaultSourceDirectorySet exportedHeaders;
+	private final DefaultSourceDirectorySet implicitHeaders;
 
-    public AbstractHeaderExportingSourceSet() {
-        this.exportedHeaders = new DefaultSourceDirectorySet("exported headers", fileResolver);
-        this.implicitHeaders = new DefaultSourceDirectorySet("implicit headers", fileResolver);
-    }
+	public AbstractHeaderExportingSourceSet() {
+		this.exportedHeaders = new DefaultSourceDirectorySet(
+				"exported headers", fileResolver);
+		this.implicitHeaders = new DefaultSourceDirectorySet(
+				"implicit headers", fileResolver);
+	}
 
-    public SourceDirectorySet getExportedHeaders() {
-        return exportedHeaders;
-    }
+	public SourceDirectorySet getExportedHeaders() {
+		return exportedHeaders;
+	}
 
-    public void exportedHeaders(Action<? super SourceDirectorySet> config) {
-        config.execute(getExportedHeaders());
-    }
+	public void exportedHeaders(Action<? super SourceDirectorySet> config) {
+		config.execute(getExportedHeaders());
+	}
 
-    public SourceDirectorySet getImplicitHeaders() {
-        return implicitHeaders;
-    }
+	public SourceDirectorySet getImplicitHeaders() {
+		return implicitHeaders;
+	}
 }

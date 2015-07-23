@@ -15,11 +15,23 @@
  */
 package org.gradle.language.assembler.tasks;
 
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import javax.inject.Inject;
+
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Incubating;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.tasks.*;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.tasks.ParallelizableTask;
+import org.gradle.api.tasks.SkipWhenEmpty;
+import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.operations.logging.BuildOperationLogger;
 import org.gradle.internal.operations.logging.BuildOperationLoggerFactory;
 import org.gradle.language.assembler.internal.DefaultAssembleSpec;
@@ -32,115 +44,118 @@ import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.AssembleSpec;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.Callable;
-
 /**
  * Translates Assembly language source files into object files.
  */
 @Incubating
 @ParallelizableTask
 public class Assemble extends DefaultTask {
-    private FileCollection source;
-    private NativeToolChainInternal toolChain;
-    private NativePlatformInternal targetPlatform;
-    private File objectFileDir;
-    private List<String> assemblerArgs;
+	private FileCollection source;
+	private NativeToolChainInternal toolChain;
+	private NativePlatformInternal targetPlatform;
+	private File objectFileDir;
+	private List<String> assemblerArgs;
 
-    @Inject
-    public Assemble() {
-        source = getProject().files();
-        getInputs().property("outputType", new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                return NativeToolChainInternal.Identifier.identify(toolChain, targetPlatform);
-            }
-        });
-    }
+	@Inject
+	public Assemble() {
+		source = getProject().files();
+		getInputs().property("outputType", new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				return NativeToolChainInternal.Identifier.identify(toolChain,
+						targetPlatform);
+			}
+		});
+	}
 
-    @Inject
-    public BuildOperationLoggerFactory getOperationLoggerFactory() {
-        throw new UnsupportedOperationException();
-    }
+	@Inject
+	public BuildOperationLoggerFactory getOperationLoggerFactory() {
+		throw new UnsupportedOperationException();
+	}
 
-    @TaskAction
-    public void assemble() {
-        BuildOperationLogger operationLogger = getOperationLoggerFactory().newOperationLogger(getName(), getTemporaryDir());
-        SimpleStaleClassCleaner cleaner = new SimpleStaleClassCleaner(getOutputs());
-        cleaner.setDestinationDir(getObjectFileDir());
-        cleaner.execute();
+	@TaskAction
+	public void assemble() {
+		BuildOperationLogger operationLogger = getOperationLoggerFactory()
+				.newOperationLogger(getName(), getTemporaryDir());
+		SimpleStaleClassCleaner cleaner = new SimpleStaleClassCleaner(
+				getOutputs());
+		cleaner.setDestinationDir(getObjectFileDir());
+		cleaner.execute();
 
-        DefaultAssembleSpec spec = new DefaultAssembleSpec();
-        spec.setTempDir(getTemporaryDir());
+		DefaultAssembleSpec spec = new DefaultAssembleSpec();
+		spec.setTempDir(getTemporaryDir());
 
-        spec.setObjectFileDir(getObjectFileDir());
-        spec.source(getSource());
-        spec.args(getAssemblerArgs());
-        spec.setOperationLogger(operationLogger);
+		spec.setObjectFileDir(getObjectFileDir());
+		spec.source(getSource());
+		spec.args(getAssemblerArgs());
+		spec.setOperationLogger(operationLogger);
 
-        Compiler<AssembleSpec> compiler = toolChain.select(targetPlatform).newCompiler(AssembleSpec.class);
-        WorkResult result = BuildOperationLoggingCompilerDecorator.wrap(compiler).execute(spec);
-        setDidWork(result.getDidWork());
-    }
+		Compiler<AssembleSpec> compiler = toolChain.select(targetPlatform)
+				.newCompiler(AssembleSpec.class);
+		WorkResult result = BuildOperationLoggingCompilerDecorator.wrap(
+				compiler).execute(spec);
+		setDidWork(result.getDidWork());
+	}
 
-    @InputFiles
-    @SkipWhenEmpty
-    public FileCollection getSource() {
-        return source;
-    }
+	@InputFiles
+	@SkipWhenEmpty
+	public FileCollection getSource() {
+		return source;
+	}
 
-    /**
-     * Adds a set of assembler sources files to be translated. The provided sourceFiles object is evaluated as per {@link org.gradle.api.Project#files(Object...)}.
-     */
-    public void source(Object sourceFiles) {
-        DefaultGroovyMethods.invokeMethod(source, "from", new Object[]{sourceFiles});
-    }
+	/**
+	 * Adds a set of assembler sources files to be translated. The provided
+	 * sourceFiles object is evaluated as per
+	 * {@link org.gradle.api.Project#files(Object...)}.
+	 */
+	public void source(Object sourceFiles) {
+		DefaultGroovyMethods.invokeMethod(source, "from",
+				new Object[] { sourceFiles });
+	}
 
-    /**
-     * Additional arguments to provide to the assembler.
-     */
-    @Input
-    public List<String> getAssemblerArgs() {
-        return assemblerArgs;
-    }
+	/**
+	 * Additional arguments to provide to the assembler.
+	 */
+	@Input
+	public List<String> getAssemblerArgs() {
+		return assemblerArgs;
+	}
 
-    public void setAssemblerArgs(List<String> assemblerArgs) {
-        this.assemblerArgs = assemblerArgs;
-    }
+	public void setAssemblerArgs(List<String> assemblerArgs) {
+		this.assemblerArgs = assemblerArgs;
+	}
 
-    /**
-     * The tool chain being used to build.
-     */
-    public NativeToolChain getToolChain() {
-        return toolChain;
-    }
+	/**
+	 * The tool chain being used to build.
+	 */
+	public NativeToolChain getToolChain() {
+		return toolChain;
+	}
 
-    public void setToolChain(NativeToolChain toolChain) {
-        this.toolChain = (NativeToolChainInternal) toolChain;
-    }
+	public void setToolChain(NativeToolChain toolChain) {
+		this.toolChain = (NativeToolChainInternal) toolChain;
+	}
 
-    /**
-     * The platform being targeted.
-     */
-    public NativePlatform getTargetPlatform() {
-        return targetPlatform;
-    }
+	/**
+	 * The platform being targeted.
+	 */
+	public NativePlatform getTargetPlatform() {
+		return targetPlatform;
+	}
 
-    public void setTargetPlatform(NativePlatform targetPlatform) {
-        this.targetPlatform = (NativePlatformInternal) targetPlatform;
-    }
+	public void setTargetPlatform(NativePlatform targetPlatform) {
+		this.targetPlatform = (NativePlatformInternal) targetPlatform;
+	}
 
-    /**
-     * The directory where object files will be generated.
-     */
-    @OutputDirectory
-    public File getObjectFileDir() {
-        return objectFileDir;
-    }
+	/**
+	 * The directory where object files will be generated.
+	 */
+	@OutputDirectory
+	public File getObjectFileDir() {
+		return objectFileDir;
+	}
 
-    public void setObjectFileDir(File objectFileDir) {
-        this.objectFileDir = objectFileDir;
-    }
+	public void setObjectFileDir(File objectFileDir) {
+		this.objectFileDir = objectFileDir;
+	}
 }

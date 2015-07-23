@@ -20,41 +20,51 @@ import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.api.tasks.util.PatternSet;
+import org.gradle.language.assembler.tasks.Assemble;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.base.internal.LanguageSourceSetInternal;
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.nativeplatform.Tool;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
-import org.gradle.language.assembler.tasks.Assemble;
 import org.gradle.platform.base.BinarySpec;
 
 public class AssembleTaskConfig implements SourceTransformTaskConfig {
-    public String getTaskPrefix() {
-        return "assemble";
-    }
+	public String getTaskPrefix() {
+		return "assemble";
+	}
 
-    public Class<? extends DefaultTask> getTaskType() {
-        return Assemble.class;
-    }
+	public Class<? extends DefaultTask> getTaskType() {
+		return Assemble.class;
+	}
 
-    public void configureTask(Task task, BinarySpec binary, LanguageSourceSet sourceSet) {
-        configureAssembleTask((Assemble) task, (NativeBinarySpecInternal) binary, (LanguageSourceSetInternal) sourceSet);
-    }
+	public void configureTask(Task task, BinarySpec binary,
+			LanguageSourceSet sourceSet) {
+		configureAssembleTask((Assemble) task,
+				(NativeBinarySpecInternal) binary,
+				(LanguageSourceSetInternal) sourceSet);
+	}
 
-    private void configureAssembleTask(Assemble task, final NativeBinarySpecInternal binary, final LanguageSourceSetInternal sourceSet) {
-        task.setDescription(String.format("Assembles the %s of %s", sourceSet, binary));
+	private void configureAssembleTask(Assemble task,
+			final NativeBinarySpecInternal binary,
+			final LanguageSourceSetInternal sourceSet) {
+		task.setDescription(String.format("Assembles the %s of %s", sourceSet,
+				binary));
 
-        task.setToolChain(binary.getToolChain());
-        task.setTargetPlatform(binary.getTargetPlatform());
+		task.setToolChain(binary.getToolChain());
+		task.setTargetPlatform(binary.getTargetPlatform());
 
-        task.source(sourceSet.getSource());
+		task.source(sourceSet.getSource());
 
-        final Project project = task.getProject();
-        task.setObjectFileDir(project.file(project.getBuildDir() + "/objs/" + binary.getNamingScheme().getOutputDirectoryBase() + "/" + sourceSet.getFullName()));
+		final Project project = task.getProject();
+		task.setObjectFileDir(project.file(project.getBuildDir() + "/objs/"
+				+ binary.getNamingScheme().getOutputDirectoryBase() + "/"
+				+ sourceSet.getFullName()));
 
-        Tool assemblerTool = (Tool) ((ExtensionAware) binary).getExtensions().getByName("assembler");
-        task.setAssemblerArgs(assemblerTool.getArgs());
+		Tool assemblerTool = (Tool) ((ExtensionAware) binary).getExtensions()
+				.getByName("assembler");
+		task.setAssemblerArgs(assemblerTool.getArgs());
 
-        binary.binaryInputs(task.getOutputs().getFiles().getAsFileTree().matching(new PatternSet().include("**/*.obj", "**/*.o")));
-    }
+		binary.binaryInputs(task.getOutputs().getFiles().getAsFileTree()
+				.matching(new PatternSet().include("**/*.obj", "**/*.o")));
+	}
 }

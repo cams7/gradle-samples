@@ -15,11 +15,12 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-
 import java.io.File;
 import java.util.Set;
 
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
+
 public interface SourceIncludesResolver {
-    Set<ResolvedInclude> resolveIncludes(File sourceFile, SourceIncludes includes);
+	Set<ResolvedInclude> resolveIncludes(File sourceFile,
+			SourceIncludes includes);
 }

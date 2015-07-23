@@ -19,49 +19,53 @@ import java.io.File;
 import java.io.Serializable;
 
 public class ResolvedInclude implements Serializable {
-    private final String include;
-    private final File dependencyFile;
 
-    public ResolvedInclude(String include, File dependencyFile) {
-        this.include = include;
-        this.dependencyFile = dependencyFile;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public boolean isUnknown() {
-        return dependencyFile == null;
-    }
+	private final String include;
+	private final File dependencyFile;
 
-    public String getInclude() {
-        return include;
-    }
+	public ResolvedInclude(String include, File dependencyFile) {
+		this.include = include;
+		this.dependencyFile = dependencyFile;
+	}
 
-    public File getFile() {
-        return dependencyFile;
-    }
+	public boolean isUnknown() {
+		return dependencyFile == null;
+	}
 
-    @Override
-    public String toString() {
-        return String.format("Resolved include '%s'", include);
-    }
+	public String getInclude() {
+		return include;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ResolvedInclude)) {
-            return false;
-        }
+	public File getFile() {
+		return dependencyFile;
+	}
 
-        ResolvedInclude that = (ResolvedInclude) o;
+	@Override
+	public String toString() {
+		return String.format("Resolved include '%s'", include);
+	}
 
-        return include.equals(that.include)
-                && (dependencyFile == null ? that.dependencyFile == null : dependencyFile.equals(that.dependencyFile));
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof ResolvedInclude)) {
+			return false;
+		}
 
-    }
+		ResolvedInclude that = (ResolvedInclude) o;
 
-    @Override
-    public int hashCode() {
-        return include.hashCode();
-    }
+		return include.equals(that.include)
+				&& (dependencyFile == null ? that.dependencyFile == null
+						: dependencyFile.equals(that.dependencyFile));
+
+	}
+
+	@Override
+	public int hashCode() {
+		return include.hashCode();
+	}
 }

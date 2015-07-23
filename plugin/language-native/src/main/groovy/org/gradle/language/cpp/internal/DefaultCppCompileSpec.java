@@ -19,5 +19,6 @@ package org.gradle.language.cpp.internal;
 import org.gradle.language.nativeplatform.internal.AbstractNativeCompileSpec;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppCompileSpec;
 
-public class DefaultCppCompileSpec extends AbstractNativeCompileSpec implements CppCompileSpec {
+public class DefaultCppCompileSpec extends AbstractNativeCompileSpec implements
+		CppCompileSpec {
 }

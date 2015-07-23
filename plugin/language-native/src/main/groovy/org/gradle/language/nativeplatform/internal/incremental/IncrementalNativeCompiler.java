@@ -15,6 +15,8 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
+import java.io.File;
+
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.internal.changedetection.state.FileSnapshotter;
 import org.gradle.api.internal.changedetection.state.TaskArtifactStateCacheAccess;
@@ -32,88 +34,107 @@ import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 import org.gradle.util.CollectionUtils;
 
-import java.io.File;
+public class IncrementalNativeCompiler<T extends NativeCompileSpec> implements
+		Compiler<T> {
+	private final Compiler<T> delegateCompiler;
+	private final boolean importsAreIncludes;
+	private final TaskInternal task;
+	private final TaskArtifactStateCacheAccess cacheAccess;
+	private final FileSnapshotter fileSnapshotter;
+	private final CompilationStateCacheFactory compilationStateCacheFactory;
 
-public class IncrementalNativeCompiler<T extends NativeCompileSpec> implements Compiler<T> {
-    private final Compiler<T> delegateCompiler;
-    private final boolean importsAreIncludes;
-    private final TaskInternal task;
-    private final TaskArtifactStateCacheAccess cacheAccess;
-    private final FileSnapshotter fileSnapshotter;
-    private final CompilationStateCacheFactory compilationStateCacheFactory;
+	private final CSourceParser sourceParser = new RegexBackedCSourceParser();
 
-    private final CSourceParser sourceParser = new RegexBackedCSourceParser();
+	public IncrementalNativeCompiler(TaskInternal task,
+			TaskArtifactStateCacheAccess cacheAccess,
+			FileSnapshotter fileSnapshotter,
+			CompilationStateCacheFactory compilationStateCacheFactory,
+			Compiler<T> delegateCompiler, NativeToolChain toolChain) {
+		this.task = task;
+		this.cacheAccess = cacheAccess;
+		this.fileSnapshotter = fileSnapshotter;
+		this.compilationStateCacheFactory = compilationStateCacheFactory;
+		this.delegateCompiler = delegateCompiler;
+		this.importsAreIncludes = Clang.class.isAssignableFrom(toolChain
+				.getClass())
+				|| Gcc.class.isAssignableFrom(toolChain.getClass());
+	}
 
-    public IncrementalNativeCompiler(TaskInternal task, TaskArtifactStateCacheAccess cacheAccess, FileSnapshotter fileSnapshotter, CompilationStateCacheFactory compilationStateCacheFactory,
-                                     Compiler<T> delegateCompiler, NativeToolChain toolChain) {
-        this.task = task;
-        this.cacheAccess = cacheAccess;
-        this.fileSnapshotter = fileSnapshotter;
-        this.compilationStateCacheFactory = compilationStateCacheFactory;
-        this.delegateCompiler = delegateCompiler;
-        this.importsAreIncludes = Clang.class.isAssignableFrom(toolChain.getClass()) || Gcc.class.isAssignableFrom(toolChain.getClass());
-    }
+	public WorkResult execute(final T spec) {
+		final PersistentStateCache<CompilationState> compileStateCache = compilationStateCacheFactory
+				.create(task.getPath());
+		final IncrementalCompilation compilation = cacheAccess.useCache(
+				"process source files", new Factory<IncrementalCompilation>() {
+					public IncrementalCompilation create() {
+						DefaultSourceIncludesParser sourceIncludesParser = new DefaultSourceIncludesParser(
+								sourceParser, importsAreIncludes);
+						IncrementalCompileProcessor processor = createProcessor(
+								compileStateCache, sourceIncludesParser,
+								spec.getIncludeRoots());
+						// TODO - do not hold the lock while processing the
+						// source files - this prevents other tasks from
+						// executing concurrently
+						IncrementalCompilation incrementalCompilation = processor
+								.processSourceFiles(spec.getSourceFiles());
+						spec.setSourceFileIncludes(incrementalCompilation
+								.getSourceFileIncludes());
+						return incrementalCompilation;
+					}
+				});
 
-    public WorkResult execute(final T spec) {
-        final PersistentStateCache<CompilationState> compileStateCache = compilationStateCacheFactory.create(task.getPath());
-        final IncrementalCompilation compilation = cacheAccess.useCache("process source files", new Factory<IncrementalCompilation>() {
-            public IncrementalCompilation create() {
-                DefaultSourceIncludesParser sourceIncludesParser = new DefaultSourceIncludesParser(sourceParser, importsAreIncludes);
-                IncrementalCompileProcessor processor = createProcessor(compileStateCache, sourceIncludesParser, spec.getIncludeRoots());
-                // TODO - do not hold the lock while processing the source files - this prevents other tasks from executing concurrently
-                IncrementalCompilation incrementalCompilation = processor.processSourceFiles(spec.getSourceFiles());
-                spec.setSourceFileIncludes(incrementalCompilation.getSourceFileIncludes());
-                return incrementalCompilation;
-            }
-        });
+		WorkResult workResult;
+		if (spec.isIncrementalCompile()) {
+			workResult = doIncrementalCompile(compilation, spec);
+		} else {
+			workResult = doCleanIncrementalCompile(spec);
+		}
 
-        WorkResult workResult;
-        if (spec.isIncrementalCompile()) {
-            workResult = doIncrementalCompile(compilation, spec);
-        } else {
-            workResult = doCleanIncrementalCompile(spec);
-        }
+		cacheAccess.useCache("update compilation state", new Factory<Void>() {
+			public Void create() {
+				compileStateCache.set(compilation.getFinalState());
+				return null;
+			}
+		});
 
-        cacheAccess.useCache("update compilation state", new Factory<Void>() {
-            public Void create() {
-                compileStateCache.set(compilation.getFinalState());
-                return null;
-            }
-        });
+		return workResult;
+	}
 
-        return workResult;
-    }
+	protected WorkResult doIncrementalCompile(
+			IncrementalCompilation compilation, T spec) {
+		// Determine the actual sources to clean/compile
+		spec.setSourceFiles(compilation.getRecompile());
+		spec.setRemovedSourceFiles(compilation.getRemoved());
+		return delegateCompiler.execute(spec);
+	}
 
-    protected WorkResult doIncrementalCompile(IncrementalCompilation compilation, T spec) {
-        // Determine the actual sources to clean/compile
-        spec.setSourceFiles(compilation.getRecompile());
-        spec.setRemovedSourceFiles(compilation.getRemoved());
-        return delegateCompiler.execute(spec);
-    }
+	protected WorkResult doCleanIncrementalCompile(T spec) {
+		boolean deleted = cleanPreviousOutputs(spec);
+		WorkResult compileResult = delegateCompiler.execute(spec);
+		if (deleted && !compileResult.getDidWork()) {
+			return new SimpleWorkResult(deleted);
+		}
+		return compileResult;
+	}
 
-    protected WorkResult doCleanIncrementalCompile(T spec) {
-        boolean deleted = cleanPreviousOutputs(spec);
-        WorkResult compileResult = delegateCompiler.execute(spec);
-        if (deleted && !compileResult.getDidWork()) {
-            return new SimpleWorkResult(deleted);
-        }
-        return compileResult;
-    }
+	private boolean cleanPreviousOutputs(NativeCompileSpec spec) {
+		SimpleStaleClassCleaner cleaner = new SimpleStaleClassCleaner(getTask()
+				.getOutputs());
+		cleaner.setDestinationDir(spec.getObjectFileDir());
+		cleaner.execute();
+		return cleaner.getDidWork();
+	}
 
-    private boolean cleanPreviousOutputs(NativeCompileSpec spec) {
-        SimpleStaleClassCleaner cleaner = new SimpleStaleClassCleaner(getTask().getOutputs());
-        cleaner.setDestinationDir(spec.getObjectFileDir());
-        cleaner.execute();
-        return cleaner.getDidWork();
-    }
+	protected TaskInternal getTask() {
+		return task;
+	}
 
-    protected TaskInternal getTask() {
-        return task;
-    }
+	private IncrementalCompileProcessor createProcessor(
+			PersistentStateCache<CompilationState> compileStateCache,
+			SourceIncludesParser sourceIncludesParser, Iterable<File> includes) {
+		DefaultSourceIncludesResolver dependencyParser = new DefaultSourceIncludesResolver(
+				CollectionUtils.toList(includes));
 
-    private IncrementalCompileProcessor createProcessor(PersistentStateCache<CompilationState> compileStateCache, SourceIncludesParser sourceIncludesParser, Iterable<File> includes) {
-        DefaultSourceIncludesResolver dependencyParser = new DefaultSourceIncludesResolver(CollectionUtils.toList(includes));
-
-        return new IncrementalCompileProcessor(compileStateCache, dependencyParser, sourceIncludesParser, fileSnapshotter);
-    }
+		return new IncrementalCompileProcessor(compileStateCache,
+				dependencyParser, sourceIncludesParser, fileSnapshotter);
+	}
 }

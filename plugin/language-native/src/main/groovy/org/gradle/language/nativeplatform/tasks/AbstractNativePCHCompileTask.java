@@ -19,5 +19,6 @@ package org.gradle.language.nativeplatform.tasks;
 /**
  * Compiles native header source files into object files.
  */
-abstract public class AbstractNativePCHCompileTask extends AbstractNativeCompileTask {
+abstract public class AbstractNativePCHCompileTask extends
+		AbstractNativeCompileTask {
 }

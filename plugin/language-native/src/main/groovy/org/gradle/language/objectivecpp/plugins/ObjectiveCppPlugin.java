@@ -22,18 +22,26 @@ import org.gradle.api.Project;
 import org.gradle.nativeplatform.plugins.NativeComponentPlugin;
 
 /**
- * A plugin for projects wishing to build native binary components from Objective-C++ sources.
+ * A plugin for projects wishing to build native binary components from
+ * Objective-C++ sources.
  *
- * <p>Automatically includes the {@link ObjectiveCppLangPlugin} for core Objective-C++ support and the {@link NativeComponentPlugin} for native component support.</p>
+ * <p>
+ * Automatically includes the {@link ObjectiveCppLangPlugin} for core
+ * Objective-C++ support and the {@link NativeComponentPlugin} for native
+ * component support.
+ * </p>
  *
- * <li>Creates a {@link org.gradle.language.objectivecpp.tasks.ObjectiveCppCompile} task for each {@link org.gradle.language.objectivecpp.ObjectiveCppSourceSet} to compile the Objective-C++ sources.</li>
+ * <li>Creates a
+ * {@link org.gradle.language.objectivecpp.tasks.ObjectiveCppCompile} task for
+ * each {@link org.gradle.language.objectivecpp.ObjectiveCppSourceSet} to
+ * compile the Objective-C++ sources.</li>
  */
 @Incubating
 public class ObjectiveCppPlugin implements Plugin<Project> {
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-        project.getPluginManager().apply(ObjectiveCppLangPlugin.class);
-        project.getPluginManager().apply(ObjectiveCppLangPCHPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+		project.getPluginManager().apply(ObjectiveCppLangPlugin.class);
+		project.getPluginManager().apply(ObjectiveCppLangPCHPlugin.class);
+	}
 
 }

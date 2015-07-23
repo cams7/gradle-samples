@@ -15,38 +15,41 @@
  */
 package org.gradle.language.nativeplatform.internal.incremental;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
+
 public class CompilationFileState implements Serializable {
-    private byte[] hash;
-    private SourceIncludes sourceIncludes = new DefaultSourceIncludes();
-    private Set<ResolvedInclude> resolvedIncludes = new HashSet<ResolvedInclude>();
 
-    public CompilationFileState(byte[] hash) {
-        this.hash = hash;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public byte[] getHash() {
-        return hash;
-    }
+	private byte[] hash;
+	private SourceIncludes sourceIncludes = new DefaultSourceIncludes();
+	private Set<ResolvedInclude> resolvedIncludes = new HashSet<ResolvedInclude>();
 
-    public SourceIncludes getSourceIncludes() {
-        return sourceIncludes;
-    }
+	public CompilationFileState(byte[] hash) {
+		this.hash = hash;
+	}
 
-    public void setSourceIncludes(SourceIncludes sourceIncludes) {
-        this.sourceIncludes = sourceIncludes;
-    }
+	public byte[] getHash() {
+		return hash;
+	}
 
-    public Set<ResolvedInclude> getResolvedIncludes() {
-        return resolvedIncludes;
-    }
+	public SourceIncludes getSourceIncludes() {
+		return sourceIncludes;
+	}
 
-    public void setResolvedIncludes(Set<ResolvedInclude> resolvedIncludes) {
-        this.resolvedIncludes = resolvedIncludes;
-    }
+	public void setSourceIncludes(SourceIncludes sourceIncludes) {
+		this.sourceIncludes = sourceIncludes;
+	}
+
+	public Set<ResolvedInclude> getResolvedIncludes() {
+		return resolvedIncludes;
+	}
+
+	public void setResolvedIncludes(Set<ResolvedInclude> resolvedIncludes) {
+		this.resolvedIncludes = resolvedIncludes;
+	}
 }

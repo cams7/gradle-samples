@@ -16,30 +16,31 @@
 
 package org.gradle.language;
 
+import java.util.Map;
+
 import org.gradle.api.Incubating;
 import org.gradle.nativeplatform.Tool;
-
-import java.util.Map;
 
 /**
  * A tool that permits configuration of the C preprocessor.
  */
 @Incubating
 public interface PreprocessingTool extends Tool {
-    /**
-     * The set of preprocessor macros to define when compiling this binary.
-     */
-    Map<String, String> getMacros();
+	/**
+	 * The set of preprocessor macros to define when compiling this binary.
+	 */
+	Map<String, String> getMacros();
 
-    /**
-     * Defines a named preprocessor macros to use when compiling this binary.
-     * The macro will be supplied to the compiler as '-D name'.
-     */
-    void define(String name);
+	/**
+	 * Defines a named preprocessor macros to use when compiling this binary.
+	 * The macro will be supplied to the compiler as '-D name'.
+	 */
+	void define(String name);
 
-    /**
-     * Defines a named preprocessor macro with a value, which will be used when compiling this binary.
-     * The macro will be supplied to the compiler as '-D name=definition'.
-     */
-    void define(String name, String definition);
+	/**
+	 * Defines a named preprocessor macro with a value, which will be used when
+	 * compiling this binary. The macro will be supplied to the compiler as '-D
+	 * name=definition'.
+	 */
+	void define(String name, String definition);
 }
