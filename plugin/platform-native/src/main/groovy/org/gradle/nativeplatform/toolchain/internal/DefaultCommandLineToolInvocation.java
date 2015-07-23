@@ -15,11 +15,11 @@
  */
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.gradle.internal.operations.logging.BuildOperationLogger;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+
+import org.gradle.internal.operations.logging.BuildOperationLogger;
 
 class DefaultCommandLineToolInvocation implements CommandLineToolInvocation {
 	private String description;

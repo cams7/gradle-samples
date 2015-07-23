@@ -16,6 +16,12 @@
 
 package org.gradle.nativeplatform.internal.configure;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.gradle.api.Action;
 import org.gradle.api.Named;
 import org.gradle.api.Transformer;
@@ -29,13 +35,11 @@ import org.gradle.nativeplatform.platform.internal.NativePlatforms;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
-import org.gradle.platform.base.internal.PlatformResolvers;
 import org.gradle.platform.base.internal.BinaryNamingSchemeBuilder;
 import org.gradle.platform.base.internal.DefaultPlatformRequirement;
 import org.gradle.platform.base.internal.PlatformRequirement;
+import org.gradle.platform.base.internal.PlatformResolvers;
 import org.gradle.util.CollectionUtils;
-
-import java.util.*;
 
 public class NativeComponentSpecInitializer implements
 		Action<NativeComponentSpec> {

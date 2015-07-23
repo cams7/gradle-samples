@@ -16,9 +16,19 @@
 
 package org.gradle.nativeplatform.internal;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.nativeplatform.DependentSourceSet;
-import org.gradle.nativeplatform.*;
+import org.gradle.nativeplatform.BuildType;
+import org.gradle.nativeplatform.Flavor;
+import org.gradle.nativeplatform.NativeComponentSpec;
+import org.gradle.nativeplatform.NativeDependencySet;
+import org.gradle.nativeplatform.NativeLibraryBinary;
+import org.gradle.nativeplatform.Tool;
 import org.gradle.nativeplatform.internal.resolve.NativeBinaryResolveResult;
 import org.gradle.nativeplatform.internal.resolve.NativeDependencyResolver;
 import org.gradle.nativeplatform.platform.NativePlatform;
@@ -32,11 +42,6 @@ import org.gradle.platform.base.internal.BinaryBuildAbility;
 import org.gradle.platform.base.internal.BinaryNamingScheme;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
 import org.gradle.platform.base.internal.ToolSearchBuildAbility;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public abstract class AbstractNativeBinarySpec extends BaseBinarySpec implements
 		NativeBinarySpecInternal {

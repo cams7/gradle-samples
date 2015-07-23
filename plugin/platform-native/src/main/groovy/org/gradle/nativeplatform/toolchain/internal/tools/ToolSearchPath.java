@@ -16,18 +16,22 @@
 
 package org.gradle.nativeplatform.toolchain.internal.tools;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.UncheckedIOException;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.internal.text.TreeFormatter;
 import org.gradle.nativeplatform.toolchain.internal.ToolType;
 import org.gradle.util.TreeVisitor;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ToolSearchPath {
 	private final Map<String, File> executables = new HashMap<String, File>();

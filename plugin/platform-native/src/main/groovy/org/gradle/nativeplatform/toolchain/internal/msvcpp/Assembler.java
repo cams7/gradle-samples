@@ -16,14 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import com.google.common.collect.Iterables;
+import java.util.List;
+
 import org.gradle.api.Transformer;
 import org.gradle.internal.operations.BuildOperationProcessor;
-import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.AssembleSpec;
 
-import java.util.List;
+import com.google.common.collect.Iterables;
 
 class Assembler extends VisualCppNativeCompiler<AssembleSpec> {
 

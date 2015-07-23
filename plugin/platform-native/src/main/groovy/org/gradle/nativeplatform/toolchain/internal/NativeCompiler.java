@@ -16,8 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
 import org.gradle.api.Action;
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.tasks.SimpleWorkResult;
@@ -32,9 +34,8 @@ import org.gradle.language.nativeplatform.internal.SourceIncludes;
 import org.gradle.nativeplatform.internal.CompilerOutputFileNamingScheme;
 import org.gradle.util.CollectionUtils;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 abstract public class NativeCompiler<T extends NativeCompileSpec> implements
 		Compiler<T> {

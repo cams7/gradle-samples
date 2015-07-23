@@ -16,12 +16,12 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.DomainObjectSet;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChainedLibraryBinaryLocator implements LibraryBinaryLocator {
 	private final List<LibraryBinaryLocator> locators = new ArrayList<LibraryBinaryLocator>();

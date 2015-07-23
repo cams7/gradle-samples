@@ -16,6 +16,8 @@
 
 package org.gradle.nativeplatform.internal;
 
+import java.io.File;
+
 import org.gradle.nativeplatform.NativeExecutableBinary;
 import org.gradle.nativeplatform.NativeExecutableBinarySpec;
 import org.gradle.nativeplatform.NativeExecutableSpec;
@@ -24,8 +26,6 @@ import org.gradle.nativeplatform.tasks.LinkExecutable;
 import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
-
-import java.io.File;
 
 public class DefaultNativeExecutableBinarySpec extends AbstractNativeBinarySpec
 		implements NativeExecutableBinary, NativeExecutableBinarySpecInternal {

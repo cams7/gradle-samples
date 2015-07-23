@@ -15,13 +15,13 @@
  */
 package org.gradle.nativeplatform.internal.resolve;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.internal.artifacts.configurations.DependencyMetaDataProvider;
 import org.gradle.api.internal.artifacts.dsl.dependencies.ProjectFinder;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.internal.prebuilt.PrebuiltLibraryBinaryLocator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NativeDependencyResolverServices {
 

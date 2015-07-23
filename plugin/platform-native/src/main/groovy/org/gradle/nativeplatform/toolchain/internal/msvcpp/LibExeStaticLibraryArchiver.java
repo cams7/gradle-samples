@@ -16,6 +16,12 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.tasks.SimpleWorkResult;
 import org.gradle.api.tasks.WorkResult;
@@ -27,12 +33,6 @@ import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
 
 class LibExeStaticLibraryArchiver implements
 		Compiler<StaticLibraryArchiverSpec> {

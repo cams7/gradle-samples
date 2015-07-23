@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-import org.gradle.nativeplatform.internal.BinaryToolSpec;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
+import org.gradle.nativeplatform.internal.BinaryToolSpec;
 
 /**
  * A compile spec that will be used to generate object files for combining into

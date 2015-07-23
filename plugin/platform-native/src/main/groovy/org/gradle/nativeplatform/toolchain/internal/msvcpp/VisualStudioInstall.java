@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+
 import org.gradle.api.Named;
 import org.gradle.util.VersionNumber;
-
-import java.io.File;
 
 public class VisualStudioInstall implements Named {
 	private final VisualCppInstall visualCppInstall;

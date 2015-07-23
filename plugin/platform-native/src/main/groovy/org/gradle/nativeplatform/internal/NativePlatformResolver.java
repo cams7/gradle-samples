@@ -15,7 +15,8 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.gradle.api.specs.Spec;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.platform.internal.NativePlatforms;
@@ -23,7 +24,7 @@ import org.gradle.platform.base.internal.PlatformRequirement;
 import org.gradle.platform.base.internal.PlatformResolver;
 import org.gradle.util.CollectionUtils;
 
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 public class NativePlatformResolver implements PlatformResolver<NativePlatform> {
 	private final Set<NativePlatform> nativePlatforms = Sets.newHashSet();

@@ -15,12 +15,12 @@
  */
 package org.gradle.language.nativeplatform;
 
-import org.gradle.api.Incubating;
-import org.gradle.language.base.LanguageSourceSet;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Set;
+
+import org.gradle.api.Incubating;
+import org.gradle.language.base.LanguageSourceSet;
 
 /**
  * A source set that depends on one or more

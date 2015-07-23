@@ -15,8 +15,14 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.rubygrapefruit.platform.MissingRegistryEntryException;
 import net.rubygrapefruit.platform.WindowsRegistry;
+
 import org.apache.commons.lang.StringUtils;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.util.GFileUtils;
@@ -24,11 +30,6 @@ import org.gradle.util.TreeVisitor;
 import org.gradle.util.VersionNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DefaultWindowsSdkLocator implements WindowsSdkLocator {
 	private static final Logger LOGGER = LoggerFactory

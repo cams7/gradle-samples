@@ -16,16 +16,17 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import com.google.common.collect.Lists;
-import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
-import org.gradle.nativeplatform.toolchain.internal.MacroArgsConverter;
-import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
+import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArg;
+import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
 
 import java.io.File;
 import java.util.List;
 
-import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArg;
-import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
+import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
+import org.gradle.nativeplatform.toolchain.internal.MacroArgsConverter;
+import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
+
+import com.google.common.collect.Lists;
 
 abstract class VisualCppCompilerArgsTransformer<T extends NativeCompileSpec>
 		implements ArgsTransformer<T> {

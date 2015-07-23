@@ -16,15 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc.version;
 
-import org.gradle.api.internal.file.FileLookup;
-import org.gradle.process.internal.DefaultExecAction;
-import org.gradle.process.internal.ExecAction;
-import org.gradle.process.internal.ExecActionFactory;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.gradle.api.internal.file.FileLookup;
+import org.gradle.process.internal.DefaultExecAction;
+import org.gradle.process.internal.ExecAction;
+import org.gradle.process.internal.ExecActionFactory;
 
 public class CompilerMetaDataProviderFactory {
 	private final CachingCompilerMetaDataProvider gcc;

@@ -15,10 +15,10 @@
  */
 package org.gradle.nativeplatform.platform.internal;
 
+import static java.util.Arrays.asList;
+
 import java.util.Arrays;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 public class Architectures {
 

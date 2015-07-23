@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+
 import org.gradle.api.Named;
 import org.gradle.nativeplatform.platform.Architecture;
 import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
 import org.gradle.util.VersionNumber;
-
-import java.io.File;
-import java.util.List;
-import java.util.Map;
 
 public class VisualCppInstall implements Named {
 	private static final String COMPILER_FILENAME = "cl.exe";

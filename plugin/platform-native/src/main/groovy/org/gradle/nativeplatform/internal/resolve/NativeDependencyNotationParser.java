@@ -18,7 +18,11 @@ package org.gradle.nativeplatform.internal.resolve;
 
 import org.gradle.api.tasks.Optional;
 import org.gradle.internal.exceptions.DiagnosticsVisitor;
-import org.gradle.internal.typeconversion.*;
+import org.gradle.internal.typeconversion.MapKey;
+import org.gradle.internal.typeconversion.MapNotationConverter;
+import org.gradle.internal.typeconversion.NotationParser;
+import org.gradle.internal.typeconversion.NotationParserBuilder;
+import org.gradle.internal.typeconversion.TypedNotationConverter;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 import org.gradle.nativeplatform.NativeLibrarySpec;
 import org.gradle.nativeplatform.internal.ProjectNativeLibraryRequirement;

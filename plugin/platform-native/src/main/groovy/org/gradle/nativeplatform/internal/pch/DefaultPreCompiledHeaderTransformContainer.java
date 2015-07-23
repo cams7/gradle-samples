@@ -16,9 +16,10 @@
 
 package org.gradle.nativeplatform.internal.pch;
 
-import com.google.common.reflect.TypeToken;
 import org.gradle.api.internal.DefaultDomainObjectSet;
 import org.gradle.language.base.internal.registry.LanguageTransform;
+
+import com.google.common.reflect.TypeToken;
 
 public class DefaultPreCompiledHeaderTransformContainer extends
 		DefaultDomainObjectSet<LanguageTransform<?, ?>> implements

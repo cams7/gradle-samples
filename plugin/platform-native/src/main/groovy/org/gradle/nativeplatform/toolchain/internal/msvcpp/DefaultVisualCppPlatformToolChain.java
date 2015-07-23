@@ -16,6 +16,9 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.toolchain.CommandLineToolConfiguration;
@@ -23,9 +26,6 @@ import org.gradle.nativeplatform.toolchain.VisualCppPlatformToolChain;
 import org.gradle.nativeplatform.toolchain.internal.ToolType;
 import org.gradle.nativeplatform.toolchain.internal.tools.CommandLineToolConfigurationInternal;
 import org.gradle.nativeplatform.toolchain.internal.tools.DefaultCommandLineToolConfiguration;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DefaultVisualCppPlatformToolChain implements
 		VisualCppPlatformToolChain {

@@ -16,17 +16,21 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.NamedDomainObjectSet;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.model.internal.core.ModelPath;
 import org.gradle.model.internal.type.ModelType;
-import org.gradle.nativeplatform.*;
+import org.gradle.nativeplatform.NativeLibraryBinary;
+import org.gradle.nativeplatform.NativeLibraryRequirement;
+import org.gradle.nativeplatform.PrebuiltLibraries;
+import org.gradle.nativeplatform.PrebuiltLibrary;
+import org.gradle.nativeplatform.Repositories;
 import org.gradle.nativeplatform.internal.resolve.LibraryBinaryLocator;
 import org.gradle.nativeplatform.internal.resolve.ProjectLocator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PrebuiltLibraryBinaryLocator implements LibraryBinaryLocator {
 	private final ProjectLocator projectLocator;

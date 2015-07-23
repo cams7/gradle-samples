@@ -16,12 +16,13 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.List;
+
 import org.gradle.api.Transformer;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import java.io.File;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class VisualCppPCHSourceFileTransformer<T extends NativeCompileSpec>
 		implements Transformer<T, T> {

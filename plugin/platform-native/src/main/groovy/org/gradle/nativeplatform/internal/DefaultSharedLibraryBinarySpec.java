@@ -16,6 +16,10 @@
 
 package org.gradle.nativeplatform.internal;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.NativeResourceSet;
@@ -25,10 +29,6 @@ import org.gradle.nativeplatform.tasks.LinkSharedLibrary;
 import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public class DefaultSharedLibraryBinarySpec extends
 		AbstractNativeLibraryBinarySpec implements SharedLibraryBinary,

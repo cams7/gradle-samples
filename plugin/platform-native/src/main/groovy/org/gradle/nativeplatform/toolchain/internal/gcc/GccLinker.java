@@ -16,6 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.internal.tasks.SimpleWorkResult;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.operations.BuildOperationProcessor;
@@ -25,13 +29,9 @@ import org.gradle.nativeplatform.internal.LinkerSpec;
 import org.gradle.nativeplatform.internal.SharedLibraryLinkerSpec;
 import org.gradle.nativeplatform.platform.OperatingSystem;
 import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
-import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 
 class GccLinker implements Compiler<LinkerSpec> {
 

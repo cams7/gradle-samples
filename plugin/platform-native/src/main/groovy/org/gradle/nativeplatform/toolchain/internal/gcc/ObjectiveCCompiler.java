@@ -18,8 +18,8 @@ package org.gradle.nativeplatform.toolchain.internal.gcc;
 
 import org.gradle.internal.Transformers;
 import org.gradle.internal.operations.BuildOperationProcessor;
-import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCCompileSpec;
 
 class ObjectiveCCompiler extends

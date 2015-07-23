@@ -15,9 +15,21 @@
  */
 package org.gradle.nativeplatform.plugins;
 
+import java.io.File;
+
+import javax.inject.Inject;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.gradle.api.*;
+import org.gradle.api.Action;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.DomainObjectSet;
+import org.gradle.api.Incubating;
+import org.gradle.api.NamedDomainObjectFactory;
+import org.gradle.api.NamedDomainObjectSet;
+import org.gradle.api.Namer;
+import org.gradle.api.Plugin;
+import org.gradle.api.Task;
 import org.gradle.api.artifacts.repositories.ArtifactRepository;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.internal.DefaultPolymorphicDomainObjectContainer;
@@ -37,11 +49,34 @@ import org.gradle.language.base.internal.registry.LanguageTransformContainer;
 import org.gradle.language.base.plugins.ComponentModelBasePlugin;
 import org.gradle.language.nativeplatform.DependentSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
-import org.gradle.model.*;
+import org.gradle.model.Defaults;
+import org.gradle.model.Finalize;
+import org.gradle.model.Model;
+import org.gradle.model.Mutate;
+import org.gradle.model.Path;
+import org.gradle.model.RuleSource;
 import org.gradle.model.collection.CollectionBuilder;
-import org.gradle.nativeplatform.*;
-import org.gradle.nativeplatform.internal.*;
-import org.gradle.nativeplatform.internal.configure.*;
+import org.gradle.nativeplatform.BuildTypeContainer;
+import org.gradle.nativeplatform.FlavorContainer;
+import org.gradle.nativeplatform.NativeBinarySpec;
+import org.gradle.nativeplatform.NativeComponentSpec;
+import org.gradle.nativeplatform.NativeExecutableSpec;
+import org.gradle.nativeplatform.NativeLibrarySpec;
+import org.gradle.nativeplatform.PrebuiltLibraries;
+import org.gradle.nativeplatform.PrebuiltLibrary;
+import org.gradle.nativeplatform.Repositories;
+import org.gradle.nativeplatform.internal.DefaultBuildTypeContainer;
+import org.gradle.nativeplatform.internal.DefaultFlavor;
+import org.gradle.nativeplatform.internal.DefaultFlavorContainer;
+import org.gradle.nativeplatform.internal.DefaultNativeExecutableSpec;
+import org.gradle.nativeplatform.internal.DefaultNativeLibrarySpec;
+import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
+import org.gradle.nativeplatform.internal.NativePlatformResolver;
+import org.gradle.nativeplatform.internal.configure.DefaultNativeBinariesFactory;
+import org.gradle.nativeplatform.internal.configure.NativeBinariesFactory;
+import org.gradle.nativeplatform.internal.configure.NativeBinarySpecInitializer;
+import org.gradle.nativeplatform.internal.configure.NativeComponentSpecInitializer;
+import org.gradle.nativeplatform.internal.configure.ToolSettingNativeBinaryInitializer;
 import org.gradle.nativeplatform.internal.pch.DefaultPreCompiledHeaderTransformContainer;
 import org.gradle.nativeplatform.internal.pch.PreCompiledHeaderTransformContainer;
 import org.gradle.nativeplatform.internal.prebuilt.DefaultPrebuiltLibraries;
@@ -52,13 +87,16 @@ import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform;
 import org.gradle.nativeplatform.tasks.PrefixHeaderFileGenerateTask;
 import org.gradle.nativeplatform.toolchain.internal.DefaultNativeToolChainRegistry;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal;
-import org.gradle.platform.base.*;
+import org.gradle.platform.base.BinaryContainer;
+import org.gradle.platform.base.ComponentSpec;
+import org.gradle.platform.base.ComponentSpecContainer;
+import org.gradle.platform.base.ComponentType;
+import org.gradle.platform.base.ComponentTypeBuilder;
+import org.gradle.platform.base.Platform;
+import org.gradle.platform.base.PlatformContainer;
 import org.gradle.platform.base.internal.BinaryNamingSchemeBuilder;
 import org.gradle.platform.base.internal.DefaultBinaryNamingSchemeBuilder;
 import org.gradle.platform.base.internal.PlatformResolvers;
-
-import javax.inject.Inject;
-import java.io.File;
 
 /**
  * A plugin that sets up the infrastructure for defining native binaries.

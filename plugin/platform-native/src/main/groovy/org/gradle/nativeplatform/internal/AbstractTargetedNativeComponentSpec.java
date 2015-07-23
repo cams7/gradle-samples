@@ -15,7 +15,12 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.Named;
 import org.gradle.nativeplatform.BuildType;
@@ -23,7 +28,7 @@ import org.gradle.nativeplatform.Flavor;
 import org.gradle.platform.base.internal.DefaultPlatformRequirement;
 import org.gradle.platform.base.internal.PlatformRequirement;
 
-import java.util.*;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractTargetedNativeComponentSpec extends
 		AbstractNativeComponentSpec implements TargetedNativeComponentInternal {

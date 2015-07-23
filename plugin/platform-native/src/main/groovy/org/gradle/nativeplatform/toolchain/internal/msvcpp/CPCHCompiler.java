@@ -16,15 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
 import org.gradle.api.Transformer;
 import org.gradle.internal.operations.BuildOperationProcessor;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CPCHCompileSpec;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
 
 public class CPCHCompiler extends VisualCppNativeCompiler<CPCHCompileSpec> {
 	public CPCHCompiler(BuildOperationProcessor buildOperationProcessor,

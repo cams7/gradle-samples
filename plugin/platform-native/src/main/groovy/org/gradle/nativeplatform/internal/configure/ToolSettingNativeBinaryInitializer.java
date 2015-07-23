@@ -16,13 +16,13 @@
 
 package org.gradle.nativeplatform.internal.configure;
 
+import java.util.Map;
+
 import org.gradle.api.Action;
 import org.gradle.api.plugins.ExtensionAware;
 import org.gradle.language.base.internal.registry.LanguageTransform;
 import org.gradle.language.base.internal.registry.LanguageTransformContainer;
 import org.gradle.nativeplatform.NativeBinarySpec;
-
-import java.util.Map;
 
 public class ToolSettingNativeBinaryInitializer implements
 		Action<NativeBinarySpec> {

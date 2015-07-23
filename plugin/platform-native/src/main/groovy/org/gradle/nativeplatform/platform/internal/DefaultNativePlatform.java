@@ -17,6 +17,7 @@
 package org.gradle.nativeplatform.platform.internal;
 
 import net.rubygrapefruit.platform.SystemInfo;
+
 import org.gradle.internal.nativeintegration.NativeIntegrationUnavailableException;
 import org.gradle.internal.nativeintegration.services.NativeServices;
 import org.gradle.internal.os.OperatingSystem;

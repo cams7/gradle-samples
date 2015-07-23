@@ -16,16 +16,16 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
+import java.io.File;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.AbstractFileCollection;
 import org.gradle.api.internal.file.collections.SimpleFileCollection;
 import org.gradle.api.tasks.TaskDependency;
-import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 import org.gradle.language.base.LanguageSourceSet;
+import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 import org.gradle.nativeplatform.NativeDependencySet;
-
-import java.io.File;
-import java.util.Set;
 
 public class SourceSetNativeDependencyResolver implements
 		NativeDependencyResolver {

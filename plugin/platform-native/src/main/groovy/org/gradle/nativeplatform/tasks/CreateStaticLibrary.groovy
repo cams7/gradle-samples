@@ -16,6 +16,8 @@
 
 package org.gradle.nativeplatform.tasks
 
+import javax.inject.Inject
+
 import org.gradle.api.DefaultTask
 import org.gradle.api.Incubating
 import org.gradle.api.file.FileCollection
@@ -27,8 +29,6 @@ import org.gradle.nativeplatform.platform.NativePlatform
 import org.gradle.nativeplatform.platform.internal.NativePlatformInternal
 import org.gradle.nativeplatform.toolchain.NativeToolChain
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal
-
-import javax.inject.Inject
 
 /**
  * Assembles a static library from object files.

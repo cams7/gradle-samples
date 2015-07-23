@@ -23,7 +23,16 @@ import org.gradle.language.base.internal.compile.CompilerUtil;
 import org.gradle.nativeplatform.internal.LinkerSpec;
 import org.gradle.nativeplatform.internal.StaticLibraryArchiverSpec;
 import org.gradle.nativeplatform.platform.internal.OperatingSystemInternal;
-import org.gradle.nativeplatform.toolchain.internal.compilespec.*;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.AssembleSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.CCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.CPCHCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.CppCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCPCHCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCppCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCppPCHCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.compilespec.WindowsResourceCompileSpec;
 import org.gradle.util.TreeVisitor;
 
 public abstract class AbstractPlatformToolProvider implements

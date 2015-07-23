@@ -15,6 +15,11 @@
  */
 package org.gradle.nativeplatform.internal;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.AbstractFileCollection;
 import org.gradle.api.internal.tasks.DefaultTaskDependency;
@@ -23,11 +28,6 @@ import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 import org.gradle.nativeplatform.NativeLibrarySpec;
 import org.gradle.platform.base.LibraryBinarySpec;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 public abstract class AbstractNativeLibraryBinarySpec extends
 		AbstractNativeBinarySpec implements LibraryBinarySpec {

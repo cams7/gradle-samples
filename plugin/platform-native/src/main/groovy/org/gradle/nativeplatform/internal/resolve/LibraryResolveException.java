@@ -16,8 +16,8 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
-import org.gradle.internal.exceptions.DefaultMultiCauseException;
 import org.gradle.internal.exceptions.Contextual;
+import org.gradle.internal.exceptions.DefaultMultiCauseException;
 
 @Contextual
 class LibraryResolveException extends DefaultMultiCauseException {

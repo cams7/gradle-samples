@@ -16,14 +16,19 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
-import org.gradle.api.Transformer;
-import org.gradle.internal.operations.BuildOperationProcessor;
-import org.gradle.nativeplatform.toolchain.internal.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.gradle.api.Transformer;
+import org.gradle.internal.operations.BuildOperationProcessor;
+import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
+import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
+import org.gradle.nativeplatform.toolchain.internal.NativeCompiler;
+import org.gradle.nativeplatform.toolchain.internal.OptionsFileArgsWriter;
 
 class GccCompatibleNativeCompiler<T extends NativeCompileSpec> extends
 		NativeCompiler<T> {

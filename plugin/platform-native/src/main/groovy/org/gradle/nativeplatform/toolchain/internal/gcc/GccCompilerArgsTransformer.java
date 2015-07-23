@@ -16,14 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
 import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
 import org.gradle.nativeplatform.toolchain.internal.MacroArgsConverter;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * Maps common options for C/C++ compiling with GCC

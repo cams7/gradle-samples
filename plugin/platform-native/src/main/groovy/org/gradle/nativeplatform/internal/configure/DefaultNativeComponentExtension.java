@@ -18,9 +18,9 @@ package org.gradle.nativeplatform.internal.configure;
 
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
+import org.gradle.nativeplatform.NativeComponentExtension;
 import org.gradle.nativeplatform.NativeExecutableSpec;
 import org.gradle.nativeplatform.NativeLibrarySpec;
-import org.gradle.nativeplatform.NativeComponentExtension;
 
 public class DefaultNativeComponentExtension implements
 		NativeComponentExtension {

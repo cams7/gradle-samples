@@ -16,11 +16,11 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.apache.commons.io.FileUtils;
-import org.gradle.api.UncheckedIOException;
-
 import java.io.File;
 import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.gradle.api.UncheckedIOException;
 
 public class PCHObjectDirectoryGeneratorUtil {
 	public static File generatePCHObjectDirectory(File tempDir,

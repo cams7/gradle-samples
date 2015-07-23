@@ -18,10 +18,10 @@ package org.gradle.nativeplatform.internal.resolve;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.Project;
 import org.gradle.api.internal.DefaultDomainObjectSet;
-import org.gradle.nativeplatform.NativeLibrarySpec;
+import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
-import org.gradle.nativeplatform.NativeBinarySpec;
+import org.gradle.nativeplatform.NativeLibrarySpec;
 import org.gradle.platform.base.ComponentSpecContainer;
 
 public class ProjectLibraryBinaryLocator implements LibraryBinaryLocator {

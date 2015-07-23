@@ -16,16 +16,17 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import com.google.common.base.Joiner;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStream;
+
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.process.internal.ExecAction;
 import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.process.internal.ExecException;
 import org.gradle.util.GFileUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
+import com.google.common.base.Joiner;
 
 public class DefaultCommandLineToolInvocationWorker implements
 		CommandLineToolInvocationWorker {

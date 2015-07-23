@@ -16,15 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.gradle.api.Action;
-import org.gradle.internal.Actions;
-import org.gradle.internal.operations.logging.BuildOperationLogger;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.gradle.api.Action;
+import org.gradle.internal.Actions;
+import org.gradle.internal.operations.logging.BuildOperationLogger;
 
 public class DefaultMutableCommandLineToolContext implements
 		MutableCommandLineToolContext {

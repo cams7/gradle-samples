@@ -15,6 +15,8 @@
  */
 package org.gradle.nativeplatform.test.internal;
 
+import java.io.File;
+
 import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.internal.AbstractNativeBinarySpec;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
@@ -26,8 +28,6 @@ import org.gradle.nativeplatform.test.NativeTestSuiteSpec;
 import org.gradle.nativeplatform.test.tasks.RunTestExecutable;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
-
-import java.io.File;
 
 public abstract class DefaultNativeTestSuiteBinarySpec extends
 		AbstractNativeBinarySpec implements NativeTestSuiteBinarySpecInternal {

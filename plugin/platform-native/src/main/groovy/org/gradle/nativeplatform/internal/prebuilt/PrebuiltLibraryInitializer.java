@@ -16,6 +16,10 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.gradle.api.Action;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.BuildType;
@@ -26,10 +30,6 @@ import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.platform.internal.NativePlatforms;
 import org.gradle.platform.base.internal.BinaryNamingSchemeBuilder;
 import org.gradle.platform.base.internal.DefaultBinaryNamingSchemeBuilder;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 // TODO:DAZ We shouldn't be instantiating all binary instances: instead should be instantiating required binary instance when resolving
 public class PrebuiltLibraryInitializer implements Action<PrebuiltLibrary> {

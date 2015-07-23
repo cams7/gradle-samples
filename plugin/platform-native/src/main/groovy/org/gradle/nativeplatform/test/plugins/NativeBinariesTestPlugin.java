@@ -16,13 +16,22 @@
 
 package org.gradle.nativeplatform.test.plugins;
 
-import org.gradle.api.*;
+import java.io.File;
+
+import org.gradle.api.Action;
+import org.gradle.api.Incubating;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.service.ServiceRegistry;
 import org.gradle.language.base.plugins.LifecycleBasePlugin;
 import org.gradle.language.nativeplatform.DependentSourceSet;
-import org.gradle.model.*;
+import org.gradle.model.Finalize;
+import org.gradle.model.Model;
+import org.gradle.model.Mutate;
+import org.gradle.model.RuleSource;
 import org.gradle.model.collection.CollectionBuilder;
 import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
@@ -34,8 +43,6 @@ import org.gradle.platform.base.BinaryContainer;
 import org.gradle.platform.base.internal.BinaryNamingScheme;
 import org.gradle.platform.base.internal.test.DefaultTestSuiteContainer;
 import org.gradle.platform.base.test.TestSuiteContainer;
-
-import java.io.File;
 
 /**
  * A plugin that sets up the infrastructure for testing native binaries with

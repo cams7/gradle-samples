@@ -16,7 +16,18 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc.version;
 
-import com.google.common.base.Joiner;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.gradle.api.UncheckedIOException;
 import org.gradle.nativeplatform.platform.internal.ArchitectureInternal;
 import org.gradle.nativeplatform.platform.internal.Architectures;
@@ -27,13 +38,7 @@ import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.util.TreeVisitor;
 import org.gradle.util.VersionNumber;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.common.base.Joiner;
 
 /**
  * Given a File pointing to an (existing) gcc/g++/clang/clang++ binary, extracts

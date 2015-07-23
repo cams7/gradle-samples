@@ -15,14 +15,19 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.toolchain.GccPlatformToolChain;
 import org.gradle.nativeplatform.toolchain.internal.ToolType;
 import org.gradle.nativeplatform.toolchain.internal.tools.DefaultGccCommandLineToolConfiguration;
 import org.gradle.nativeplatform.toolchain.internal.tools.GccCommandLineToolConfigurationInternal;
 import org.gradle.nativeplatform.toolchain.internal.tools.ToolRegistry;
-
-import java.util.*;
 
 public class DefaultGccPlatformToolChain implements GccPlatformToolChain,
 		ToolRegistry {

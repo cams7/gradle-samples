@@ -15,14 +15,21 @@
  */
 package org.gradle.nativeplatform.internal.resolve;
 
+import java.util.Set;
+
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.internal.reflect.Instantiator;
-import org.gradle.nativeplatform.*;
+import org.gradle.nativeplatform.BuildType;
+import org.gradle.nativeplatform.Flavor;
+import org.gradle.nativeplatform.NativeBinarySpec;
+import org.gradle.nativeplatform.NativeDependencySet;
+import org.gradle.nativeplatform.NativeLibraryBinary;
+import org.gradle.nativeplatform.NativeLibraryRequirement;
+import org.gradle.nativeplatform.SharedLibraryBinary;
+import org.gradle.nativeplatform.StaticLibraryBinary;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.util.GUtil;
-
-import java.util.Set;
 
 class DefaultLibraryResolver {
 	@SuppressWarnings("unused")

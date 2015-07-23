@@ -16,13 +16,13 @@
 
 package org.gradle.nativeplatform;
 
+import java.util.Collection;
+
 import org.gradle.api.Incubating;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.platform.base.BinarySpec;
-
-import java.util.Collection;
 
 /**
  * Represents a binary artifact that is the result of building a native

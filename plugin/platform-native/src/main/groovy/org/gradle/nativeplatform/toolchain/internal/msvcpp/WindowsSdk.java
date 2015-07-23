@@ -16,12 +16,12 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+
 import org.gradle.api.Named;
 import org.gradle.nativeplatform.platform.internal.ArchitectureInternal;
 import org.gradle.nativeplatform.platform.internal.NativePlatformInternal;
 import org.gradle.util.VersionNumber;
-
-import java.io.File;
 
 public class WindowsSdk implements Named {
 	private static final String[] BINPATHS_X86 = { "bin/x86", "Bin" };

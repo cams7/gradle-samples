@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.internal;
 
+import java.io.File;
+
 import org.apache.commons.io.FilenameUtils;
 import org.gradle.internal.hash.HashUtil;
-
-import java.io.File;
 
 public class CompilerOutputFileNamingScheme {
 	private String objectFileNameSuffix;

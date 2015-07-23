@@ -15,6 +15,13 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
+import static java.util.Arrays.asList;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.gradle.api.Action;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.internal.Actions;
@@ -39,13 +46,6 @@ import org.gradle.platform.base.internal.toolchain.ToolChainAvailability;
 import org.gradle.process.internal.ExecActionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 /**
  * A tool chain that has GCC semantics.

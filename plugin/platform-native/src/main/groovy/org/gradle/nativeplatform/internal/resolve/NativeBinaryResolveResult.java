@@ -16,16 +16,16 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
-import org.gradle.api.Transformer;
-import org.gradle.api.specs.Spec;
-import org.gradle.nativeplatform.NativeLibraryBinary;
-import org.gradle.nativeplatform.NativeDependencySet;
-import org.gradle.nativeplatform.NativeBinarySpec;
-import org.gradle.util.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import org.gradle.api.Transformer;
+import org.gradle.api.specs.Spec;
+import org.gradle.nativeplatform.NativeBinarySpec;
+import org.gradle.nativeplatform.NativeDependencySet;
+import org.gradle.nativeplatform.NativeLibraryBinary;
+import org.gradle.util.CollectionUtils;
 
 public class NativeBinaryResolveResult {
 	private final NativeBinarySpec target;

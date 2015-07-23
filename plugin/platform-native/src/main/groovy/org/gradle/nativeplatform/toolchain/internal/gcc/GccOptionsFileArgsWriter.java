@@ -16,14 +16,15 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
-import com.google.common.collect.Lists;
-import org.gradle.platform.base.internal.toolchain.ArgWriter;
-import org.gradle.nativeplatform.toolchain.internal.OptionsFileArgsWriter;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.gradle.nativeplatform.toolchain.internal.OptionsFileArgsWriter;
+import org.gradle.platform.base.internal.toolchain.ArgWriter;
+
+import com.google.common.collect.Lists;
 
 /**
  * Uses an option file for arguments passed to GCC if possible. Certain GCC

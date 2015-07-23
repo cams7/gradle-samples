@@ -15,6 +15,8 @@
  */
 
 package org.gradle.nativeplatform.tasks
+import javax.inject.Inject
+
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.Incubating
@@ -29,10 +31,8 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.nativeintegration.filesystem.FileSystem
 import org.gradle.internal.os.OperatingSystem
 import org.gradle.internal.reflect.Instantiator
-import org.gradle.nativeplatform.toolchain.NativeToolChain
 import org.gradle.nativeplatform.toolchain.Gcc
-
-import javax.inject.Inject
+import org.gradle.nativeplatform.toolchain.NativeToolChain
 /**
  * Installs an executable with it's dependent libraries so it can be easily executed.
  */

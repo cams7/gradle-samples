@@ -16,21 +16,24 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.api.Transformer;
-import org.gradle.api.internal.tasks.SimpleWorkResult;
-import org.gradle.internal.operations.BuildOperationProcessor;
-import org.gradle.internal.operations.BuildOperationQueue;
-import org.gradle.language.base.internal.compile.Compiler;
-import org.gradle.api.tasks.WorkResult;
-import org.gradle.nativeplatform.internal.LinkerSpec;
-import org.gradle.nativeplatform.internal.SharedLibraryLinkerSpec;
-import org.gradle.nativeplatform.toolchain.internal.*;
+import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
+import org.gradle.api.Transformer;
+import org.gradle.api.internal.tasks.SimpleWorkResult;
+import org.gradle.api.tasks.WorkResult;
+import org.gradle.internal.operations.BuildOperationProcessor;
+import org.gradle.internal.operations.BuildOperationQueue;
+import org.gradle.language.base.internal.compile.Compiler;
+import org.gradle.nativeplatform.internal.LinkerSpec;
+import org.gradle.nativeplatform.internal.SharedLibraryLinkerSpec;
+import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 
 class LinkExeLinker implements Compiler<LinkerSpec> {
 

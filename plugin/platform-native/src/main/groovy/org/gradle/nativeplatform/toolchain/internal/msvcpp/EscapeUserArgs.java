@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.util.List;
+
 import org.gradle.api.Transformer;
 import org.gradle.util.CollectionUtils;
-
-import java.util.List;
 
 class EscapeUserArgs implements Transformer<String, String> {
 	public static String escapeUserArg(String original) {

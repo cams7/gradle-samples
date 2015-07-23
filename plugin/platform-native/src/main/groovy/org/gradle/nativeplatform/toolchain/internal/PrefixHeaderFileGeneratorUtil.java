@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.Transformer;
 import org.gradle.api.UncheckedIOException;
 import org.gradle.util.CollectionUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
 
 public class PrefixHeaderFileGeneratorUtil {
 	public static void generatePCHFile(Set<String> headers, File headerFile) {

@@ -16,7 +16,12 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.io.IOUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Transformer;
@@ -24,11 +29,7 @@ import org.gradle.api.UncheckedIOException;
 import org.gradle.platform.base.internal.toolchain.ArgWriter;
 import org.gradle.util.GFileUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class OptionsFileArgsWriter implements Action<List<String>> {
 	private final Transformer<ArgWriter, PrintWriter> argWriterFactory;

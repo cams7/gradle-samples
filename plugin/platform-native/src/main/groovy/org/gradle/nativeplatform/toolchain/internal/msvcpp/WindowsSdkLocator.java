@@ -15,9 +15,9 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
-
 import java.io.File;
+
+import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 
 public interface WindowsSdkLocator {
 

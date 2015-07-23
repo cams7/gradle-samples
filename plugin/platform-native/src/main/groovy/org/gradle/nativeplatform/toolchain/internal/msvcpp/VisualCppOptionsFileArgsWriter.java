@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import org.gradle.platform.base.internal.toolchain.ArgWriter;
-import org.gradle.nativeplatform.toolchain.internal.OptionsFileArgsWriter;
-
 import java.io.File;
+
+import org.gradle.nativeplatform.toolchain.internal.OptionsFileArgsWriter;
+import org.gradle.platform.base.internal.toolchain.ArgWriter;
 
 /**
  * Uses an option file for arguments passed to Visual C++.

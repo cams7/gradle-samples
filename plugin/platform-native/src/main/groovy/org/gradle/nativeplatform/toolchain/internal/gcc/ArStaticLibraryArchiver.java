@@ -16,6 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.tasks.SimpleWorkResult;
 import org.gradle.api.tasks.WorkResult;
@@ -27,10 +31,6 @@ import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A static library archiver based on the GNU 'ar' utility

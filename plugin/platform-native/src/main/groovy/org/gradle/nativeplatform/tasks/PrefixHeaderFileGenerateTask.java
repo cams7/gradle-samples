@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.tasks;
 
+import java.io.File;
+import java.util.Set;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.nativeplatform.toolchain.internal.PrefixHeaderFileGeneratorUtil;
-
-import java.io.File;
-import java.util.Set;
 
 /**
  * Generates a prefix header file from a list of headers to be precompiled.

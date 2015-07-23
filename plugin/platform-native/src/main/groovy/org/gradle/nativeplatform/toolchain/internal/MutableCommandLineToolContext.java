@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.gradle.api.Action;
-
 import java.io.File;
 import java.util.List;
+
+import org.gradle.api.Action;
 
 public interface MutableCommandLineToolContext extends CommandLineToolContext {
 

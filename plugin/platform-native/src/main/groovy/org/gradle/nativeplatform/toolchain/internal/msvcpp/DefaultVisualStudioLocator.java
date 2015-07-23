@@ -16,9 +16,17 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.rubygrapefruit.platform.MissingRegistryEntryException;
 import net.rubygrapefruit.platform.SystemInfo;
 import net.rubygrapefruit.platform.WindowsRegistry;
+
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.nativeplatform.platform.Architecture;
 import org.gradle.nativeplatform.platform.internal.Architectures;
@@ -27,9 +35,6 @@ import org.gradle.util.TreeVisitor;
 import org.gradle.util.VersionNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.*;
 
 public class DefaultVisualStudioLocator implements VisualStudioLocator {
 	private static final Logger LOGGER = LoggerFactory

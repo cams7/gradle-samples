@@ -16,6 +16,10 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.AbstractBuildableModelElement;
 import org.gradle.api.internal.file.collections.FileCollectionAdapter;
@@ -26,10 +30,6 @@ import org.gradle.nativeplatform.Flavor;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.platform.NativePlatform;
-
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
 
 public abstract class AbstractPrebuiltLibraryBinary extends
 		AbstractBuildableModelElement implements NativeLibraryBinary {

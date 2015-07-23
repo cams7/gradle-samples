@@ -16,6 +16,8 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import java.io.File;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.collections.SimpleFileCollection;
 import org.gradle.nativeplatform.BuildType;
@@ -23,8 +25,6 @@ import org.gradle.nativeplatform.Flavor;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.PrebuiltStaticLibraryBinary;
 import org.gradle.nativeplatform.platform.NativePlatform;
-
-import java.io.File;
 
 public class DefaultPrebuiltStaticLibraryBinary extends
 		AbstractPrebuiltLibraryBinary implements PrebuiltStaticLibraryBinary {

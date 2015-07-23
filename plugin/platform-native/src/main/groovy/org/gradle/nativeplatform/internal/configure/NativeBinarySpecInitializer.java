@@ -15,6 +15,8 @@
  */
 package org.gradle.nativeplatform.internal.configure;
 
+import java.io.File;
+
 import org.gradle.api.Action;
 import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.NativeExecutableBinarySpec;
@@ -23,8 +25,6 @@ import org.gradle.nativeplatform.StaticLibraryBinarySpec;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 import org.gradle.platform.base.internal.BinaryNamingScheme;
-
-import java.io.File;
 
 public class NativeBinarySpecInitializer implements Action<NativeBinarySpec> {
 	private final File binariesOutputDir;

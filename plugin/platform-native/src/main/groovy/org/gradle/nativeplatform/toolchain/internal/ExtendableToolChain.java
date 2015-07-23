@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import java.io.File;
+
 import org.gradle.api.Action;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.internal.operations.BuildOperationProcessor;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.listener.ActionBroadcast;
 import org.gradle.nativeplatform.toolchain.NativePlatformToolChain;
-
-import java.io.File;
 
 public abstract class ExtendableToolChain<T extends NativePlatformToolChain>
 		implements NativeToolChainInternal {

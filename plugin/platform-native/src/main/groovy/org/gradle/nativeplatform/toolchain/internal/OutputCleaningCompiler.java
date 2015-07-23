@@ -16,12 +16,12 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import org.gradle.api.internal.tasks.SimpleWorkResult;
-import org.gradle.language.base.internal.compile.Compiler;
-import org.gradle.api.tasks.WorkResult;
-import org.gradle.nativeplatform.internal.CompilerOutputFileNamingScheme;
-
 import java.io.File;
+
+import org.gradle.api.internal.tasks.SimpleWorkResult;
+import org.gradle.api.tasks.WorkResult;
+import org.gradle.language.base.internal.compile.Compiler;
+import org.gradle.nativeplatform.internal.CompilerOutputFileNamingScheme;
 
 public class OutputCleaningCompiler<T extends NativeCompileSpec> implements
 		Compiler<T> {

@@ -15,7 +15,8 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.gradle.nativeplatform.NativeComponentSpec;
 import org.gradle.nativeplatform.ObjectFile;
 import org.gradle.platform.base.TransformationFileType;
@@ -23,7 +24,7 @@ import org.gradle.platform.base.component.BaseComponentSpec;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
 import org.gradle.util.GUtil;
 
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 public abstract class AbstractNativeComponentSpec extends BaseComponentSpec
 		implements NativeComponentSpec, ComponentSpecInternal {

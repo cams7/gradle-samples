@@ -16,14 +16,14 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
+import java.io.File;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.nativeplatform.BuildType;
 import org.gradle.nativeplatform.Flavor;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.PrebuiltSharedLibraryBinary;
 import org.gradle.nativeplatform.platform.NativePlatform;
-
-import java.io.File;
 
 public class DefaultPrebuiltSharedLibraryBinary extends
 		AbstractPrebuiltLibraryBinary implements PrebuiltSharedLibraryBinary {

@@ -16,6 +16,9 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.gradle.api.GradleException;
@@ -24,9 +27,6 @@ import org.gradle.api.UncheckedIOException;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CPCHCompileSpec;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
-
-import java.io.File;
-import java.io.IOException;
 
 public class VisualCppPCHSourceFileGeneratorUtil {
 	private static SourceFileExtensionCalculator calculator = new SourceFileExtensionCalculator();

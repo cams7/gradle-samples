@@ -16,6 +16,12 @@
 
 package org.gradle.nativeplatform.internal;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.collections.SimpleFileCollection;
 import org.gradle.nativeplatform.StaticLibraryBinary;
@@ -24,12 +30,6 @@ import org.gradle.nativeplatform.tasks.CreateStaticLibrary;
 import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 public class DefaultStaticLibraryBinarySpec extends
 		AbstractNativeLibraryBinarySpec implements StaticLibraryBinary,
