@@ -20,26 +20,27 @@ import org.gradle.language.base.internal.compile.*;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.util.TreeVisitor;
 
-public class DefaultResolvedCompiler<C extends CompileSpec> implements ResolvedTool<org.gradle.language.base.internal.compile.Compiler<C>> {
-    private final ToolProvider provider;
-    private final Class<C> specType;
+public class DefaultResolvedCompiler<C extends CompileSpec> implements
+		ResolvedTool<org.gradle.language.base.internal.compile.Compiler<C>> {
+	private final ToolProvider provider;
+	private final Class<C> specType;
 
-    public DefaultResolvedCompiler(ToolProvider provider, Class<C> specType) {
-        this.provider = provider;
-        this.specType = specType;
-    }
+	public DefaultResolvedCompiler(ToolProvider provider, Class<C> specType) {
+		this.provider = provider;
+		this.specType = specType;
+	}
 
-    @Override
-    public Compiler<C> get() {
-        return provider.newCompiler(specType);
-    }
+	@Override
+	public Compiler<C> get() {
+		return provider.newCompiler(specType);
+	}
 
-    @Override
-    public boolean isAvailable() {
-        return true;
-    }
+	@Override
+	public boolean isAvailable() {
+		return true;
+	}
 
-    @Override
-    public void explain(TreeVisitor<? super String> visitor) {
-    }
+	@Override
+	public void explain(TreeVisitor<? super String> visitor) {
+	}
 }

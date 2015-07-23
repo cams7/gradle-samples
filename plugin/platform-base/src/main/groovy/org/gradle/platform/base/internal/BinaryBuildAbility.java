@@ -19,6 +19,7 @@ package org.gradle.platform.base.internal;
 import org.gradle.util.TreeVisitor;
 
 public interface BinaryBuildAbility {
-    boolean isBuildable();
-    void explain(TreeVisitor<? super String> visitor);
+	boolean isBuildable();
+
+	void explain(TreeVisitor<? super String> visitor);
 }

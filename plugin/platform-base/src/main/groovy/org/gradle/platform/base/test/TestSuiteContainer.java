@@ -23,5 +23,6 @@ import org.gradle.api.NamedDomainObjectContainer;
  * A container of {@link TestSuiteSpec} instances.
  */
 @Incubating
-public interface TestSuiteContainer extends NamedDomainObjectContainer<TestSuiteSpec> {
+public interface TestSuiteContainer extends
+		NamedDomainObjectContainer<TestSuiteSpec> {
 }

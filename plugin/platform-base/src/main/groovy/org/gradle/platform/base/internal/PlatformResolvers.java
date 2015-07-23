@@ -19,6 +19,8 @@ package org.gradle.platform.base.internal;
 import org.gradle.platform.base.Platform;
 
 public interface PlatformResolvers {
-    void register(PlatformResolver<?> platformResolver);
-    <T extends Platform> T resolve(Class<T> type, PlatformRequirement platformRequirement);
+	void register(PlatformResolver<?> platformResolver);
+
+	<T extends Platform> T resolve(Class<T> type,
+			PlatformRequirement platformRequirement);
 }

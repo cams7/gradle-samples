@@ -22,11 +22,14 @@ import org.gradle.api.GradleException;
  * Thrown when a model element cannot be instantiated for some reason.
  */
 public class ModelInstantiationException extends GradleException {
-    public ModelInstantiationException(String message) {
-        this(message, null);
-    }
 
-    public ModelInstantiationException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	private static final long serialVersionUID = 1L;
+
+	public ModelInstantiationException(String message) {
+		this(message, null);
+	}
+
+	public ModelInstantiationException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

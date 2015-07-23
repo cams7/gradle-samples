@@ -24,5 +24,5 @@ import org.gradle.api.Named;
  */
 @Incubating
 public interface ComponentSpecIdentifier extends Named {
-    String getProjectPath();
+	String getProjectPath();
 }

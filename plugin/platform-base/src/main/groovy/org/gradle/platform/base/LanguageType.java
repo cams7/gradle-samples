@@ -24,18 +24,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The following example demonstrates how to register a custom language type using a plugin with a
- * {@link LanguageType} annotation.
+ * The following example demonstrates how to register a custom language type
+ * using a plugin with a {@link LanguageType} annotation.
  *
  * <pre autoTested=''>
  * import org.gradle.model.*
  * import org.gradle.model.collection.*
- *
+ * 
  * interface CustomLanguageSourceSet extends LanguageSourceSet {}
  * class DefaultCustomLanguageSourceSet extends BaseLanguageSourceSet implements CustomLanguageSourceSet {}
- *
+ * 
  * apply plugin: MySamplePlugin
- *
+ * 
  * class MySamplePlugin extends RuleSource {
  *     {@literal @}LanguageType
  *     void declareCustomLanguage(LanguageTypeBuilder<CustomLanguageSourceSet> builder) {

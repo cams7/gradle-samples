@@ -22,11 +22,14 @@ import org.gradle.api.GradleException;
  * Thrown when a component model is declared in an invalid way.
  */
 public class InvalidModelException extends GradleException {
-    public InvalidModelException(String message) {
-        super(message);
-    }
 
-    public InvalidModelException(String message, Exception cause) {
-        super(message, cause);
-    }
+	private static final long serialVersionUID = 1L;
+
+	public InvalidModelException(String message) {
+		super(message);
+	}
+
+	public InvalidModelException(String message, Exception cause) {
+		super(message, cause);
+	}
 }

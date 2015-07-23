@@ -19,6 +19,7 @@ package org.gradle.platform.base.internal.builder;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.platform.base.LanguageTypeBuilder;
 
-public interface LanguageTypeBuilderInternal<T extends LanguageSourceSet> extends LanguageTypeBuilder<T>, TypeBuilderInternal<T> {
-    String getLanguageName();
+public interface LanguageTypeBuilderInternal<T extends LanguageSourceSet>
+		extends LanguageTypeBuilder<T>, TypeBuilderInternal<T> {
+	String getLanguageName();
 }

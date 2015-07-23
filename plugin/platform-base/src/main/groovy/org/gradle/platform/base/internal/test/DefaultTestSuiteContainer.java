@@ -21,8 +21,10 @@ import org.gradle.internal.reflect.Instantiator;
 import org.gradle.platform.base.test.TestSuiteContainer;
 import org.gradle.platform.base.test.TestSuiteSpec;
 
-public class DefaultTestSuiteContainer extends DefaultPolymorphicDomainObjectContainer<TestSuiteSpec> implements TestSuiteContainer {
-    public DefaultTestSuiteContainer(Instantiator instantiator) {
-        super(TestSuiteSpec.class, instantiator);
-    }
+public class DefaultTestSuiteContainer extends
+		DefaultPolymorphicDomainObjectContainer<TestSuiteSpec> implements
+		TestSuiteContainer {
+	public DefaultTestSuiteContainer(Instantiator instantiator) {
+		super(TestSuiteSpec.class, instantiator);
+	}
 }

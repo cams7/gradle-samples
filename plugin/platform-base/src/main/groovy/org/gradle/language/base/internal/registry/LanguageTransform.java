@@ -27,26 +27,27 @@ import java.util.Map;
  * A registered language transformation.
  */
 public interface LanguageTransform<U extends LanguageSourceSet, V extends TransformationFileType> {
-    /**
-     * The interface type of the language source set.
-     */
-    Class<U> getSourceSetType();
+	/**
+	 * The interface type of the language source set.
+	 */
+	Class<U> getSourceSetType();
 
-    /**
-     * The output type generated from these language sources.
-     */
-    Class<V> getOutputType();
+	/**
+	 * The output type generated from these language sources.
+	 */
+	Class<V> getOutputType();
 
-    /**
-     * The tool extensions that should be added to any binary with these language sources.
-     */
-    Map<String, Class<?>> getBinaryTools();
+	/**
+	 * The tool extensions that should be added to any binary with these
+	 * language sources.
+	 */
+	Map<String, Class<?>> getBinaryTools();
 
-    /**
-     * The task used to transform sources into code for the target runtime.
-     */
-    SourceTransformTaskConfig getTransformTask();
+	/**
+	 * The task used to transform sources into code for the target runtime.
+	 */
+	SourceTransformTaskConfig getTransformTask();
 
-    // TODO:DAZ This should be declarative, not imperative
-    boolean applyToBinary(BinarySpec binary);
+	// TODO:DAZ This should be declarative, not imperative
+	boolean applyToBinary(BinarySpec binary);
 }

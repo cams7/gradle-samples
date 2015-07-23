@@ -51,145 +51,202 @@ import java.util.Set;
 /**
  * Base plugin for language support.
  *
- * Adds a {@link org.gradle.platform.base.BinaryContainer} named {@code binaries} to the project. Adds a {@link org.gradle.language.base.ProjectSourceSet} named {@code sources} to the project.
+ * Adds a {@link org.gradle.platform.base.BinaryContainer} named
+ * {@code binaries} to the project. Adds a
+ * {@link org.gradle.language.base.ProjectSourceSet} named {@code sources} to
+ * the project.
  *
- * For each binary instance added to the binaries container, registers a lifecycle task to create that binary.
+ * For each binary instance added to the binaries container, registers a
+ * lifecycle task to create that binary.
  */
 @Incubating
 public class LanguageBasePlugin implements Plugin<Project> {
 
-    private final Instantiator instantiator;
-    private final ModelRegistry modelRegistry;
+	private final Instantiator instantiator;
+	private final ModelRegistry modelRegistry;
 
-    @Inject
-    public LanguageBasePlugin(Instantiator instantiator, ModelRegistry modelRegistry) {
-        this.instantiator = instantiator;
-        this.modelRegistry = modelRegistry;
-    }
+	@Inject
+	public LanguageBasePlugin(Instantiator instantiator,
+			ModelRegistry modelRegistry) {
+		this.instantiator = instantiator;
+		this.modelRegistry = modelRegistry;
+	}
 
-    public void apply(final Project target) {
-        target.getPluginManager().apply(LifecycleBasePlugin.class);
-        target.getExtensions().create("sources", DefaultProjectSourceSet.class);
+	public void apply(final Project target) {
+		target.getPluginManager().apply(LifecycleBasePlugin.class);
+		target.getExtensions().create("sources", DefaultProjectSourceSet.class);
 
-        DefaultBinaryContainer binaries = target.getExtensions().create("binaries", DefaultBinaryContainer.class, instantiator);
-        applyRules(modelRegistry, binaries);
-    }
+		DefaultBinaryContainer binaries = target.getExtensions().create(
+				"binaries", DefaultBinaryContainer.class, instantiator);
+		applyRules(modelRegistry, binaries);
+	}
 
-    private static void applyRules(ModelRegistry modelRegistry, DefaultBinaryContainer binaries) {
-        final String descriptor = LanguageBasePlugin.class.getName() + ".apply()";
-        final ModelRuleDescriptor ruleDescriptor = new SimpleModelRuleDescriptor(descriptor);
-        ModelPath binariesPath = ModelPath.path("binaries");
-        BridgedCollections.dynamicTypes(
-                modelRegistry,
-                binariesPath,
-                descriptor,
-                ModelType.of(DefaultBinaryContainer.class),
-                ModelType.of(DefaultBinaryContainer.class),
-                ModelType.of(BinarySpec.class),
-                binaries,
-                Named.Namer.INSTANCE,
-                BridgedCollections.itemDescriptor(descriptor)
-        );
+	private static void applyRules(ModelRegistry modelRegistry,
+			DefaultBinaryContainer binaries) {
+		final String descriptor = LanguageBasePlugin.class.getName()
+				+ ".apply()";
+		final ModelRuleDescriptor ruleDescriptor = new SimpleModelRuleDescriptor(
+				descriptor);
+		ModelPath binariesPath = ModelPath.path("binaries");
+		BridgedCollections.dynamicTypes(modelRegistry, binariesPath,
+				descriptor, ModelType.of(DefaultBinaryContainer.class),
+				ModelType.of(DefaultBinaryContainer.class),
+				ModelType.of(BinarySpec.class), binaries, Named.Namer.INSTANCE,
+				BridgedCollections.itemDescriptor(descriptor));
 
-        modelRegistry.configure(ModelActionRole.Defaults, DirectNodeModelAction.of(ModelReference.of(binariesPath), ruleDescriptor, new Action<MutableModelNode>() {
-            @Override
-            public void execute(MutableModelNode binariesNode) {
-                binariesNode.applyToAllLinks(ModelActionRole.Finalize, BiActionBackedModelAction.single(ModelReference.of(BinarySpec.class), ruleDescriptor, ModelReference.of(ITaskFactory.class), new BiAction<BinarySpec, ITaskFactory>() {
-                    @Override
-                    public void execute(BinarySpec binary, ITaskFactory taskFactory) {
-                        if (!((BinarySpecInternal) binary).isLegacyBinary()) {
-                            TaskInternal binaryLifecycleTask = taskFactory.create(binary.getName(), DefaultTask.class);
-                            binaryLifecycleTask.setGroup(LifecycleBasePlugin.BUILD_GROUP);
-                            binaryLifecycleTask.setDescription(String.format("Assembles %s.", binary));
-                            binary.setBuildTask(binaryLifecycleTask);
-                        }
-                    }
-                }));
+		modelRegistry.configure(ModelActionRole.Defaults, DirectNodeModelAction
+				.of(ModelReference.of(binariesPath), ruleDescriptor,
+						new Action<MutableModelNode>() {
+							@Override
+							public void execute(MutableModelNode binariesNode) {
+								binariesNode
+										.applyToAllLinks(
+												ModelActionRole.Finalize,
+												BiActionBackedModelAction.single(
+														ModelReference
+																.of(BinarySpec.class),
+														ruleDescriptor,
+														ModelReference
+																.of(ITaskFactory.class),
+														new BiAction<BinarySpec, ITaskFactory>() {
+															@Override
+															public void execute(
+																	BinarySpec binary,
+																	ITaskFactory taskFactory) {
+																if (!((BinarySpecInternal) binary)
+																		.isLegacyBinary()) {
+																	TaskInternal binaryLifecycleTask = taskFactory
+																			.create(binary
+																					.getName(),
+																					DefaultTask.class);
+																	binaryLifecycleTask
+																			.setGroup(LifecycleBasePlugin.BUILD_GROUP);
+																	binaryLifecycleTask
+																			.setDescription(String
+																					.format("Assembles %s.",
+																							binary));
+																	binary.setBuildTask(binaryLifecycleTask);
+																}
+															}
+														}));
 
-                binariesNode.applyToAllLinks(ModelActionRole.Initialize, DirectNodeModelAction.of(ModelReference.of(BinarySpec.class), new SimpleModelRuleDescriptor(descriptor + ".tasks"), new Action<MutableModelNode>() {
-                    @Override
-                    public void execute(MutableModelNode modelNode) {
-                        ModelPath binaryPath = modelNode.getPath();
-                        ModelPath taskNodePath = binaryPath.child("__tasks");
-                        ModelType<Collection<Task>> taskCollectionType = ModelTypes.collectionOf(Task.class);
-                        ModelReference<Collection<Task>> tasksNodeReference = ModelReference.of(taskNodePath, taskCollectionType);
-                        modelNode.addLink(ModelCreators.of(tasksNodeReference, BiActions.doNothing())
-                                        .withProjection(new UnmanagedModelProjection<Collection<Task>>(taskCollectionType))
-                                        .descriptor(descriptor + ".createTasksNode")
-                                        .build()
-                        );
-                        MutableModelNode link = modelNode.getLink(taskNodePath.getName());
-                        assert link != null;
-                        link.setPrivateData(taskCollectionType, modelNode.getPrivateData(ModelType.of(BinarySpec.class)).getTasks());
-                    }
-                }));
-            }
-        }));
-    }
+								binariesNode.applyToAllLinks(
+										ModelActionRole.Initialize,
+										DirectNodeModelAction.of(ModelReference
+												.of(BinarySpec.class),
+												new SimpleModelRuleDescriptor(
+														descriptor + ".tasks"),
+												new Action<MutableModelNode>() {
+													@Override
+													public void execute(
+															MutableModelNode modelNode) {
+														ModelPath binaryPath = modelNode
+																.getPath();
+														ModelPath taskNodePath = binaryPath
+																.child("__tasks");
+														ModelType<Collection<Task>> taskCollectionType = ModelTypes
+																.collectionOf(Task.class);
+														ModelReference<Collection<Task>> tasksNodeReference = ModelReference
+																.of(taskNodePath,
+																		taskCollectionType);
+														modelNode
+																.addLink(ModelCreators
+																		.of(tasksNodeReference,
+																				BiActions
+																						.doNothing())
+																		.withProjection(
+																				new UnmanagedModelProjection<Collection<Task>>(
+																						taskCollectionType))
+																		.descriptor(
+																				descriptor
+																						+ ".createTasksNode")
+																		.build());
+														MutableModelNode link = modelNode
+																.getLink(taskNodePath
+																		.getName());
+														assert link != null;
+														link.setPrivateData(
+																taskCollectionType,
+																modelNode
+																		.getPrivateData(
+																				ModelType
+																						.of(BinarySpec.class))
+																		.getTasks());
+													}
+												}));
+							}
+						}));
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
+	static class Rules extends RuleSource {
 
-        @Model
-        ProjectSourceSet sources(ExtensionContainer extensions) {
-            return extensions.getByType(ProjectSourceSet.class);
-        }
+		@Model
+		ProjectSourceSet sources(ExtensionContainer extensions) {
+			return extensions.getByType(ProjectSourceSet.class);
+		}
 
-        @Mutate
-        void copyBinaryTasksToTaskContainer(TaskContainer tasks, BinaryContainer binaries) {
-            for (BinarySpec binary : binaries) {
-                tasks.addAll(binary.getTasks());
-                Task buildTask = binary.getBuildTask();
-                if (buildTask != null) {
-                    tasks.add(buildTask);
-                }
-            }
-        }
+		@Mutate
+		void copyBinaryTasksToTaskContainer(TaskContainer tasks,
+				BinaryContainer binaries) {
+			for (BinarySpec binary : binaries) {
+				tasks.addAll(binary.getTasks());
+				Task buildTask = binary.getBuildTask();
+				if (buildTask != null) {
+					tasks.add(buildTask);
+				}
+			}
+		}
 
-        @Mutate
-        void attachBinariesToAssembleLifecycle(@Path("tasks.assemble") Task assemble, BinaryContainer binaries) {
-            List<BinarySpecInternal> notBuildable = Lists.newArrayList();
-            boolean hasBuildableBinaries = false;
-            for (BinarySpecInternal binary : binaries.withType(BinarySpecInternal.class)) {
-                if (!binary.isLegacyBinary()) {
-                    if (binary.isBuildable()) {
-                        assemble.dependsOn(binary);
-                        hasBuildableBinaries = true;
-                    } else {
-                        notBuildable.add(binary);
-                    }
-                }
-            }
-            if (!hasBuildableBinaries && !notBuildable.isEmpty()) {
-                assemble.doFirst(new CheckForNotBuildableBinariesAction(notBuildable));
-            }
-        }
+		@Mutate
+		void attachBinariesToAssembleLifecycle(
+				@Path("tasks.assemble") Task assemble, BinaryContainer binaries) {
+			List<BinarySpecInternal> notBuildable = Lists.newArrayList();
+			boolean hasBuildableBinaries = false;
+			for (BinarySpecInternal binary : binaries
+					.withType(BinarySpecInternal.class)) {
+				if (!binary.isLegacyBinary()) {
+					if (binary.isBuildable()) {
+						assemble.dependsOn(binary);
+						hasBuildableBinaries = true;
+					} else {
+						notBuildable.add(binary);
+					}
+				}
+			}
+			if (!hasBuildableBinaries && !notBuildable.isEmpty()) {
+				assemble.doFirst(new CheckForNotBuildableBinariesAction(
+						notBuildable));
+			}
+		}
 
-        private static class CheckForNotBuildableBinariesAction implements Action<Task> {
-            private final List<BinarySpecInternal> notBuildable;
+		private static class CheckForNotBuildableBinariesAction implements
+				Action<Task> {
+			private final List<BinarySpecInternal> notBuildable;
 
-            public CheckForNotBuildableBinariesAction(List<BinarySpecInternal> notBuildable) {
-                this.notBuildable = notBuildable;
-            }
+			public CheckForNotBuildableBinariesAction(
+					List<BinarySpecInternal> notBuildable) {
+				this.notBuildable = notBuildable;
+			}
 
-            @Override
-            public void execute(Task task) {
-                Set<? extends Task> taskDependencies = task.getTaskDependencies().getDependencies(task);
+			@Override
+			public void execute(Task task) {
+				Set<? extends Task> taskDependencies = task
+						.getTaskDependencies().getDependencies(task);
 
-                if (taskDependencies.isEmpty()) {
-                    TreeFormatter formatter = new TreeFormatter();
-                    formatter.node("No buildable binaries found");
-                    formatter.startChildren();
-                    for (BinarySpecInternal binary : notBuildable) {
-                        formatter.node(binary.getName());
-                        formatter.startChildren();
-                        binary.getBuildAbility().explain(formatter);
-                        formatter.endChildren();
-                    }
-                    formatter.endChildren();
-                    throw new GradleException(formatter.toString());
-                }
-            }
-        }
-    }
+				if (taskDependencies.isEmpty()) {
+					TreeFormatter formatter = new TreeFormatter();
+					formatter.node("No buildable binaries found");
+					formatter.startChildren();
+					for (BinarySpecInternal binary : notBuildable) {
+						formatter.node(binary.getName());
+						formatter.startChildren();
+						binary.getBuildAbility().explain(formatter);
+						formatter.endChildren();
+					}
+					formatter.endChildren();
+					throw new GradleException(formatter.toString());
+				}
+			}
+		}
+	}
 }

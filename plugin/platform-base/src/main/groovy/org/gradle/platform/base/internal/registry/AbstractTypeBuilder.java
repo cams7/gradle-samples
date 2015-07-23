@@ -20,22 +20,26 @@ import org.gradle.platform.base.InvalidModelException;
 import org.gradle.platform.base.internal.builder.TypeBuilderInternal;
 
 public abstract class AbstractTypeBuilder<T> implements TypeBuilderInternal<T> {
-    private final Class<?> markerAnnotation;
-    Class<? extends T> implementation;
+	private final Class<?> markerAnnotation;
+	Class<? extends T> implementation;
 
-    public AbstractTypeBuilder(Class<?> markerAnnotation){
-        this.markerAnnotation = markerAnnotation;
-    }
+	public AbstractTypeBuilder(Class<?> markerAnnotation) {
+		this.markerAnnotation = markerAnnotation;
+	}
 
-    public TypeBuilderInternal<T> defaultImplementation(Class<? extends T> implementation) {
-        if (this.implementation != null) {
-            throw new InvalidModelException(String.format("Method annotated with @%s cannot set default implementation multiple times.", markerAnnotation.getSimpleName()));
-        }
-        this.implementation = implementation;
-        return this;
-    }
+	public TypeBuilderInternal<T> defaultImplementation(
+			Class<? extends T> implementation) {
+		if (this.implementation != null) {
+			throw new InvalidModelException(
+					String.format(
+							"Method annotated with @%s cannot set default implementation multiple times.",
+							markerAnnotation.getSimpleName()));
+		}
+		this.implementation = implementation;
+		return this;
+	}
 
-    public Class<? extends T> getDefaultImplementation() {
-        return this.implementation;
-    }
+	public Class<? extends T> getDefaultImplementation() {
+		return this.implementation;
+	}
 }

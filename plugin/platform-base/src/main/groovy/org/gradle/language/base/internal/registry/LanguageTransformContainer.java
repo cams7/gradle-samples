@@ -21,5 +21,6 @@ import org.gradle.api.DomainObjectSet;
 /**
  * A registry of language transforms.
  */
-public interface LanguageTransformContainer extends DomainObjectSet<LanguageTransform<?, ?>> {
+public interface LanguageTransformContainer extends
+		DomainObjectSet<LanguageTransform<?, ?>> {
 }

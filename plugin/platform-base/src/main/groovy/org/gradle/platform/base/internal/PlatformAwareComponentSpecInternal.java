@@ -25,11 +25,13 @@ import java.util.List;
  * Defines Platform specific operations for ComponentSpecs
  */
 @Incubating
-public interface PlatformAwareComponentSpecInternal extends PlatformAwareComponentSpec {
-    /**
-     * Get the names of the targeted platforms that this component should be built for.
-     *
-     * @return the list of targeted platforms, may be empty but never null.
-     */
-    List<PlatformRequirement> getTargetPlatforms();
+public interface PlatformAwareComponentSpecInternal extends
+		PlatformAwareComponentSpec {
+	/**
+	 * Get the names of the targeted platforms that this component should be
+	 * built for.
+	 *
+	 * @return the list of targeted platforms, may be empty but never null.
+	 */
+	List<PlatformRequirement> getTargetPlatforms();
 }

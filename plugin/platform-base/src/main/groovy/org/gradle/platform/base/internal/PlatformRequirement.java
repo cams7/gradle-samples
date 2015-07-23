@@ -17,5 +17,5 @@
 package org.gradle.platform.base.internal;
 
 public interface PlatformRequirement {
-    String getPlatformName();
+	String getPlatformName();
 }

@@ -19,25 +19,25 @@ package org.gradle.platform.base.internal.toolchain;
 import org.gradle.util.TreeVisitor;
 
 public class DefaultResolvedTool<T> implements ResolvedTool<T> {
-    private final ToolProvider provider;
-    private final Class<T> toolType;
+	private final ToolProvider provider;
+	private final Class<T> toolType;
 
-    public DefaultResolvedTool(ToolProvider provider, Class<T> toolType) {
-        this.provider = provider;
-        this.toolType = toolType;
-    }
+	public DefaultResolvedTool(ToolProvider provider, Class<T> toolType) {
+		this.provider = provider;
+		this.toolType = toolType;
+	}
 
-    @Override
-    public T get() {
-        return provider.get(toolType);
-    }
+	@Override
+	public T get() {
+		return provider.get(toolType);
+	}
 
-    @Override
-    public boolean isAvailable() {
-        return true;
-    }
+	@Override
+	public boolean isAvailable() {
+		return true;
+	}
 
-    @Override
-    public void explain(TreeVisitor<? super String> visitor) {
-    }
+	@Override
+	public void explain(TreeVisitor<? super String> visitor) {
+	}
 }

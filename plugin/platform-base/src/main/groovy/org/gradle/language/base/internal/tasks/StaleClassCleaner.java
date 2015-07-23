@@ -20,24 +20,24 @@ import org.gradle.api.file.FileCollection;
 import java.io.File;
 
 public abstract class StaleClassCleaner {
-    private File destinationDir;
-    FileCollection source;
+	private File destinationDir;
+	FileCollection source;
 
-    public abstract void execute();
+	public abstract void execute();
 
-    public FileCollection getSource() {
-        return source;
-    }
+	public FileCollection getSource() {
+		return source;
+	}
 
-    public void setSource(FileCollection source) {
-        this.source = source;
-    }
+	public void setSource(FileCollection source) {
+		this.source = source;
+	}
 
-    public void setDestinationDir(File destinationDir) {
-        this.destinationDir = destinationDir;
-    }
+	public void setDestinationDir(File destinationDir) {
+		this.destinationDir = destinationDir;
+	}
 
-    public File getDestinationDir() {
-        return destinationDir;
-    }
+	public File getDestinationDir() {
+		return destinationDir;
+	}
 }

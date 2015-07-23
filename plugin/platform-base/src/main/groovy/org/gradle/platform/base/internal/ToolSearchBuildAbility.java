@@ -20,19 +20,19 @@ import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 import org.gradle.util.TreeVisitor;
 
 public class ToolSearchBuildAbility implements BinaryBuildAbility {
-    final ToolSearchResult result;
+	final ToolSearchResult result;
 
-    public ToolSearchBuildAbility(ToolSearchResult result) {
-        this.result = result;
-    }
+	public ToolSearchBuildAbility(ToolSearchResult result) {
+		this.result = result;
+	}
 
-    @Override
-    public boolean isBuildable() {
-        return result.isAvailable();
-    }
+	@Override
+	public boolean isBuildable() {
+		return result.isAvailable();
+	}
 
-    @Override
-    public void explain(TreeVisitor<? super String> visitor) {
-        result.explain(visitor);
-    }
+	@Override
+	public void explain(TreeVisitor<? super String> visitor) {
+		result.explain(visitor);
+	}
 }

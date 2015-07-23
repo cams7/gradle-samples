@@ -26,36 +26,42 @@ import org.gradle.api.internal.project.taskfactory.ITaskFactory;
 import org.gradle.platform.base.BinarySpec;
 import org.gradle.platform.base.BinaryTasksCollection;
 
-public class DefaultBinaryTasksCollection extends DefaultDomainObjectSet<Task> implements BinaryTasksCollection {
+public class DefaultBinaryTasksCollection extends DefaultDomainObjectSet<Task>
+		implements BinaryTasksCollection {
 
-    private final BinarySpec binary;
-    private final ITaskFactory taskFactory;
+	private final BinarySpec binary;
+	private final ITaskFactory taskFactory;
 
-    public DefaultBinaryTasksCollection(BinarySpec binarySpecInternal, ITaskFactory taskFactory) {
-        super(Task.class);
-        this.binary = binarySpecInternal;
-        this.taskFactory = taskFactory;
-    }
+	public DefaultBinaryTasksCollection(BinarySpec binarySpecInternal,
+			ITaskFactory taskFactory) {
+		super(Task.class);
+		this.binary = binarySpecInternal;
+		this.taskFactory = taskFactory;
+	}
 
-    public Task getBuild() {
-        return binary.getBuildTask();
-    }
+	public Task getBuild() {
+		return binary.getBuildTask();
+	}
 
-    public <T extends Task> T findSingleTaskWithType(Class<T> type) {
-        DomainObjectSet<T> tasks = withType(type);
-        if (tasks.size() == 0) {
-            return null;
-        }
-        if (tasks.size() > 1) {
-            throw new UnknownDomainObjectException(String.format("Multiple tasks with type '%s' found.", type.getSimpleName()));
-        }
-        return tasks.iterator().next();
-    }
+	public <T extends Task> T findSingleTaskWithType(Class<T> type) {
+		DomainObjectSet<T> tasks = withType(type);
+		if (tasks.size() == 0) {
+			return null;
+		}
+		if (tasks.size() > 1) {
+			throw new UnknownDomainObjectException(String.format(
+					"Multiple tasks with type '%s' found.",
+					type.getSimpleName()));
+		}
+		return tasks.iterator().next();
+	}
 
-    @Override
-    public <T extends Task> void create(String name, Class<T> type, Action<? super T> config) {
-        @SuppressWarnings("unchecked") T task = (T) taskFactory.create(name, (Class<TaskInternal>) type);
-        add(task);
-        config.execute(task);
-    }
+	@Override
+	public <T extends Task> void create(String name, Class<T> type,
+			Action<? super T> config) {
+		@SuppressWarnings("unchecked")
+		T task = (T) taskFactory.create(name, (Class<TaskInternal>) type);
+		add(task);
+		config.execute(task);
+	}
 }

@@ -20,7 +20,10 @@ import org.gradle.api.Incubating;
 
 /**
  * Allows a plugin to register a custom binary type.
- * @param <C> The binary type.
+ * 
+ * @param <C>
+ *            The binary type.
  */
 @Incubating
-public interface BinaryTypeBuilder<C extends BinarySpec> extends TypeBuilder<C> {}
+public interface BinaryTypeBuilder<C extends BinarySpec> extends TypeBuilder<C> {
+}

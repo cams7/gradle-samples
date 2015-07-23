@@ -26,10 +26,10 @@ import org.gradle.internal.HasInternalProtocol;
 @Incubating
 @HasInternalProtocol
 public interface ToolChain extends Named {
-    /**
-     * Returns a human consumable name for this tool chain.
-     *
-     * @since 1.11
-     */
-    String getDisplayName();
+	/**
+	 * Returns a human consumable name for this tool chain.
+	 *
+	 * @since 1.11
+	 */
+	String getDisplayName();
 }

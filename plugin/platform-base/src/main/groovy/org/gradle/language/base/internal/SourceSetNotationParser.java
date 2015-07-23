@@ -26,45 +26,50 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class SourceSetNotationParser {
-    public static NotationParser<Object, Set<LanguageSourceSet>> parser() {
-        return NotationParserBuilder
-                .toType(new TypeInfo<Set<LanguageSourceSet>>(Set.class))
-                .converter(new FunctionalSourceSetConverter())
-                .converter(new SingleLanguageSourceSetConverter())
-                .converter(new LanguageSourceSetCollectionConverter())
-                .toComposite();
-    }
+	public static NotationParser<Object, Set<LanguageSourceSet>> parser() {
+		return NotationParserBuilder
+				.toType(new TypeInfo<Set<LanguageSourceSet>>(Set.class))
+				.converter(new FunctionalSourceSetConverter())
+				.converter(new SingleLanguageSourceSetConverter())
+				.converter(new LanguageSourceSetCollectionConverter())
+				.toComposite();
+	}
 
-    private static class FunctionalSourceSetConverter extends TypedNotationConverter<FunctionalSourceSet, Set<LanguageSourceSet>> {
-        private FunctionalSourceSetConverter() {
-            super(FunctionalSourceSet.class);
-        }
+	private static class FunctionalSourceSetConverter extends
+			TypedNotationConverter<FunctionalSourceSet, Set<LanguageSourceSet>> {
+		private FunctionalSourceSetConverter() {
+			super(FunctionalSourceSet.class);
+		}
 
-        @Override
-        protected Set<LanguageSourceSet> parseType(FunctionalSourceSet notation) {
-            return notation;
-        }
-    }
+		@Override
+		protected Set<LanguageSourceSet> parseType(FunctionalSourceSet notation) {
+			return notation;
+		}
+	}
 
-    private static class SingleLanguageSourceSetConverter extends TypedNotationConverter<LanguageSourceSet, Set<LanguageSourceSet>> {
-        private SingleLanguageSourceSetConverter() {
-            super(LanguageSourceSet.class);
-        }
+	private static class SingleLanguageSourceSetConverter extends
+			TypedNotationConverter<LanguageSourceSet, Set<LanguageSourceSet>> {
+		private SingleLanguageSourceSetConverter() {
+			super(LanguageSourceSet.class);
+		}
 
-        @Override
-        protected Set<LanguageSourceSet> parseType(LanguageSourceSet notation) {
-            return Collections.singleton(notation);
-        }
-    }
+		@Override
+		protected Set<LanguageSourceSet> parseType(LanguageSourceSet notation) {
+			return Collections.singleton(notation);
+		}
+	}
 
-    private static class LanguageSourceSetCollectionConverter extends TypedNotationConverter<Collection<LanguageSourceSet>, Set<LanguageSourceSet>> {
-        private LanguageSourceSetCollectionConverter() {
-            super(new TypeInfo<Collection<LanguageSourceSet>>(Collection.class));
-        }
+	private static class LanguageSourceSetCollectionConverter
+			extends
+			TypedNotationConverter<Collection<LanguageSourceSet>, Set<LanguageSourceSet>> {
+		private LanguageSourceSetCollectionConverter() {
+			super(new TypeInfo<Collection<LanguageSourceSet>>(Collection.class));
+		}
 
-        @Override
-        protected Set<LanguageSourceSet> parseType(Collection<LanguageSourceSet> notation) {
-            return new LinkedHashSet<LanguageSourceSet>(notation);
-        }
-    }
+		@Override
+		protected Set<LanguageSourceSet> parseType(
+				Collection<LanguageSourceSet> notation) {
+			return new LinkedHashSet<LanguageSourceSet>(notation);
+		}
+	}
 }

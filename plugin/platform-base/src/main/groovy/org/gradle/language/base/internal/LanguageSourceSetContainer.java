@@ -26,26 +26,29 @@ import org.gradle.language.base.LanguageSourceSet;
 import java.util.Set;
 
 public class LanguageSourceSetContainer {
-    private final NotationParser<Object, Set<LanguageSourceSet>> sourcesNotationParser = SourceSetNotationParser.parser();
-    private FunctionalSourceSet mainSources;
-    private Set<LanguageSourceSet> additionalSources = new DefaultDomainObjectSet<LanguageSourceSet>(LanguageSourceSet.class);
+	private final NotationParser<Object, Set<LanguageSourceSet>> sourcesNotationParser = SourceSetNotationParser
+			.parser();
+	private FunctionalSourceSet mainSources;
+	private Set<LanguageSourceSet> additionalSources = new DefaultDomainObjectSet<LanguageSourceSet>(
+			LanguageSourceSet.class);
 
-    public void setMainSources(FunctionalSourceSet mainSources) {
-        this.mainSources = mainSources;
-    }
+	public void setMainSources(FunctionalSourceSet mainSources) {
+		this.mainSources = mainSources;
+	}
 
-    public void source(Object sources) {
-        additionalSources.addAll(sourcesNotationParser.parseNotation(sources));
-    }
+	public void source(Object sources) {
+		additionalSources.addAll(sourcesNotationParser.parseNotation(sources));
+	}
 
-    public FunctionalSourceSet getMainSources() {
-        return mainSources;
-    }
+	public FunctionalSourceSet getMainSources() {
+		return mainSources;
+	}
 
-    public DomainObjectSet<LanguageSourceSet> getSources() {
-        Set<LanguageSourceSet> all = Sets.newLinkedHashSet();
-        all.addAll(mainSources);
-        all.addAll(additionalSources);
-        return new DefaultDomainObjectSet<LanguageSourceSet>(LanguageSourceSet.class, all);
-    }
+	public DomainObjectSet<LanguageSourceSet> getSources() {
+		Set<LanguageSourceSet> all = Sets.newLinkedHashSet();
+		all.addAll(mainSources);
+		all.addAll(additionalSources);
+		return new DefaultDomainObjectSet<LanguageSourceSet>(
+				LanguageSourceSet.class, all);
+	}
 }

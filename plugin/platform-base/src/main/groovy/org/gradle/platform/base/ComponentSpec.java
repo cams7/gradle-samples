@@ -26,33 +26,35 @@ import org.gradle.language.base.LanguageSourceSet;
 @Incubating
 @HasInternalProtocol
 public interface ComponentSpec extends Named {
-    /**
-     * The path the the project containing this component.
-     */
-    String getProjectPath();
+	/**
+	 * The path the the project containing this component.
+	 */
+	String getProjectPath();
 
-    /**
-     * Returns a human-consumable display name for this component.
-     */
-    String getDisplayName();
+	/**
+	 * Returns a human-consumable display name for this component.
+	 */
+	String getDisplayName();
 
-    /**
-     * The source sets that are used to build this component.
-     */
-    DomainObjectSet<LanguageSourceSet> getSource();
+	/**
+	 * The source sets that are used to build this component.
+	 */
+	DomainObjectSet<LanguageSourceSet> getSource();
 
-    /**
-     * Configures the source sets used to build this component.
-     */
-    void sources(Action<? super PolymorphicDomainObjectContainer<LanguageSourceSet>> action);
+	/**
+	 * Configures the source sets used to build this component.
+	 */
+	void sources(
+			Action<? super PolymorphicDomainObjectContainer<LanguageSourceSet>> action);
 
-    /**
-     * The binaries that are built for this component. You can use this to configure the binaries for this component.
-     */
-    DomainObjectSet<BinarySpec> getBinaries();
+	/**
+	 * The binaries that are built for this component. You can use this to
+	 * configure the binaries for this component.
+	 */
+	DomainObjectSet<BinarySpec> getBinaries();
 
-    /**
-     * Configures the binaries that are produced for this component.
-     */
-    void binaries(Action<? super DomainObjectSet<BinarySpec>> action);
+	/**
+	 * Configures the binaries that are produced for this component.
+	 */
+	void binaries(Action<? super DomainObjectSet<BinarySpec>> action);
 }

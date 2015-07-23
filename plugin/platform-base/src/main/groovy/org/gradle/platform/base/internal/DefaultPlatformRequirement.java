@@ -17,37 +17,37 @@
 package org.gradle.platform.base.internal;
 
 public class DefaultPlatformRequirement implements PlatformRequirement {
-    private final String platformName;
+	private final String platformName;
 
-    public static PlatformRequirement create(String name) {
-        return new DefaultPlatformRequirement(name);
-    }
+	public static PlatformRequirement create(String name) {
+		return new DefaultPlatformRequirement(name);
+	}
 
-    public DefaultPlatformRequirement(String platformName) {
-        this.platformName = platformName;
-    }
+	public DefaultPlatformRequirement(String platformName) {
+		this.platformName = platformName;
+	}
 
-    @Override
-    public String getPlatformName() {
-        return platformName;
-    }
+	@Override
+	public String getPlatformName() {
+		return platformName;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
 
-        DefaultPlatformRequirement that = (DefaultPlatformRequirement) o;
-        return platformName.equals(that.platformName);
+		DefaultPlatformRequirement that = (DefaultPlatformRequirement) o;
+		return platformName.equals(that.platformName);
 
-    }
+	}
 
-    @Override
-    public int hashCode() {
-        return platformName.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return platformName.hashCode();
+	}
 }

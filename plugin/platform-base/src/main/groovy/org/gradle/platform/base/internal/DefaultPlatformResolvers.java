@@ -26,45 +26,50 @@ import org.gradle.util.CollectionUtils;
 import java.util.List;
 
 public class DefaultPlatformResolvers implements PlatformResolvers {
-    private final List<PlatformResolver<?>> platformResolvers = Lists.newArrayList();
-    private final PlatformContainer platforms;
+	private final List<PlatformResolver<?>> platformResolvers = Lists
+			.newArrayList();
+	private final PlatformContainer platforms;
 
-    public DefaultPlatformResolvers(PlatformContainer platforms) {
-        this.platforms = platforms;
-    }
+	public DefaultPlatformResolvers(PlatformContainer platforms) {
+		this.platforms = platforms;
+	}
 
-    @Override
-    public void register(PlatformResolver<?> platformResolver) {
-        platformResolvers.add(platformResolver);
-    }
+	@Override
+	public void register(PlatformResolver<?> platformResolver) {
+		platformResolvers.add(platformResolver);
+	}
 
-    @Override
-    public <T extends Platform> T resolve(Class<T> type, PlatformRequirement platformRequirement) {
-        for (PlatformResolver<?> platformResolver : platformResolvers) {
-            if (platformResolver.getType().equals(type)) {
-                @SuppressWarnings("unchecked") PlatformResolver<T> pr = (PlatformResolver<T>) platformResolver;
-                T resolved = pr.resolve(platformRequirement);
-                if (resolved != null) {
-                    return resolved;
-                }
-            }
-        }
-        return resolveFromContainer(type, platformRequirement);
-    }
+	@Override
+	public <T extends Platform> T resolve(Class<T> type,
+			PlatformRequirement platformRequirement) {
+		for (PlatformResolver<?> platformResolver : platformResolvers) {
+			if (platformResolver.getType().equals(type)) {
+				@SuppressWarnings("unchecked")
+				PlatformResolver<T> pr = (PlatformResolver<T>) platformResolver;
+				T resolved = pr.resolve(platformRequirement);
+				if (resolved != null) {
+					return resolved;
+				}
+			}
+		}
+		return resolveFromContainer(type, platformRequirement);
+	}
 
-    private <T extends Platform> T resolveFromContainer(Class<T> type, PlatformRequirement platformRequirement) {
-        final String target = platformRequirement.getPlatformName();
+	private <T extends Platform> T resolveFromContainer(Class<T> type,
+			PlatformRequirement platformRequirement) {
+		final String target = platformRequirement.getPlatformName();
 
-        NamedDomainObjectSet<T> allWithType = platforms.withType(type);
-        T matching = CollectionUtils.findFirst(allWithType, new Spec<T>() {
-            public boolean isSatisfiedBy(T element) {
-                return element.getName().equals(target);
-            }
-        });
+		NamedDomainObjectSet<T> allWithType = platforms.withType(type);
+		T matching = CollectionUtils.findFirst(allWithType, new Spec<T>() {
+			public boolean isSatisfiedBy(T element) {
+				return element.getName().equals(target);
+			}
+		});
 
-        if (matching == null) {
-            throw new InvalidUserDataException(String.format("Invalid %s: %s", type.getSimpleName(), target));
-        }
-        return matching;
-    }
+		if (matching == null) {
+			throw new InvalidUserDataException(String.format("Invalid %s: %s",
+					type.getSimpleName(), target));
+		}
+		return matching;
+	}
 }

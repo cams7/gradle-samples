@@ -23,44 +23,53 @@ import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.base.ProjectSourceSet;
 
-public class DefaultFunctionalSourceSet extends DefaultPolymorphicDomainObjectContainer<LanguageSourceSet> implements FunctionalSourceSet {
-    private final String name;
-    private final ProjectSourceSet projectSourceSet;
+public class DefaultFunctionalSourceSet extends
+		DefaultPolymorphicDomainObjectContainer<LanguageSourceSet> implements
+		FunctionalSourceSet {
+	private final String name;
+	private final ProjectSourceSet projectSourceSet;
 
-    public DefaultFunctionalSourceSet(String name, Instantiator instantiator, final ProjectSourceSet projectSourceSet) {
-        super(LanguageSourceSet.class, instantiator);
-        this.name = name;
-        this.projectSourceSet = projectSourceSet;
-        whenObjectAdded(new Action<LanguageSourceSet>() {
-            public void execute(LanguageSourceSet languageSourceSet) {
-                projectSourceSet.add(languageSourceSet);
-            }
-        });
-    }
+	public DefaultFunctionalSourceSet(String name, Instantiator instantiator,
+			final ProjectSourceSet projectSourceSet) {
+		super(LanguageSourceSet.class, instantiator);
+		this.name = name;
+		this.projectSourceSet = projectSourceSet;
+		whenObjectAdded(new Action<LanguageSourceSet>() {
+			public void execute(LanguageSourceSet languageSourceSet) {
+				projectSourceSet.add(languageSourceSet);
+			}
+		});
+	}
 
-    @Override
-    public String toString() {
-        return String.format("source set '%s'", name);
-    }
+	@Override
+	public String toString() {
+		return String.format("source set '%s'", name);
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    // TODO:DAZ This needs unit testing
-    // TODO:DAZ Perhaps we should pull out a LanguageSourceSet 'factory-for-type' so we only register the languages once
-    public FunctionalSourceSet copy(String name) {
-        DefaultFunctionalSourceSet copy = getInstantiator().newInstance(DefaultFunctionalSourceSet.class, name, getInstantiator(), projectSourceSet);
-        for (Class<? extends LanguageSourceSet> languageType : factories.keySet()) {
-            copyFactory(copy, languageType);
-        }
-        copy.addAll(this);
-        return copy;
-    }
+	// TODO:DAZ This needs unit testing
+	// TODO:DAZ Perhaps we should pull out a LanguageSourceSet
+	// 'factory-for-type' so we only register the languages once
+	public FunctionalSourceSet copy(String name) {
+		DefaultFunctionalSourceSet copy = getInstantiator().newInstance(
+				DefaultFunctionalSourceSet.class, name, getInstantiator(),
+				projectSourceSet);
+		for (Class<? extends LanguageSourceSet> languageType : factories
+				.keySet()) {
+			copyFactory(copy, languageType);
+		}
+		copy.addAll(this);
+		return copy;
+	}
 
-    <T extends LanguageSourceSet, U extends T> void copyFactory(DefaultFunctionalSourceSet target, Class<T> type) {
-        @SuppressWarnings("unchecked")
-        NamedDomainObjectFactory<U> factory = (NamedDomainObjectFactory<U>) factories.get(type);
-        target.registerFactory(type, factory);
-    }
+	<T extends LanguageSourceSet, U extends T> void copyFactory(
+			DefaultFunctionalSourceSet target, Class<T> type) {
+		@SuppressWarnings("unchecked")
+		NamedDomainObjectFactory<U> factory = (NamedDomainObjectFactory<U>) factories
+				.get(type);
+		target.registerFactory(type, factory);
+	}
 }

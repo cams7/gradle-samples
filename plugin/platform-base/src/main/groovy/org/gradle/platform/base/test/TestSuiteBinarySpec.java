@@ -24,8 +24,8 @@ import org.gradle.platform.base.BinarySpec;
  */
 @Incubating
 public interface TestSuiteBinarySpec extends BinarySpec {
-    /**
-     * Returns the test suite that this binary belongs to.
-     */
-    TestSuiteSpec getTestSuite();
+	/**
+	 * Returns the test suite that this binary belongs to.
+	 */
+	TestSuiteSpec getTestSuite();
 }

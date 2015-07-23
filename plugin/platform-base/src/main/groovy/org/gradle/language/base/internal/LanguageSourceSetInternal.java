@@ -20,15 +20,16 @@ import org.gradle.language.base.LanguageSourceSet;
 
 public interface LanguageSourceSetInternal extends LanguageSourceSet {
 
-    /**
-     * A unique name for this source set across all functional source sets.
-     */
-    String getFullName();
+	/**
+	 * A unique name for this source set across all functional source sets.
+	 */
+	String getFullName();
 
-    /**
-     * Return true if the source set contains sources, or if the source set is generated.
-     */
-    boolean getMayHaveSources();
+	/**
+	 * Return true if the source set contains sources, or if the source set is
+	 * generated.
+	 */
+	boolean getMayHaveSources();
 
-    Task getGeneratorTask();
+	Task getGeneratorTask();
 }

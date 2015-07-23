@@ -21,9 +21,12 @@ import org.gradle.language.base.LanguageSourceSet;
 
 /**
  * Allows a plugin to register a custom language.
- * @param <T> The custom language sourceset type.
+ * 
+ * @param <T>
+ *            The custom language sourceset type.
  */
 @Incubating
-public interface LanguageTypeBuilder<T extends LanguageSourceSet> extends TypeBuilder<T> {
-    void setLanguageName(String languageName);
+public interface LanguageTypeBuilder<T extends LanguageSourceSet> extends
+		TypeBuilder<T> {
+	void setLanguageName(String languageName);
 }

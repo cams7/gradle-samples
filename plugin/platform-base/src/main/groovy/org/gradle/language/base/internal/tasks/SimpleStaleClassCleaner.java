@@ -20,24 +20,24 @@ import org.gradle.api.internal.TaskOutputsInternal;
 import java.io.File;
 
 public class SimpleStaleClassCleaner extends StaleClassCleaner {
-    private final TaskOutputsInternal taskOutputs;
-    private boolean didWork;
+	private final TaskOutputsInternal taskOutputs;
+	private boolean didWork;
 
-    public SimpleStaleClassCleaner(TaskOutputsInternal taskOutputs) {
-        this.taskOutputs = taskOutputs;
-    }
+	public SimpleStaleClassCleaner(TaskOutputsInternal taskOutputs) {
+		this.taskOutputs = taskOutputs;
+	}
 
-    @Override
-    public void execute() {
-        String prefix = getDestinationDir().getAbsolutePath() + File.separator;
-        for (File f : taskOutputs.getPreviousFiles()) {
-            if (f.getAbsolutePath().startsWith(prefix)) {
-                didWork |= f.delete();
-            }
-        }
-    }
+	@Override
+	public void execute() {
+		String prefix = getDestinationDir().getAbsolutePath() + File.separator;
+		for (File f : taskOutputs.getPreviousFiles()) {
+			if (f.getAbsolutePath().startsWith(prefix)) {
+				didWork |= f.delete();
+			}
+		}
+	}
 
-    public boolean getDidWork() {
-        return didWork;
-    }
+	public boolean getDidWork() {
+		return didWork;
+	}
 }

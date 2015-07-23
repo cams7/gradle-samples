@@ -22,68 +22,68 @@ import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
 public class ArgWriter implements ArgCollector {
-    private static final Pattern WHITESPACE = Pattern.compile("\\s");
-    private final PrintWriter writer;
-    private final boolean backslashEscape;
+	private static final Pattern WHITESPACE = Pattern.compile("\\s");
+	private final PrintWriter writer;
+	private final boolean backslashEscape;
 
-    private ArgWriter(PrintWriter writer, boolean backslashEscape) {
-        this.writer = writer;
-        this.backslashEscape = backslashEscape;
-    }
+	private ArgWriter(PrintWriter writer, boolean backslashEscape) {
+		this.writer = writer;
+		this.backslashEscape = backslashEscape;
+	}
 
-    public static ArgWriter unixStyle(PrintWriter writer) {
-        return new ArgWriter(writer, true);
-    }
+	public static ArgWriter unixStyle(PrintWriter writer) {
+		return new ArgWriter(writer, true);
+	}
 
-    public static Transformer<ArgWriter, PrintWriter> unixStyleFactory() {
-        return new Transformer<ArgWriter, PrintWriter>() {
-            public ArgWriter transform(PrintWriter original) {
-                return unixStyle(original);
-            }
-        };
-    }
+	public static Transformer<ArgWriter, PrintWriter> unixStyleFactory() {
+		return new Transformer<ArgWriter, PrintWriter>() {
+			public ArgWriter transform(PrintWriter original) {
+				return unixStyle(original);
+			}
+		};
+	}
 
-    public static ArgWriter windowsStyle(PrintWriter writer) {
-        return new ArgWriter(writer, false);
-    }
+	public static ArgWriter windowsStyle(PrintWriter writer) {
+		return new ArgWriter(writer, false);
+	}
 
-    public static Transformer<ArgWriter, PrintWriter> windowsStyleFactory() {
-        return new Transformer<ArgWriter, PrintWriter>() {
-            public ArgWriter transform(PrintWriter original) {
-                return windowsStyle(original);
-            }
-        };
-    }
+	public static Transformer<ArgWriter, PrintWriter> windowsStyleFactory() {
+		return new Transformer<ArgWriter, PrintWriter>() {
+			public ArgWriter transform(PrintWriter original) {
+				return windowsStyle(original);
+			}
+		};
+	}
 
-    /**
-     * Writes a set of args on a single line, escaping and quoting as required.
-     */
-    public ArgWriter args(Object... args) {
-        for (int i = 0; i < args.length; i++) {
-            Object arg = args[i];
-            if (i > 0) {
-                writer.print(' ');
-            }
-            String str = arg.toString();
-            if (backslashEscape) {
-                str = str.replace("\\", "\\\\").replace("\"", "\\\"");
-            }
-            if (WHITESPACE.matcher(str).find()) {
-                writer.print('\"');
-                writer.print(str);
-                writer.print('\"');
-            } else {
-                writer.print(str);
-            }
-        }
-        writer.println();
-        return this;
-    }
+	/**
+	 * Writes a set of args on a single line, escaping and quoting as required.
+	 */
+	public ArgWriter args(Object... args) {
+		for (int i = 0; i < args.length; i++) {
+			Object arg = args[i];
+			if (i > 0) {
+				writer.print(' ');
+			}
+			String str = arg.toString();
+			if (backslashEscape) {
+				str = str.replace("\\", "\\\\").replace("\"", "\\\"");
+			}
+			if (WHITESPACE.matcher(str).find()) {
+				writer.print('\"');
+				writer.print(str);
+				writer.print('\"');
+			} else {
+				writer.print(str);
+			}
+		}
+		writer.println();
+		return this;
+	}
 
-    public ArgCollector args(Iterable<?> args) {
-        for (Object arg : args) {
-            args(arg);
-        }
-        return this;
-    }
+	public ArgCollector args(Iterable<?> args) {
+		for (Object arg : args) {
+			args(arg);
+		}
+		return this;
+	}
 }

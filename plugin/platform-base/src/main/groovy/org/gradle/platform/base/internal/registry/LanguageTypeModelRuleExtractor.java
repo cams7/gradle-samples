@@ -39,80 +39,108 @@ import org.gradle.platform.base.internal.util.ImplementationTypeDetermer;
 
 import java.util.List;
 
-public class LanguageTypeModelRuleExtractor extends TypeModelRuleExtractor<LanguageType, LanguageSourceSet, BaseLanguageSourceSet> {
-    public ImplementationTypeDetermer<LanguageSourceSet, BaseLanguageSourceSet> implementationTypeDetermer = new ImplementationTypeDetermer<LanguageSourceSet, BaseLanguageSourceSet>("language", BaseLanguageSourceSet.class);
+public class LanguageTypeModelRuleExtractor
+		extends
+		TypeModelRuleExtractor<LanguageType, LanguageSourceSet, BaseLanguageSourceSet> {
+	public ImplementationTypeDetermer<LanguageSourceSet, BaseLanguageSourceSet> implementationTypeDetermer = new ImplementationTypeDetermer<LanguageSourceSet, BaseLanguageSourceSet>(
+			"language", BaseLanguageSourceSet.class);
 
-    public LanguageTypeModelRuleExtractor() {
-        super("language", LanguageSourceSet.class, BaseLanguageSourceSet.class, LanguageTypeBuilder.class, JavaReflectionUtil.factory(DirectInstantiator.INSTANCE, DefaultLanguageTypeBuilder.class));
-    }
+	public LanguageTypeModelRuleExtractor() {
+		super("language", LanguageSourceSet.class, BaseLanguageSourceSet.class,
+				LanguageTypeBuilder.class, JavaReflectionUtil.factory(
+						DirectInstantiator.INSTANCE,
+						DefaultLanguageTypeBuilder.class));
+	}
 
-    @Override
-    protected <R, S> ExtractedModelRule createRegistration(MethodRuleDefinition<R, S> ruleDefinition, ModelType<? extends LanguageSourceSet> type, TypeBuilderInternal<LanguageSourceSet> builder) {
-        ImmutableList<Class<?>> dependencies = ImmutableList.<Class<?>>of(ComponentModelBasePlugin.class);
-        ModelType<? extends BaseLanguageSourceSet> implementation = implementationTypeDetermer.determineImplementationType(type, builder);
-        if (implementation != null) {
-            ModelAction<?> mutator = new RegisterTypeRule(type, implementation, ((LanguageTypeBuilderInternal) builder).getLanguageName(), ruleDefinition.getDescriptor());
-            return new ExtractedModelAction(ModelActionRole.Defaults, dependencies, mutator);
-        }
-        return new DependencyOnlyExtractedModelRule(dependencies);
-    }
+	@Override
+	protected <R, S> ExtractedModelRule createRegistration(
+			MethodRuleDefinition<R, S> ruleDefinition,
+			ModelType<? extends LanguageSourceSet> type,
+			TypeBuilderInternal<LanguageSourceSet> builder) {
+		ImmutableList<Class<?>> dependencies = ImmutableList
+				.<Class<?>> of(ComponentModelBasePlugin.class);
+		ModelType<? extends BaseLanguageSourceSet> implementation = implementationTypeDetermer
+				.determineImplementationType(type, builder);
+		if (implementation != null) {
+			ModelAction<?> mutator = new RegisterTypeRule(type, implementation,
+					((LanguageTypeBuilderInternal<LanguageSourceSet>) builder)
+							.getLanguageName(), ruleDefinition.getDescriptor());
+			return new ExtractedModelAction(ModelActionRole.Defaults,
+					dependencies, mutator);
+		}
+		return new DependencyOnlyExtractedModelRule(dependencies);
+	}
 
-    public static class DefaultLanguageTypeBuilder extends AbstractTypeBuilder<LanguageSourceSet> implements LanguageTypeBuilderInternal<LanguageSourceSet> {
-        private String languageName;
+	public static class DefaultLanguageTypeBuilder extends
+			AbstractTypeBuilder<LanguageSourceSet> implements
+			LanguageTypeBuilderInternal<LanguageSourceSet> {
+		private String languageName;
 
-        public DefaultLanguageTypeBuilder() {
-            super(LanguageType.class);
-        }
+		public DefaultLanguageTypeBuilder() {
+			super(LanguageType.class);
+		}
 
-        @Override
-        public void setLanguageName(String languageName) {
-            this.languageName = languageName;
-        }
+		@Override
+		public void setLanguageName(String languageName) {
+			this.languageName = languageName;
+		}
 
-        @Override
-        public String getLanguageName() {
-            return languageName;
-        }
-    }
+		@Override
+		public String getLanguageName() {
+			return languageName;
+		}
+	}
 
-    protected static class RegisterTypeRule implements ModelAction<LanguageRegistry> {
-        private final ModelType<? extends LanguageSourceSet> type;
-        private final ModelType<? extends BaseLanguageSourceSet> implementation;
-        private String languageName;
-        private final ModelRuleDescriptor descriptor;
-        private final ModelReference<LanguageRegistry> subject;
-        private final List<ModelReference<?>> inputs;
+	protected static class RegisterTypeRule implements
+			ModelAction<LanguageRegistry> {
+		private final ModelType<? extends LanguageSourceSet> type;
+		private final ModelType<? extends BaseLanguageSourceSet> implementation;
+		private String languageName;
+		private final ModelRuleDescriptor descriptor;
+		private final ModelReference<LanguageRegistry> subject;
+		private final List<ModelReference<?>> inputs;
 
-        protected RegisterTypeRule(ModelType<? extends LanguageSourceSet> type, ModelType<? extends BaseLanguageSourceSet> implementation, String languageName, ModelRuleDescriptor descriptor) {
-            this.type = type;
-            this.implementation = implementation;
-            this.languageName = languageName;
-            this.descriptor = descriptor;
+		protected RegisterTypeRule(ModelType<? extends LanguageSourceSet> type,
+				ModelType<? extends BaseLanguageSourceSet> implementation,
+				String languageName, ModelRuleDescriptor descriptor) {
+			this.type = type;
+			this.implementation = implementation;
+			this.languageName = languageName;
+			this.descriptor = descriptor;
 
-            subject = ModelReference.of(LanguageRegistry.class);
-            inputs = ImmutableList.<ModelReference<?>>of(ModelReference.of(ServiceRegistry.class));
-        }
+			subject = ModelReference.of(LanguageRegistry.class);
+			inputs = ImmutableList.<ModelReference<?>> of(ModelReference
+					.of(ServiceRegistry.class));
+		}
 
-        public ModelReference<LanguageRegistry> getSubject() {
-            return subject;
-        }
+		public ModelReference<LanguageRegistry> getSubject() {
+			return subject;
+		}
 
-        public List<ModelReference<?>> getInputs() {
-            return inputs;
-        }
+		public List<ModelReference<?>> getInputs() {
+			return inputs;
+		}
 
-        public ModelRuleDescriptor getDescriptor() {
-            return descriptor;
-        }
+		public ModelRuleDescriptor getDescriptor() {
+			return descriptor;
+		}
 
-        public void execute(MutableModelNode modelNode, LanguageRegistry languageRegistry, List<ModelView<?>> inputs) {
-            ServiceRegistry serviceRegistry = ModelViews.assertType(inputs.get(0), ModelType.of(ServiceRegistry.class)).getInstance();
-            Instantiator instantiator = serviceRegistry.get(Instantiator.class);
-            FileResolver fileResolver = serviceRegistry.get(FileResolver.class);
-            @SuppressWarnings("unchecked")
-            Class<BaseLanguageSourceSet> publicClass = (Class<BaseLanguageSourceSet>) type.getConcreteClass();
-            Class<? extends BaseLanguageSourceSet> implementationClass = implementation.getConcreteClass();
-            languageRegistry.add(new RuleBasedLanguageRegistration<BaseLanguageSourceSet>(languageName, publicClass, implementationClass, instantiator, fileResolver));
-        }
-    }
+		public void execute(MutableModelNode modelNode,
+				LanguageRegistry languageRegistry, List<ModelView<?>> inputs) {
+			ServiceRegistry serviceRegistry = ModelViews.assertType(
+					inputs.get(0), ModelType.of(ServiceRegistry.class))
+					.getInstance();
+			Instantiator instantiator = serviceRegistry.get(Instantiator.class);
+			FileResolver fileResolver = serviceRegistry.get(FileResolver.class);
+			@SuppressWarnings("unchecked")
+			Class<BaseLanguageSourceSet> publicClass = (Class<BaseLanguageSourceSet>) type
+					.getConcreteClass();
+			Class<? extends BaseLanguageSourceSet> implementationClass = implementation
+					.getConcreteClass();
+			languageRegistry
+					.add(new RuleBasedLanguageRegistration<BaseLanguageSourceSet>(
+							languageName, publicClass, implementationClass,
+							instantiator, fileResolver));
+		}
+	}
 }

@@ -30,68 +30,80 @@ import org.gradle.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class CollectionBuilderBasedRule<R, S, T, C> implements ModelAction<C> {
-    private final ModelReference<C> subject;
-    private final Class<? extends T> baseType;
-    private final MethodRuleDefinition<R, ?> ruleDefinition;
+public abstract class CollectionBuilderBasedRule<R, S, T, C> implements
+		ModelAction<C> {
+	private final ModelReference<C> subject;
+	private final Class<? extends T> baseType;
+	private final MethodRuleDefinition<R, ?> ruleDefinition;
 
-    private ImmutableList<ModelReference<?>> inputs;
-    protected int baseTypeParameterIndex;
+	private ImmutableList<ModelReference<?>> inputs;
+	protected int baseTypeParameterIndex;
 
-    public CollectionBuilderBasedRule(ModelReference<C> subject, Class<? extends T> baseType, MethodRuleDefinition<R, ?> ruleDefinition, ModelReference<?>... additionalInput) {
-        this.subject = subject;
-        this.baseType = baseType;
-        this.ruleDefinition = ruleDefinition;
-        this.inputs = calculateInputs(Arrays.asList(additionalInput));
-    }
+	public CollectionBuilderBasedRule(ModelReference<C> subject,
+			Class<? extends T> baseType,
+			MethodRuleDefinition<R, ?> ruleDefinition,
+			ModelReference<?>... additionalInput) {
+		this.subject = subject;
+		this.baseType = baseType;
+		this.ruleDefinition = ruleDefinition;
+		this.inputs = calculateInputs(Arrays.asList(additionalInput));
+	}
 
-    public List<ModelReference<?>> getInputs() {
-        return this.inputs;
-    }
+	public List<ModelReference<?>> getInputs() {
+		return this.inputs;
+	}
 
-    public ModelReference<C> getSubject() {
-        return subject;
-    }
+	public ModelReference<C> getSubject() {
+		return subject;
+	}
 
-    public ModelRuleDescriptor getDescriptor() {
-        return ruleDefinition.getDescriptor();
-    }
+	public ModelRuleDescriptor getDescriptor() {
+		return ruleDefinition.getDescriptor();
+	}
 
-    private ImmutableList<ModelReference<?>> calculateInputs(List<ModelReference<?>> modelReferences) {
-        final List<ModelReference<?>> references = this.ruleDefinition.getReferences().subList(1, this.ruleDefinition.getReferences().size());
-        final List<ModelReference<?>> filteredReferences = CollectionUtils.filter(references, new Spec<ModelReference<?>>() {
-            public boolean isSatisfiedBy(ModelReference<?> element) {
-                if (element.getType().equals(ModelType.of(baseType))) {
-                    baseTypeParameterIndex = references.indexOf(element) + 1;
-                    return false;
-                }
-                return true;
-            }
-        });
+	private ImmutableList<ModelReference<?>> calculateInputs(
+			List<ModelReference<?>> modelReferences) {
+		final List<ModelReference<?>> references = this.ruleDefinition
+				.getReferences().subList(1,
+						this.ruleDefinition.getReferences().size());
+		final List<ModelReference<?>> filteredReferences = CollectionUtils
+				.filter(references, new Spec<ModelReference<?>>() {
+					public boolean isSatisfiedBy(ModelReference<?> element) {
+						if (element.getType().equals(ModelType.of(baseType))) {
+							baseTypeParameterIndex = references
+									.indexOf(element) + 1;
+							return false;
+						}
+						return true;
+					}
+				});
 
-        ImmutableList.Builder<ModelReference<?>> allInputs = ImmutableList.builder();
-        allInputs.addAll(modelReferences);
-        allInputs.addAll(filteredReferences);
-        return allInputs.build();
-    }
+		ImmutableList.Builder<ModelReference<?>> allInputs = ImmutableList
+				.builder();
+		allInputs.addAll(modelReferences);
+		allInputs.addAll(filteredReferences);
+		return allInputs.build();
+	}
 
-    protected void invoke(List<ModelView<?>> inputs, CollectionBuilder<S> collectionBuilder, T baseTypeParameter, Object ignoredInput) {
-        Object[] args = new Object[inputs.size() + 1];
-        args[0] = collectionBuilder;
-        args[baseTypeParameterIndex] = baseTypeParameter;
+	protected void invoke(List<ModelView<?>> inputs,
+			CollectionBuilder<S> collectionBuilder, T baseTypeParameter,
+			Object ignoredInput) {
+		Object[] args = new Object[inputs.size() + 1];
+		args[0] = collectionBuilder;
+		args[baseTypeParameterIndex] = baseTypeParameter;
 
-        for (ModelView<?> view : inputs) {
-            Object instance = view.getInstance();
-            if (instance == ignoredInput) {
-                continue;
-            }
-            for (int i = 0; i < args.length; i++) {
-                if (args[i] == null) {
-                    args[i] = instance;
-                    break;
-                }
-            }
-        }
-        ruleDefinition.getRuleInvoker().invoke(args);
-    }
+		for (ModelView<?> view : inputs) {
+			Object instance = view.getInstance();
+			if (instance == ignoredInput) {
+				continue;
+			}
+			for (int i = 0; i < args.length; i++) {
+				if (args[i] == null) {
+					args[i] = instance;
+					break;
+				}
+			}
+		}
+		ruleDefinition.getRuleInvoker().invoke(args);
+	}
 }

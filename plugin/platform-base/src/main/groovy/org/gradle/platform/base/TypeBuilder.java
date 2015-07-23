@@ -21,15 +21,19 @@ import org.gradle.internal.HasInternalProtocol;
 
 /**
  * A TypeBuilder to configure read the implementation class of a type.
- * @param <C> The component type.
+ * 
+ * @param <C>
+ *            The component type.
  * */
 @Incubating
 @HasInternalProtocol
 public interface TypeBuilder<C> {
 
-    /**
-     * Allows the plugin to register the implementation type.
-     * @param implementation the implementation class.
-     */
-    TypeBuilder<C> defaultImplementation(Class<? extends C> implementation);
+	/**
+	 * Allows the plugin to register the implementation type.
+	 * 
+	 * @param implementation
+	 *            the implementation class.
+	 */
+	TypeBuilder<C> defaultImplementation(Class<? extends C> implementation);
 }

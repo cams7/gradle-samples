@@ -18,12 +18,13 @@ package org.gradle.platform.base;
 
 /**
  * A Provider of {@link ToolChain}s.
+ * 
  * @param <P>
  * @param <T>
  */
 public interface ToolChainRegistry<P extends Platform, T extends ToolChain> {
-    /**
-     * Returns the best tool chain to build for the target platform.
-     */
-    T getForPlatform(P targetPlatform);
+	/**
+	 * Returns the best tool chain to build for the target platform.
+	 */
+	T getForPlatform(P targetPlatform);
 }

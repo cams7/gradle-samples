@@ -23,39 +23,50 @@ import org.gradle.platform.base.internal.builder.TypeBuilderInternal;
 
 public class ImplementationTypeDetermer<T, U extends T> {
 
+	private final ModelType<U> baseImplementation;
+	private String modelName;
 
-    private final ModelType<U> baseImplementation;
-    private String modelName;
+	public ImplementationTypeDetermer(String modelName,
+			Class<U> baseImplementation) {
+		this.modelName = modelName;
+		this.baseImplementation = ModelType.of(baseImplementation);
+	}
 
-    public ImplementationTypeDetermer(String modelName, Class<U> baseImplementation) {
-        this.modelName = modelName;
-        this.baseImplementation = ModelType.of(baseImplementation);
-    }
+	public ModelType<? extends U> determineImplementationType(
+			ModelType<? extends T> type,
+			TypeBuilderInternal<? extends T> builder) {
+		Class<? extends T> implementation = builder.getDefaultImplementation();
+		if (implementation == null) {
+			return null;
+		}
 
-    public ModelType<? extends U> determineImplementationType(ModelType<? extends T> type, TypeBuilderInternal<? extends T> builder) {
-        Class<? extends T> implementation = builder.getDefaultImplementation();
-        if (implementation == null) {
-            return null;
-        }
+		ModelType<? extends T> implementationType = ModelType
+				.of(implementation);
+		ModelType<? extends U> asSubclass = baseImplementation
+				.asSubclass(implementationType);
 
-        ModelType<? extends T> implementationType = ModelType.of(implementation);
-        ModelType<? extends U> asSubclass = baseImplementation.asSubclass(implementationType);
+		if (asSubclass == null) {
+			throw new InvalidModelException(String.format(
+					"%s implementation '%s' must extend '%s'.",
+					StringUtils.capitalize(modelName), implementationType,
+					baseImplementation));
+		}
 
-        if (asSubclass == null) {
-            throw new InvalidModelException(String.format("%s implementation '%s' must extend '%s'.", StringUtils.capitalize(modelName), implementationType, baseImplementation));
-        }
+		if (!type.isAssignableFrom(asSubclass)) {
+			throw new InvalidModelException(String.format(
+					"%s implementation '%s' must implement '%s'.",
+					StringUtils.capitalize(modelName), asSubclass, type));
+		}
 
-        if (!type.isAssignableFrom(asSubclass)) {
-            throw new InvalidModelException(String.format("%s implementation '%s' must implement '%s'.", StringUtils.capitalize(modelName), asSubclass, type));
-        }
+		try {
+			asSubclass.getRawClass().getConstructor();
+		} catch (NoSuchMethodException nsmException) {
+			throw new InvalidModelException(
+					String.format(
+							"%s implementation '%s' must have public default constructor.",
+							StringUtils.capitalize(modelName), asSubclass));
+		}
 
-        try {
-            asSubclass.getRawClass().getConstructor();
-        } catch (NoSuchMethodException nsmException) {
-            throw new InvalidModelException(String.format("%s implementation '%s' must have public default constructor.", StringUtils.capitalize(modelName), asSubclass));
-        }
-
-        return asSubclass;
-    }
+		return asSubclass;
+	}
 }
-

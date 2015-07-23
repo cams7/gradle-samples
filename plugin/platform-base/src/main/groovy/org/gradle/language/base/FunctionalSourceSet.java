@@ -25,6 +25,7 @@ import org.gradle.api.Named;
  */
 @Incubating
 // TODO:DAZ Make this internal
-public interface FunctionalSourceSet extends ExtensiblePolymorphicDomainObjectContainer<LanguageSourceSet>, Named {
-    FunctionalSourceSet copy(String name);
+public interface FunctionalSourceSet extends
+		ExtensiblePolymorphicDomainObjectContainer<LanguageSourceSet>, Named {
+	FunctionalSourceSet copy(String name);
 }

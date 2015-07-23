@@ -19,14 +19,18 @@ package org.gradle.language.base.internal.registry;
 import com.google.common.reflect.TypeToken;
 import org.gradle.api.internal.DefaultDomainObjectSet;
 
-public class DefaultLanguageRegistry extends DefaultDomainObjectSet<LanguageRegistration<?>> implements LanguageRegistry {
-    public DefaultLanguageRegistry() {
-        super(getLanguageRegistrationType());
-    }
+public class DefaultLanguageRegistry extends
+		DefaultDomainObjectSet<LanguageRegistration<?>> implements
+		LanguageRegistry {
+	public DefaultLanguageRegistry() {
+		super(getLanguageRegistrationType());
+	}
 
-    private static Class<LanguageRegistration<?>> getLanguageRegistrationType() {
-        @SuppressWarnings("unchecked")
-        Class<LanguageRegistration<?>> rawType = (Class<LanguageRegistration<?>>) new TypeToken<LanguageRegistration<?>>() {}.getRawType();
-        return rawType;
-    }
+	private static Class<LanguageRegistration<?>> getLanguageRegistrationType() {
+		@SuppressWarnings("unchecked")
+		Class<LanguageRegistration<?>> rawType = (Class<LanguageRegistration<?>>) new TypeToken<LanguageRegistration<?>>() {
+			private static final long serialVersionUID = 1L;
+		}.getRawType();
+		return rawType;
+	}
 }

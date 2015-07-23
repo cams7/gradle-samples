@@ -21,9 +21,11 @@ import org.gradle.platform.base.Platform;
 import org.gradle.language.base.internal.compile.Compiler;
 
 public interface ToolResolver {
-    <P extends Platform> ToolSearchResult checkToolAvailability(P requirement);
+	<P extends Platform> ToolSearchResult checkToolAvailability(P requirement);
 
-    <T, P extends Platform> ResolvedTool<T> resolve(Class<T> toolType, P requirement);
+	<T, P extends Platform> ResolvedTool<T> resolve(Class<T> toolType,
+			P requirement);
 
-    <C extends CompileSpec, P extends Platform> ResolvedTool<Compiler<C>> resolveCompiler(Class<C> specType, P requirement);
+	<C extends CompileSpec, P extends Platform> ResolvedTool<Compiler<C>> resolveCompiler(
+			Class<C> specType, P requirement);
 }

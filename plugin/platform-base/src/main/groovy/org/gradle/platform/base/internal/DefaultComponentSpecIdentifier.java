@@ -21,40 +21,40 @@ import org.gradle.platform.base.ComponentSpecIdentifier;
  * An identifier for a component that is built as part of the current build.
  */
 public class DefaultComponentSpecIdentifier implements ComponentSpecIdentifier {
-    private final String projectPath;
-    private final String name;
+	private final String projectPath;
+	private final String name;
 
-    public DefaultComponentSpecIdentifier(String projectPath, String name) {
-        this.projectPath = projectPath;
-        this.name = name;
-    }
+	public DefaultComponentSpecIdentifier(String projectPath, String name) {
+		this.projectPath = projectPath;
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getProjectPath() {
-        return projectPath;
-    }
+	public String getProjectPath() {
+		return projectPath;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DefaultComponentSpecIdentifier)) {
-            return false;
-        }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof DefaultComponentSpecIdentifier)) {
+			return false;
+		}
 
-        DefaultComponentSpecIdentifier that = (DefaultComponentSpecIdentifier) o;
-        return name.equals(that.name) && projectPath.equals(that.projectPath);
+		DefaultComponentSpecIdentifier that = (DefaultComponentSpecIdentifier) o;
+		return name.equals(that.name) && projectPath.equals(that.projectPath);
 
-    }
+	}
 
-    @Override
-    public int hashCode() {
-        int result = projectPath.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = projectPath.hashCode();
+		result = 31 * result + name.hashCode();
+		return result;
+	}
 }

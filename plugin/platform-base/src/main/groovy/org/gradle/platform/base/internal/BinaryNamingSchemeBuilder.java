@@ -16,11 +16,11 @@
 package org.gradle.platform.base.internal;
 
 public interface BinaryNamingSchemeBuilder {
-    BinaryNamingSchemeBuilder withComponentName(String name);
+	BinaryNamingSchemeBuilder withComponentName(String name);
 
-    BinaryNamingSchemeBuilder withTypeString(String newTypeString);
+	BinaryNamingSchemeBuilder withTypeString(String newTypeString);
 
-    BinaryNamingSchemeBuilder withVariantDimension(String dimension);
+	BinaryNamingSchemeBuilder withVariantDimension(String dimension);
 
-    BinaryNamingScheme build();
+	BinaryNamingScheme build();
 }

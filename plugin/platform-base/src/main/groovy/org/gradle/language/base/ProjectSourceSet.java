@@ -19,7 +19,9 @@ import org.gradle.api.DomainObjectSet;
 import org.gradle.api.Incubating;
 
 /**
- * A container of {@link org.gradle.language.base.LanguageSourceSet}s. Added to a project by the {@link org.gradle.language.base.plugins.LanguageBasePlugin}.
+ * A container of {@link org.gradle.language.base.LanguageSourceSet}s. Added to
+ * a project by the {@link org.gradle.language.base.plugins.LanguageBasePlugin}.
  */
 @Incubating
-public interface ProjectSourceSet extends DomainObjectSet<LanguageSourceSet> {}
+public interface ProjectSourceSet extends DomainObjectSet<LanguageSourceSet> {
+}

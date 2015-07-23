@@ -26,17 +26,17 @@ import java.util.List;
 
 // behaviour: composing these
 public interface BinaryNamingScheme {
-    String getBaseName();
+	String getBaseName();
 
-    String getLifecycleTaskName();
+	String getLifecycleTaskName();
 
-    String getTaskName(@Nullable String verb);
+	String getTaskName(@Nullable String verb);
 
-    String getTaskName(@Nullable String verb, @Nullable String target);
+	String getTaskName(@Nullable String verb, @Nullable String target);
 
-    String getOutputDirectoryBase();
+	String getOutputDirectoryBase();
 
-    String getDescription();
+	String getDescription();
 
-    List<String> getVariantDimensions();
+	List<String> getVariantDimensions();
 }

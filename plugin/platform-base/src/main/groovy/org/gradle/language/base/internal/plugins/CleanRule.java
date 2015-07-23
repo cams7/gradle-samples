@@ -24,38 +24,40 @@ import org.gradle.api.tasks.TaskContainer;
 
 public class CleanRule implements Rule {
 
-    public static final String CLEAN = "clean";
+	public static final String CLEAN = "clean";
 
-    private final TaskContainer tasks;
+	private final TaskContainer tasks;
 
-    public CleanRule(TaskContainer tasks) {
-        this.tasks = tasks;
-    }
+	public CleanRule(TaskContainer tasks) {
+		this.tasks = tasks;
+	}
 
-    public String getDescription() {
-        return String.format("Pattern: %s<TaskName>: Cleans the output files of a task.", CLEAN);
-    }
+	public String getDescription() {
+		return String.format(
+				"Pattern: %s<TaskName>: Cleans the output files of a task.",
+				CLEAN);
+	}
 
-    @Override
-    public String toString() {
-        return String.format("Rule: %s", getDescription());
-    }
+	@Override
+	public String toString() {
+		return String.format("Rule: %s", getDescription());
+	}
 
-    public void apply(String taskName) {
-        if (!taskName.startsWith(CLEAN) || taskName.equals(CLEAN)) {
-            return;
-        }
-        String targetTaskName = taskName.substring(CLEAN.length());
-        if (Character.isLowerCase(targetTaskName.charAt(0))) {
-            return;
-        }
+	public void apply(String taskName) {
+		if (!taskName.startsWith(CLEAN) || taskName.equals(CLEAN)) {
+			return;
+		}
+		String targetTaskName = taskName.substring(CLEAN.length());
+		if (Character.isLowerCase(targetTaskName.charAt(0))) {
+			return;
+		}
 
-        Task task = tasks.findByName(StringUtils.uncapitalize(targetTaskName));
-        if (task == null) {
-            return;
-        }
+		Task task = tasks.findByName(StringUtils.uncapitalize(targetTaskName));
+		if (task == null) {
+			return;
+		}
 
-        Delete clean = tasks.create(taskName, Delete.class);
-        clean.delete(task.getOutputs().getFiles());
-    }
+		Delete clean = tasks.create(taskName, Delete.class);
+		clean.delete(task.getOutputs().getFiles());
+	}
 }

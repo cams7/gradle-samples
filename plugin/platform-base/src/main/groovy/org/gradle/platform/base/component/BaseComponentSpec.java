@@ -32,105 +32,114 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * Base class for custom component implementations.
- * A custom implementation of {@link ComponentSpec} must extend this type.
+ * Base class for custom component implementations. A custom implementation of
+ * {@link ComponentSpec} must extend this type.
  */
 @Incubating
 public abstract class BaseComponentSpec implements ComponentSpecInternal {
-    private static ThreadLocal<ComponentInfo> nextComponentInfo = new ThreadLocal<ComponentInfo>();
-    private final FunctionalSourceSet mainSourceSet;
+	private static ThreadLocal<ComponentInfo> nextComponentInfo = new ThreadLocal<ComponentInfo>();
+	private final FunctionalSourceSet mainSourceSet;
 
-    private final ComponentSpecIdentifier identifier;
-    private final String typeName;
-    private final DomainObjectSet<BinarySpec> binaries = new DefaultDomainObjectSet<BinarySpec>(BinarySpec.class);
+	private final ComponentSpecIdentifier identifier;
+	private final String typeName;
+	private final DomainObjectSet<BinarySpec> binaries = new DefaultDomainObjectSet<BinarySpec>(
+			BinarySpec.class);
 
-    public static <T extends BaseComponentSpec> T create(Class<T> type, ComponentSpecIdentifier identifier, FunctionalSourceSet mainSourceSet, Instantiator instantiator) {
-        if (type.equals(BaseComponentSpec.class)) {
-            throw new ModelInstantiationException("Cannot create instance of abstract class BaseComponentSpec.");
-        }
-        nextComponentInfo.set(new ComponentInfo(identifier, type.getSimpleName(), mainSourceSet));
-        try {
-            try {
-                return instantiator.newInstance(type);
-            } catch (ObjectInstantiationException e) {
-                throw new ModelInstantiationException(String.format("Could not create component of type %s", type.getSimpleName()), e.getCause());
-            }
-        } finally {
-            nextComponentInfo.set(null);
-        }
-    }
+	public static <T extends BaseComponentSpec> T create(Class<T> type,
+			ComponentSpecIdentifier identifier,
+			FunctionalSourceSet mainSourceSet, Instantiator instantiator) {
+		if (type.equals(BaseComponentSpec.class)) {
+			throw new ModelInstantiationException(
+					"Cannot create instance of abstract class BaseComponentSpec.");
+		}
+		nextComponentInfo.set(new ComponentInfo(identifier, type
+				.getSimpleName(), mainSourceSet));
+		try {
+			try {
+				return instantiator.newInstance(type);
+			} catch (ObjectInstantiationException e) {
+				throw new ModelInstantiationException(String.format(
+						"Could not create component of type %s",
+						type.getSimpleName()), e.getCause());
+			}
+		} finally {
+			nextComponentInfo.set(null);
+		}
+	}
 
-    protected BaseComponentSpec() {
-        this(nextComponentInfo.get());
-    }
+	protected BaseComponentSpec() {
+		this(nextComponentInfo.get());
+	}
 
-    private BaseComponentSpec(ComponentInfo info) {
-        if (info == null) {
-            throw new ModelInstantiationException("Direct instantiation of a BaseComponentSpec is not permitted. Use a ComponentTypeBuilder instead.");
-        }
+	private BaseComponentSpec(ComponentInfo info) {
+		if (info == null) {
+			throw new ModelInstantiationException(
+					"Direct instantiation of a BaseComponentSpec is not permitted. Use a ComponentTypeBuilder instead.");
+		}
 
-        this.identifier = info.componentIdentifier;
-        this.typeName = info.typeName;
-        this.mainSourceSet = info.sourceSets;
-    }
+		this.identifier = info.componentIdentifier;
+		this.typeName = info.typeName;
+		this.mainSourceSet = info.sourceSets;
+	}
 
-    public String getName() {
-        return identifier.getName();
-    }
+	public String getName() {
+		return identifier.getName();
+	}
 
-    public String getProjectPath() {
-        return identifier.getProjectPath();
-    }
+	public String getProjectPath() {
+		return identifier.getProjectPath();
+	}
 
-    protected String getTypeName() {
-        return typeName;
-    }
+	protected String getTypeName() {
+		return typeName;
+	}
 
-    public String getDisplayName() {
-        return String.format("%s '%s'", getTypeName(), getName());
-    }
+	public String getDisplayName() {
+		return String.format("%s '%s'", getTypeName(), getName());
+	}
 
-    @Override
-    public String toString() {
-        return getDisplayName();
-    }
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 
-    public DomainObjectSet<LanguageSourceSet> getSource() {
-        return new DefaultDomainObjectSet<LanguageSourceSet>(LanguageSourceSet.class, mainSourceSet);
-    }
+	public DomainObjectSet<LanguageSourceSet> getSource() {
+		return new DefaultDomainObjectSet<LanguageSourceSet>(
+				LanguageSourceSet.class, mainSourceSet);
+	}
 
-    public DomainObjectSet<BinarySpec> getBinaries() {
-        return binaries;
-    }
+	public DomainObjectSet<BinarySpec> getBinaries() {
+		return binaries;
+	}
 
-    @Override
-    public void binaries(Action<? super DomainObjectSet<BinarySpec>> action) {
-        action.execute(binaries);
-    }
+	@Override
+	public void binaries(Action<? super DomainObjectSet<BinarySpec>> action) {
+		action.execute(binaries);
+	}
 
-    public FunctionalSourceSet getSources() {
-        return mainSourceSet;
-    }
+	public FunctionalSourceSet getSources() {
+		return mainSourceSet;
+	}
 
-    public void sources(Action<? super PolymorphicDomainObjectContainer<LanguageSourceSet>> action) {
-        action.execute(mainSourceSet);
-    }
+	public void sources(
+			Action<? super PolymorphicDomainObjectContainer<LanguageSourceSet>> action) {
+		action.execute(mainSourceSet);
+	}
 
-    public Set<Class<? extends TransformationFileType>> getInputTypes() {
-        return Collections.emptySet();
-    }
+	public Set<Class<? extends TransformationFileType>> getInputTypes() {
+		return Collections.emptySet();
+	}
 
-    private static class ComponentInfo {
-        final ComponentSpecIdentifier componentIdentifier;
-        final String typeName;
-        final FunctionalSourceSet sourceSets;
+	private static class ComponentInfo {
+		final ComponentSpecIdentifier componentIdentifier;
+		final String typeName;
+		final FunctionalSourceSet sourceSets;
 
-        private ComponentInfo(ComponentSpecIdentifier componentIdentifier,
-                              String typeName,
-                              FunctionalSourceSet sourceSets) {
-            this.componentIdentifier = componentIdentifier;
-            this.typeName = typeName;
-            this.sourceSets = sourceSets;
-        }
-    }
+		private ComponentInfo(ComponentSpecIdentifier componentIdentifier,
+				String typeName, FunctionalSourceSet sourceSets) {
+			this.componentIdentifier = componentIdentifier;
+			this.typeName = typeName;
+			this.sourceSets = sourceSets;
+		}
+	}
 }

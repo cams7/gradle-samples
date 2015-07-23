@@ -22,7 +22,9 @@ import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.platform.base.BinarySpec;
 
 public interface SourceTransformTaskConfig {
-    String getTaskPrefix();
-    Class<? extends DefaultTask> getTaskType();
-    void configureTask(Task task, BinarySpec binary, LanguageSourceSet sourceSet);
+	String getTaskPrefix();
+
+	Class<? extends DefaultTask> getTaskType();
+
+	void configureTask(Task task, BinarySpec binary, LanguageSourceSet sourceSet);
 }

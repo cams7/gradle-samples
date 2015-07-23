@@ -19,10 +19,10 @@ package org.gradle.platform.base.internal.toolchain;
 import org.gradle.util.TreeVisitor;
 
 public interface ToolSearchResult {
-    boolean isAvailable();
+	boolean isAvailable();
 
-    /**
-     * Writes some diagnostics about why the tool is not available.
-     */
-    void explain(TreeVisitor<? super String> visitor);
+	/**
+	 * Writes some diagnostics about why the tool is not available.
+	 */
+	void explain(TreeVisitor<? super String> visitor);
 }

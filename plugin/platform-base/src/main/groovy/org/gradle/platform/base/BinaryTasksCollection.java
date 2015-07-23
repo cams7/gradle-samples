@@ -24,11 +24,12 @@ import org.gradle.api.Task;
  * A collection of tasks associated to a binary
  * */
 public interface BinaryTasksCollection extends DomainObjectSet<Task> {
-    /**
-     * The 'lifecycle' task, that can be used to construct this binary.
-     */
-    Task getBuild();
+	/**
+	 * The 'lifecycle' task, that can be used to construct this binary.
+	 */
+	Task getBuild();
 
-    <T extends Task> void create(String name, Class<T> type, Action<? super T> config);
+	<T extends Task> void create(String name, Class<T> type,
+			Action<? super T> config);
 
 }

@@ -29,21 +29,22 @@ import org.gradle.internal.HasInternalProtocol;
 @Incubating
 @HasInternalProtocol
 public interface LanguageSourceSet extends Named, BuildableModelElement {
-    String getDisplayName();
+	String getDisplayName();
 
-    // TODO: do we want to keep using SourceDirectorySet in the new API?
-    // would feel more natural if dirs could be added directly to LanguageSourceSet
-    // could also think about extending SourceDirectorySet
+	// TODO: do we want to keep using SourceDirectorySet in the new API?
+	// would feel more natural if dirs could be added directly to
+	// LanguageSourceSet
+	// could also think about extending SourceDirectorySet
 
-    /**
-     * The source files.
-     */
-    SourceDirectorySet getSource();
+	/**
+	 * The source files.
+	 */
+	SourceDirectorySet getSource();
 
-    /**
-     * Configure the sources
-     */
-    void source(Action<? super SourceDirectorySet> config);
+	/**
+	 * Configure the sources
+	 */
+	void source(Action<? super SourceDirectorySet> config);
 
-    void generatedBy(Task generatorTask);
+	void generatedBy(Task generatorTask);
 }

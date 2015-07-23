@@ -20,8 +20,10 @@ import org.gradle.platform.base.BinaryContainer;
 import org.gradle.platform.base.BinarySpec;
 import org.gradle.platform.base.internal.rules.RuleAwarePolymorphicDomainObjectContainer;
 
-public class DefaultBinaryContainer extends RuleAwarePolymorphicDomainObjectContainer<BinarySpec> implements BinaryContainer {
-    public DefaultBinaryContainer(Instantiator instantiator) {
-        super(BinarySpec.class, instantiator);
-    }
+public class DefaultBinaryContainer extends
+		RuleAwarePolymorphicDomainObjectContainer<BinarySpec> implements
+		BinaryContainer {
+	public DefaultBinaryContainer(Instantiator instantiator) {
+		super(BinarySpec.class, instantiator);
+	}
 }

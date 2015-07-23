@@ -28,49 +28,60 @@ import org.gradle.platform.base.internal.toolchain.ToolResolver;
 
 public class ComponentModelBaseServiceRegistry implements PluginServiceRegistry {
 
-    public void registerGlobalServices(ServiceRegistration registration) {
-        registration.addProvider(new GlobalScopeServices());
-    }
+	public void registerGlobalServices(ServiceRegistration registration) {
+		registration.addProvider(new GlobalScopeServices());
+	}
 
-    public void registerBuildServices(ServiceRegistration registration){
-    }
+	public void registerBuildServices(ServiceRegistration registration) {
+	}
 
-    public void registerGradleServices(ServiceRegistration registration) {
-    }
+	public void registerGradleServices(ServiceRegistration registration) {
+	}
 
-    public void registerProjectServices(ServiceRegistration registration) {
-        registration.addProvider(new ProjectScopeServices());
-    }
+	public void registerProjectServices(ServiceRegistration registration) {
+		registration.addProvider(new ProjectScopeServices());
+	}
 
-    private static class ProjectScopeServices {
-        ToolResolver createToolResolver(ServiceRegistry services) {
-            DefaultToolResolver toolResolver = new DefaultToolResolver();
-            for (ToolChainInternal<?> toolChain : services.getAll(ToolChainInternal.class)) {
-                @SuppressWarnings("unchecked") ToolChainInternal<? extends Platform> converted = toolChain;
-                toolResolver.registerToolChain(converted);
-            }
-            return toolResolver;
-        }
-    }
+	private static class ProjectScopeServices {
+		@SuppressWarnings("unused")
+		ToolResolver createToolResolver(ServiceRegistry services) {
+			DefaultToolResolver toolResolver = new DefaultToolResolver();
+			for (ToolChainInternal<?> toolChain : services
+					.getAll(ToolChainInternal.class)) {
 
-    private static class GlobalScopeServices {
-        MethodModelRuleExtractor createLanguageTypePluginInspector() {
-            return new LanguageTypeModelRuleExtractor();
-        }
+				ToolChainInternal<? extends Platform> converted = toolChain;
+				toolResolver.registerToolChain(converted);
+			}
+			return toolResolver;
+		}
+	}
 
-        MethodModelRuleExtractor createComponentModelPluginInspector(Instantiator instantiator) {
-            return new ComponentTypeModelRuleExtractor(instantiator);
-        }
+	private static class GlobalScopeServices {
+		@SuppressWarnings("unused")
+		MethodModelRuleExtractor createLanguageTypePluginInspector() {
+			return new LanguageTypeModelRuleExtractor();
+		}
 
-        MethodModelRuleExtractor createBinaryTypeModelPluginInspector(Instantiator instantiator) {
-            return new BinaryTypeModelRuleExtractor(instantiator);
-        }
+		@SuppressWarnings("unused")
+		MethodModelRuleExtractor createComponentModelPluginInspector(
+				Instantiator instantiator) {
+			return new ComponentTypeModelRuleExtractor(instantiator);
+		}
 
-        MethodModelRuleExtractor createComponentBinariesPluginInspector() {
-            return new ComponentBinariesModelRuleExtractor();
-        }
-        MethodModelRuleExtractor createBinaryTaskPluginInspector() {
-            return new BinaryTasksModelRuleExtractor();
-        }
-    }
+		@SuppressWarnings("unused")
+		MethodModelRuleExtractor createBinaryTypeModelPluginInspector(
+				Instantiator instantiator) {
+			return new BinaryTypeModelRuleExtractor(instantiator);
+		}
+
+		@SuppressWarnings("unused")
+		MethodModelRuleExtractor createComponentBinariesPluginInspector() {
+			return new ComponentBinariesModelRuleExtractor();
+		}
+
+		@SuppressWarnings("unused")
+		MethodModelRuleExtractor createBinaryTaskPluginInspector() {
+			return new BinaryTasksModelRuleExtractor();
+		}
+	}
 }

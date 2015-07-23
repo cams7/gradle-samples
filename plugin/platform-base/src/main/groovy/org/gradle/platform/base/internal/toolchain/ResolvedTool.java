@@ -17,5 +17,5 @@
 package org.gradle.platform.base.internal.toolchain;
 
 public interface ResolvedTool<T> extends ToolSearchResult {
-    public T get();
+	public T get();
 }

@@ -17,9 +17,9 @@
 package org.gradle.platform.base.internal.toolchain;
 
 public interface ArgCollector {
-    
-    ArgCollector args(Object... args);
 
-    ArgCollector args(Iterable<?> args);
+	ArgCollector args(Object... args);
+
+	ArgCollector args(Iterable<?> args);
 
 }

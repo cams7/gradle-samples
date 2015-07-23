@@ -25,28 +25,35 @@ import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 
 import java.util.Map;
 
-public abstract class RuleAwarePolymorphicDomainObjectContainer<T> extends DefaultPolymorphicDomainObjectContainer<T> {
-    private final Map<Class<? extends T>, ModelRuleDescriptor> creators = Maps.newHashMap();
+public abstract class RuleAwarePolymorphicDomainObjectContainer<T> extends
+		DefaultPolymorphicDomainObjectContainer<T> {
+	private final Map<Class<? extends T>, ModelRuleDescriptor> creators = Maps
+			.newHashMap();
 
-    public RuleAwarePolymorphicDomainObjectContainer(Class<T> type, Instantiator instantiator) {
-        super(type, instantiator);
-    }
+	public RuleAwarePolymorphicDomainObjectContainer(Class<T> type,
+			Instantiator instantiator) {
+		super(type, instantiator);
+	}
 
-    public <U extends T> void registerFactory(Class<U> type, NamedDomainObjectFactory<? extends U> factory, ModelRuleDescriptor descriptor) {
-        checkCanRegister(type, descriptor);
-        super.registerFactory(type, factory);
-    }
+	public <U extends T> void registerFactory(Class<U> type,
+			NamedDomainObjectFactory<? extends U> factory,
+			ModelRuleDescriptor descriptor) {
+		checkCanRegister(type, descriptor);
+		super.registerFactory(type, factory);
+	}
 
-    private void checkCanRegister(Class<? extends T> type, ModelRuleDescriptor descriptor) {
-        ModelRuleDescriptor creator = creators.get(type);
-        if (creator != null) {
-            StringBuilder builder = new StringBuilder("Cannot register a factory for type ")
-                    .append(type.getSimpleName())
-                    .append(" because a factory for this type was already registered by ");
-            creator.describeTo(builder);
-            builder.append(".");
-            throw new GradleException(builder.toString());
-        }
-        creators.put(type, descriptor);
-    }
+	private void checkCanRegister(Class<? extends T> type,
+			ModelRuleDescriptor descriptor) {
+		ModelRuleDescriptor creator = creators.get(type);
+		if (creator != null) {
+			StringBuilder builder = new StringBuilder(
+					"Cannot register a factory for type ")
+					.append(type.getSimpleName())
+					.append(" because a factory for this type was already registered by ");
+			creator.describeTo(builder);
+			builder.append(".");
+			throw new GradleException(builder.toString());
+		}
+		creators.put(type, descriptor);
+	}
 }

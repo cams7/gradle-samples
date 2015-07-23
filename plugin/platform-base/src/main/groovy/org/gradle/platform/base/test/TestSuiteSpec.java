@@ -24,8 +24,8 @@ import org.gradle.platform.base.ComponentSpec;
  */
 @Incubating
 public interface TestSuiteSpec extends ComponentSpec {
-    /**
-     * The tested component.
-     */
-    ComponentSpec getTestedComponent();
+	/**
+	 * The tested component.
+	 */
+	ComponentSpec getTestedComponent();
 }

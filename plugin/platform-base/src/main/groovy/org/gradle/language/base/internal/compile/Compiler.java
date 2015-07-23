@@ -18,5 +18,5 @@ package org.gradle.language.base.internal.compile;
 import org.gradle.api.tasks.WorkResult;
 
 public interface Compiler<T extends CompileSpec> {
-    WorkResult execute(T spec);
+	WorkResult execute(T spec);
 }

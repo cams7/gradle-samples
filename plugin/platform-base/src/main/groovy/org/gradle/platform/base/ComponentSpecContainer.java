@@ -20,9 +20,10 @@ import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer;
 import org.gradle.api.Incubating;
 
 /**
- * A container of software components.
- * TODO:DAZ Merge with org.gradle.api.component.SoftwareComponentContainer
+ * A container of software components. TODO:DAZ Merge with
+ * org.gradle.api.component.SoftwareComponentContainer
  */
 @Incubating
-public interface ComponentSpecContainer extends ExtensiblePolymorphicDomainObjectContainer<ComponentSpec> {
+public interface ComponentSpecContainer extends
+		ExtensiblePolymorphicDomainObjectContainer<ComponentSpec> {
 }

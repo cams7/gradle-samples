@@ -20,49 +20,50 @@ import org.gradle.internal.text.TreeFormatter;
 import org.gradle.util.TreeVisitor;
 
 public class ToolChainAvailability implements ToolSearchResult {
-    private ToolSearchResult reason;
+	private ToolSearchResult reason;
 
-    public boolean isAvailable() {
-        return reason == null;
-    }
+	public boolean isAvailable() {
+		return reason == null;
+	}
 
-    public String getUnavailableMessage() {
-        TreeFormatter formatter = new TreeFormatter();
-        this.explain(formatter);
-        return formatter.toString();
-    }
+	public String getUnavailableMessage() {
+		TreeFormatter formatter = new TreeFormatter();
+		this.explain(formatter);
+		return formatter.toString();
+	}
 
-    public void explain(TreeVisitor<? super String> visitor) {
-        reason.explain(visitor);
-    }
+	public void explain(TreeVisitor<? super String> visitor) {
+		reason.explain(visitor);
+	}
 
-    public ToolChainAvailability unavailable(String unavailableMessage) {
-        if (reason == null) {
-            reason = new FixedMessageToolSearchResult(unavailableMessage);
-        }
-        return this;
-    }
+	public ToolChainAvailability unavailable(String unavailableMessage) {
+		if (reason == null) {
+			reason = new FixedMessageToolSearchResult(unavailableMessage);
+		}
+		return this;
+	}
 
-    public ToolChainAvailability mustBeAvailable(ToolSearchResult tool) {
-        if (!tool.isAvailable() && reason == null) {
-            reason = tool;
-        }
-        return this;
-    }
+	public ToolChainAvailability mustBeAvailable(ToolSearchResult tool) {
+		if (!tool.isAvailable() && reason == null) {
+			reason = tool;
+		}
+		return this;
+	}
 
-    private static class FixedMessageToolSearchResult implements ToolSearchResult {
-        private final String message;
+	private static class FixedMessageToolSearchResult implements
+			ToolSearchResult {
+		private final String message;
 
-        private FixedMessageToolSearchResult(String message) {
-            this.message = message;
-        }
+		private FixedMessageToolSearchResult(String message) {
+			this.message = message;
+		}
 
-        public boolean isAvailable() {
-            return false;
-        }
+		public boolean isAvailable() {
+			return false;
+		}
 
-        public void explain(TreeVisitor<? super String> visitor) {
-            visitor.node(message);
-        }
-    }
+		public void explain(TreeVisitor<? super String> visitor) {
+			visitor.node(message);
+		}
+	}
 }

@@ -22,14 +22,15 @@ import org.gradle.api.Named;
 /**
  * The platform or runtime that a binary is designed to run on.
  *
- * Examples: the JvmPlatform defines a java runtime, while the NativePlatform defines the Operating System and Architecture for a native app.
+ * Examples: the JvmPlatform defines a java runtime, while the NativePlatform
+ * defines the Operating System and Architecture for a native app.
  */
 @Incubating
 public interface Platform extends Named {
 
-    /**
-     * Returns a human consumable name for this platform.
-     *
-     */
-    String getDisplayName();
+	/**
+	 * Returns a human consumable name for this platform.
+	 *
+	 */
+	String getDisplayName();
 }

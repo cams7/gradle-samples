@@ -19,46 +19,51 @@ package org.gradle.platform.base.internal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultBinaryNamingSchemeBuilder implements BinaryNamingSchemeBuilder {
-    private final String parentName;
-    private final String typeString;
-    private final List<String> dimensions;
+public class DefaultBinaryNamingSchemeBuilder implements
+		BinaryNamingSchemeBuilder {
+	private final String parentName;
+	private final String typeString;
+	private final List<String> dimensions;
 
-    public DefaultBinaryNamingSchemeBuilder() {
-        this.parentName = null;
-        this.typeString = "";
-        this.dimensions = new ArrayList<String>();
-    }
+	public DefaultBinaryNamingSchemeBuilder() {
+		this.parentName = null;
+		this.typeString = "";
+		this.dimensions = new ArrayList<String>();
+	}
 
-    public DefaultBinaryNamingSchemeBuilder(BinaryNamingScheme basis) {
-        assert basis instanceof DefaultBinaryNamingScheme;
-        DefaultBinaryNamingScheme clone = (DefaultBinaryNamingScheme) basis;
-        this.parentName = clone.parentName;
-        this.typeString = clone.typeString;
-        this.dimensions = clone.dimensions;
-    }
+	public DefaultBinaryNamingSchemeBuilder(BinaryNamingScheme basis) {
+		assert basis instanceof DefaultBinaryNamingScheme;
+		DefaultBinaryNamingScheme clone = (DefaultBinaryNamingScheme) basis;
+		this.parentName = clone.parentName;
+		this.typeString = clone.typeString;
+		this.dimensions = clone.dimensions;
+	}
 
-    private DefaultBinaryNamingSchemeBuilder(String parentName, String typeString, List<String> dimensions) {
-        this.parentName = parentName;
-        this.typeString = typeString;
-        this.dimensions = dimensions;
-    }
+	private DefaultBinaryNamingSchemeBuilder(String parentName,
+			String typeString, List<String> dimensions) {
+		this.parentName = parentName;
+		this.typeString = typeString;
+		this.dimensions = dimensions;
+	}
 
-    public BinaryNamingSchemeBuilder withComponentName(String name) {
-        return new DefaultBinaryNamingSchemeBuilder(name, typeString, dimensions);
-    }
+	public BinaryNamingSchemeBuilder withComponentName(String name) {
+		return new DefaultBinaryNamingSchemeBuilder(name, typeString,
+				dimensions);
+	}
 
-    public BinaryNamingSchemeBuilder withTypeString(String newTypeString) {
-        return new DefaultBinaryNamingSchemeBuilder(parentName, newTypeString, dimensions);
-    }
+	public BinaryNamingSchemeBuilder withTypeString(String newTypeString) {
+		return new DefaultBinaryNamingSchemeBuilder(parentName, newTypeString,
+				dimensions);
+	}
 
-    public BinaryNamingSchemeBuilder withVariantDimension(String dimension) {
-        List<String> newDimensions = new ArrayList<String>(dimensions);
-        newDimensions.add(dimension);
-        return new DefaultBinaryNamingSchemeBuilder(parentName, typeString, newDimensions);
-    }
+	public BinaryNamingSchemeBuilder withVariantDimension(String dimension) {
+		List<String> newDimensions = new ArrayList<String>(dimensions);
+		newDimensions.add(dimension);
+		return new DefaultBinaryNamingSchemeBuilder(parentName, typeString,
+				newDimensions);
+	}
 
-    public BinaryNamingScheme build() {
-        return new DefaultBinaryNamingScheme(parentName, typeString, dimensions);
-    }
+	public BinaryNamingScheme build() {
+		return new DefaultBinaryNamingScheme(parentName, typeString, dimensions);
+	}
 }

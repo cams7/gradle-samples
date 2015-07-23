@@ -20,13 +20,13 @@ import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.platform.base.BinarySpec;
 
 public interface BinarySpecInternal extends BinarySpec {
-    FunctionalSourceSet getBinarySources();
+	FunctionalSourceSet getBinarySources();
 
-    void setBinarySources(FunctionalSourceSet sources);
+	void setBinarySources(FunctionalSourceSet sources);
 
-    void setBuildable(boolean buildable);
+	void setBuildable(boolean buildable);
 
-    BinaryBuildAbility getBuildAbility();
+	BinaryBuildAbility getBuildAbility();
 
-    boolean isLegacyBinary();
+	boolean isLegacyBinary();
 }

@@ -19,14 +19,18 @@ package org.gradle.language.base.internal.registry;
 import com.google.common.reflect.TypeToken;
 import org.gradle.api.internal.DefaultDomainObjectSet;
 
-public class DefaultLanguageTransformContainer extends DefaultDomainObjectSet<LanguageTransform<?, ?>> implements LanguageTransformContainer {
-    public DefaultLanguageTransformContainer() {
-        super(getLanguageTransformType());
-    }
+public class DefaultLanguageTransformContainer extends
+		DefaultDomainObjectSet<LanguageTransform<?, ?>> implements
+		LanguageTransformContainer {
+	public DefaultLanguageTransformContainer() {
+		super(getLanguageTransformType());
+	}
 
-    private static Class<LanguageTransform<?, ?>> getLanguageTransformType() {
-        @SuppressWarnings("unchecked")
-        Class<LanguageTransform<?, ?>> rawType = (Class<LanguageTransform<?, ?>>) new TypeToken<LanguageTransform<?, ?>>() {}.getRawType();
-        return rawType;
-    }
+	private static Class<LanguageTransform<?, ?>> getLanguageTransformType() {
+		@SuppressWarnings("unchecked")
+		Class<LanguageTransform<?, ?>> rawType = (Class<LanguageTransform<?, ?>>) new TypeToken<LanguageTransform<?, ?>>() {
+			private static final long serialVersionUID = 1L;
+		}.getRawType();
+		return rawType;
+	}
 }

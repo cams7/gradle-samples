@@ -21,39 +21,44 @@ import org.gradle.api.internal.file.FileResolver;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.language.base.sources.BaseLanguageSourceSet;
 
-public class RuleBasedLanguageRegistration<T extends BaseLanguageSourceSet> implements LanguageRegistration<T> {
+public class RuleBasedLanguageRegistration<T extends BaseLanguageSourceSet>
+		implements LanguageRegistration<T> {
 
-    private final String name;
-    private final Class<T> sourceSetType;
-    private final Class<? extends T> sourceSetImplementation;
-    private Instantiator instantiator;
-    private FileResolver fileResolver;
+	private final String name;
+	private final Class<T> sourceSetType;
+	private final Class<? extends T> sourceSetImplementation;
+	private Instantiator instantiator;
+	private FileResolver fileResolver;
 
-    public RuleBasedLanguageRegistration(String name, Class<T> sourceSetType, Class<? extends T> sourceSetImplementation, Instantiator instantiator, FileResolver fileResolver) {
-        this.name = name;
-        this.sourceSetType = sourceSetType;
-        this.sourceSetImplementation = sourceSetImplementation;
-        this.instantiator = instantiator;
-        this.fileResolver = fileResolver;
-    }
+	public RuleBasedLanguageRegistration(String name, Class<T> sourceSetType,
+			Class<? extends T> sourceSetImplementation,
+			Instantiator instantiator, FileResolver fileResolver) {
+		this.name = name;
+		this.sourceSetType = sourceSetType;
+		this.sourceSetImplementation = sourceSetImplementation;
+		this.instantiator = instantiator;
+		this.fileResolver = fileResolver;
+	}
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public Class<T> getSourceSetType() {
-        return sourceSetType;
-    }
+	@Override
+	public Class<T> getSourceSetType() {
+		return sourceSetType;
+	}
 
-    @Override
-    public NamedDomainObjectFactory<? extends T> getSourceSetFactory(final String parentName) {
-        return new NamedDomainObjectFactory<T>() {
-            @Override
-            public T create(String name) {
-                return BaseLanguageSourceSet.create(sourceSetImplementation, name, parentName, fileResolver, instantiator);
-            }
-        };
-    }
+	@Override
+	public NamedDomainObjectFactory<? extends T> getSourceSetFactory(
+			final String parentName) {
+		return new NamedDomainObjectFactory<T>() {
+			@Override
+			public T create(String name) {
+				return BaseLanguageSourceSet.create(sourceSetImplementation,
+						name, parentName, fileResolver, instantiator);
+			}
+		};
+	}
 }

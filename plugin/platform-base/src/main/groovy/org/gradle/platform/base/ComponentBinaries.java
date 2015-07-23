@@ -24,28 +24,31 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Declares the binaries that should be built for a custom {@link org.gradle.platform.base.ComponentSpec} type.
+ * Declares the binaries that should be built for a custom
+ * {@link org.gradle.platform.base.ComponentSpec} type.
  *
- * The following example demonstrates how to register a binary for a custom component type using a plugin with a
- * {@link org.gradle.platform.base.ComponentBinaries} annotation.
- * Furthermore the plugin registers 'DefaultSampleBinary' as implementation for {@link org.gradle.platform.base.BinarySpec}.
+ * The following example demonstrates how to register a binary for a custom
+ * component type using a plugin with a
+ * {@link org.gradle.platform.base.ComponentBinaries} annotation. Furthermore
+ * the plugin registers 'DefaultSampleBinary' as implementation for
+ * {@link org.gradle.platform.base.BinarySpec}.
  *
  * <pre autoTested='true'>
  * import org.gradle.model.*
  * import org.gradle.model.collection.*
- *
+ * 
  * interface SampleComponent extends ComponentSpec {}
  * interface SampleBinary extends BinarySpec {}
  * class DefaultSampleBinary extends BaseBinarySpec implements SampleBinary {}
- *
+ * 
  * apply plugin: MyCustomBinariesPlugin
- *
+ * 
  * class MyCustomBinariesPlugin extends RuleSource {
  *     {@literal @}BinaryType
  *     void register(BinaryTypeBuilder<SampleBinary> builder) {
  *         builder.defaultImplementation(DefaultSampleBinary)
  *     }
- *
+ * 
  *     {@literal @}ComponentBinaries
  *     void createBinariesForSampleLibrary(CollectionBuilder<SampleBinary> binaries, SampleComponent component) {
  *         binaries.create("${component.name}Binary", SampleBinary)
