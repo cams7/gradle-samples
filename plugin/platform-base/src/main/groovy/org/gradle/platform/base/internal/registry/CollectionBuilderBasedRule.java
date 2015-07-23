@@ -16,7 +16,9 @@
 
 package org.gradle.platform.base.internal.registry;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.gradle.api.specs.Spec;
 import org.gradle.model.collection.CollectionBuilder;
 import org.gradle.model.internal.core.ModelAction;
@@ -27,8 +29,7 @@ import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
 import org.gradle.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public abstract class CollectionBuilderBasedRule<R, S, T, C> implements
 		ModelAction<C> {

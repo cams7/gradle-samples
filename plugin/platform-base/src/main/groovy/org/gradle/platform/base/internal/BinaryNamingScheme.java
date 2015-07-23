@@ -16,9 +16,9 @@
 
 package org.gradle.platform.base.internal;
 
-import org.gradle.api.Nullable;
-
 import java.util.List;
+
+import org.gradle.api.Nullable;
 
 // TODO:DAZ Split data from behaviour
 // data: fullName + component parts [typeName, dimensions, baseName?]

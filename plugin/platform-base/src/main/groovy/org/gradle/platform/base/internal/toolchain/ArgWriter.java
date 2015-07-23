@@ -16,10 +16,10 @@
 
 package org.gradle.platform.base.internal.toolchain;
 
-import org.gradle.api.Transformer;
-
 import java.io.PrintWriter;
 import java.util.regex.Pattern;
+
+import org.gradle.api.Transformer;
 
 public class ArgWriter implements ArgCollector {
 	private static final Pattern WHITESPACE = Pattern.compile("\\s");

@@ -15,7 +15,16 @@
  */
 package org.gradle.language.base.plugins;
 
-import org.gradle.api.*;
+import static org.apache.commons.lang.StringUtils.capitalize;
+
+import javax.inject.Inject;
+
+import org.gradle.api.Action;
+import org.gradle.api.Incubating;
+import org.gradle.api.Named;
+import org.gradle.api.NamedDomainObjectFactory;
+import org.gradle.api.Plugin;
+import org.gradle.api.Task;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.tasks.TaskContainer;
@@ -26,8 +35,17 @@ import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.base.ProjectSourceSet;
 import org.gradle.language.base.internal.LanguageSourceSetInternal;
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
-import org.gradle.language.base.internal.registry.*;
-import org.gradle.model.*;
+import org.gradle.language.base.internal.registry.DefaultLanguageRegistry;
+import org.gradle.language.base.internal.registry.DefaultLanguageTransformContainer;
+import org.gradle.language.base.internal.registry.LanguageRegistration;
+import org.gradle.language.base.internal.registry.LanguageRegistry;
+import org.gradle.language.base.internal.registry.LanguageTransform;
+import org.gradle.language.base.internal.registry.LanguageTransformContainer;
+import org.gradle.model.Defaults;
+import org.gradle.model.Finalize;
+import org.gradle.model.Model;
+import org.gradle.model.Mutate;
+import org.gradle.model.RuleSource;
 import org.gradle.model.collection.CollectionBuilder;
 import org.gradle.model.collection.internal.BridgedCollections;
 import org.gradle.model.internal.core.ModelPath;
@@ -37,11 +55,12 @@ import org.gradle.platform.base.BinaryContainer;
 import org.gradle.platform.base.ComponentSpec;
 import org.gradle.platform.base.ComponentSpecContainer;
 import org.gradle.platform.base.PlatformContainer;
-import org.gradle.platform.base.internal.*;
-
-import javax.inject.Inject;
-
-import static org.apache.commons.lang.StringUtils.capitalize;
+import org.gradle.platform.base.internal.BinarySpecInternal;
+import org.gradle.platform.base.internal.ComponentSpecInternal;
+import org.gradle.platform.base.internal.DefaultComponentSpecContainer;
+import org.gradle.platform.base.internal.DefaultPlatformContainer;
+import org.gradle.platform.base.internal.DefaultPlatformResolvers;
+import org.gradle.platform.base.internal.PlatformResolvers;
 
 /**
  * Base plugin for language support.

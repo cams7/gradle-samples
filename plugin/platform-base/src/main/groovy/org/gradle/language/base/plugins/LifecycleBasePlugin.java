@@ -16,17 +16,22 @@
 
 package org.gradle.language.base.plugins;
 
-import org.gradle.api.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+import org.gradle.api.Action;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.Incubating;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.api.tasks.Delete;
 import org.gradle.language.base.internal.plugins.CleanRule;
 import org.gradle.util.DeprecationLogger;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * <p>

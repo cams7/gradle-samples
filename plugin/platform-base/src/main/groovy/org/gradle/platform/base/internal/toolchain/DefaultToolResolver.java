@@ -16,7 +16,9 @@
 
 package org.gradle.platform.base.internal.toolchain;
 
-import com.google.common.collect.Sets;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Set;
 
 import org.gradle.api.GradleException;
 import org.gradle.internal.text.TreeFormatter;
@@ -25,9 +27,7 @@ import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.platform.base.Platform;
 import org.gradle.util.TreeVisitor;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 public class DefaultToolResolver implements ToolResolver {
 	private Set<ToolChainInternal<? extends Platform>> toolChains;

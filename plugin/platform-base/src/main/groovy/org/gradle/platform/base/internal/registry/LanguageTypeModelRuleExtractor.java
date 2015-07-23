@@ -16,7 +16,8 @@
 
 package org.gradle.platform.base.internal.registry;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.internal.reflect.DirectInstantiator;
 import org.gradle.internal.reflect.Instantiator;
@@ -27,7 +28,15 @@ import org.gradle.language.base.internal.registry.LanguageRegistry;
 import org.gradle.language.base.internal.registry.RuleBasedLanguageRegistration;
 import org.gradle.language.base.plugins.ComponentModelBasePlugin;
 import org.gradle.language.base.sources.BaseLanguageSourceSet;
-import org.gradle.model.internal.core.*;
+import org.gradle.model.internal.core.DependencyOnlyExtractedModelRule;
+import org.gradle.model.internal.core.ExtractedModelAction;
+import org.gradle.model.internal.core.ExtractedModelRule;
+import org.gradle.model.internal.core.ModelAction;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.ModelReference;
+import org.gradle.model.internal.core.ModelView;
+import org.gradle.model.internal.core.ModelViews;
+import org.gradle.model.internal.core.MutableModelNode;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
@@ -37,7 +46,7 @@ import org.gradle.platform.base.internal.builder.LanguageTypeBuilderInternal;
 import org.gradle.platform.base.internal.builder.TypeBuilderInternal;
 import org.gradle.platform.base.internal.util.ImplementationTypeDetermer;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public class LanguageTypeModelRuleExtractor
 		extends

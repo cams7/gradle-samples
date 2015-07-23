@@ -17,8 +17,8 @@
 package org.gradle.platform.base.internal.toolchain;
 
 import org.gradle.language.base.internal.compile.CompileSpec;
-import org.gradle.platform.base.Platform;
 import org.gradle.language.base.internal.compile.Compiler;
+import org.gradle.platform.base.Platform;
 
 public interface ToolResolver {
 	<P extends Platform> ToolSearchResult checkToolAvailability(P requirement);

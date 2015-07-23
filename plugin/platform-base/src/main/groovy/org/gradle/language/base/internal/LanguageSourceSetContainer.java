@@ -16,14 +16,15 @@
 
 package org.gradle.language.base.internal;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.internal.DefaultDomainObjectSet;
 import org.gradle.internal.typeconversion.NotationParser;
 import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.language.base.LanguageSourceSet;
 
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 public class LanguageSourceSetContainer {
 	private final NotationParser<Object, Set<LanguageSourceSet>> sourcesNotationParser = SourceSetNotationParser

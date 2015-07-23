@@ -17,13 +17,18 @@
 package org.gradle.platform.base.internal;
 
 import groovy.lang.Closure;
-import org.gradle.api.*;
-import org.gradle.api.specs.Spec;
-import org.gradle.platform.base.BinaryTasksCollection;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.gradle.api.Action;
+import org.gradle.api.DomainObjectCollection;
+import org.gradle.api.DomainObjectSet;
+import org.gradle.api.Task;
+import org.gradle.api.UnknownDomainObjectException;
+import org.gradle.api.specs.Spec;
+import org.gradle.platform.base.BinaryTasksCollection;
 
 @SuppressWarnings("rawtypes")
 public class BinaryTasksCollectionWrapper implements BinaryTasksCollection {

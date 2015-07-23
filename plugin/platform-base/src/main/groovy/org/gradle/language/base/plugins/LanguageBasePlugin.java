@@ -15,8 +15,20 @@
  */
 package org.gradle.language.base.plugins;
 
-import com.google.common.collect.Lists;
-import org.gradle.api.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.gradle.api.Action;
+import org.gradle.api.DefaultTask;
+import org.gradle.api.GradleException;
+import org.gradle.api.Incubating;
+import org.gradle.api.Named;
+import org.gradle.api.Plugin;
+import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.internal.TaskInternal;
 import org.gradle.api.internal.project.taskfactory.ITaskFactory;
 import org.gradle.api.plugins.ExtensionContainer;
@@ -32,7 +44,14 @@ import org.gradle.model.Mutate;
 import org.gradle.model.Path;
 import org.gradle.model.RuleSource;
 import org.gradle.model.collection.internal.BridgedCollections;
-import org.gradle.model.internal.core.*;
+import org.gradle.model.internal.core.BiActionBackedModelAction;
+import org.gradle.model.internal.core.DirectNodeModelAction;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.ModelCreators;
+import org.gradle.model.internal.core.ModelPath;
+import org.gradle.model.internal.core.ModelReference;
+import org.gradle.model.internal.core.MutableModelNode;
+import org.gradle.model.internal.core.UnmanagedModelProjection;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.core.rule.describe.SimpleModelRuleDescriptor;
 import org.gradle.model.internal.registry.ModelRegistry;
@@ -43,10 +62,7 @@ import org.gradle.platform.base.BinarySpec;
 import org.gradle.platform.base.internal.BinarySpecInternal;
 import org.gradle.platform.base.internal.DefaultBinaryContainer;
 
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import com.google.common.collect.Lists;
 
 /**
  * Base plugin for language support.

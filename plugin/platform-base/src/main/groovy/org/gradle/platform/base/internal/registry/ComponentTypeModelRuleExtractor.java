@@ -16,7 +16,9 @@
 
 package org.gradle.platform.base.internal.registry;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.gradle.api.NamedDomainObjectFactory;
 import org.gradle.api.internal.project.ProjectIdentifier;
 import org.gradle.internal.reflect.DirectInstantiator;
@@ -26,7 +28,15 @@ import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.language.base.ProjectSourceSet;
 import org.gradle.language.base.internal.DefaultFunctionalSourceSet;
 import org.gradle.language.base.plugins.ComponentModelBasePlugin;
-import org.gradle.model.internal.core.*;
+import org.gradle.model.internal.core.DependencyOnlyExtractedModelRule;
+import org.gradle.model.internal.core.ExtractedModelAction;
+import org.gradle.model.internal.core.ExtractedModelRule;
+import org.gradle.model.internal.core.ModelAction;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.ModelReference;
+import org.gradle.model.internal.core.ModelView;
+import org.gradle.model.internal.core.ModelViews;
+import org.gradle.model.internal.core.MutableModelNode;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
@@ -39,8 +49,7 @@ import org.gradle.platform.base.internal.DefaultComponentSpecContainer;
 import org.gradle.platform.base.internal.DefaultComponentSpecIdentifier;
 import org.gradle.platform.base.internal.builder.TypeBuilderInternal;
 
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public class ComponentTypeModelRuleExtractor extends
 		TypeModelRuleExtractor<ComponentType, ComponentSpec, BaseComponentSpec> {

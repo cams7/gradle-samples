@@ -16,10 +16,10 @@
 
 package org.gradle.platform.base.internal;
 
+import java.util.List;
+
 import org.gradle.api.Nullable;
 import org.gradle.util.GUtil;
-
-import java.util.List;
 
 public class DefaultBinaryNamingScheme implements BinaryNamingScheme {
 	final String parentName;

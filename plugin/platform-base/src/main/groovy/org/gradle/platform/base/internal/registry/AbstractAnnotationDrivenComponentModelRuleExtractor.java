@@ -16,17 +16,17 @@
 
 package org.gradle.platform.base.internal.registry;
 
+import java.lang.annotation.Annotation;
+import java.security.InvalidParameterException;
+import java.util.HashMap;
+import java.util.List;
+
 import org.gradle.model.collection.CollectionBuilder;
 import org.gradle.model.internal.core.ModelReference;
 import org.gradle.model.internal.inspect.AbstractAnnotationDrivenModelRuleExtractor;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
 import org.gradle.platform.base.InvalidModelException;
-
-import java.lang.annotation.Annotation;
-import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.List;
 
 public abstract class AbstractAnnotationDrivenComponentModelRuleExtractor<T extends Annotation>
 		extends AbstractAnnotationDrivenModelRuleExtractor<T> {

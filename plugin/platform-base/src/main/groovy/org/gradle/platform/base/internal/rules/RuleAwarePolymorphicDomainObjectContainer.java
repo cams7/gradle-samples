@@ -16,14 +16,15 @@
 
 package org.gradle.platform.base.internal.rules;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.NamedDomainObjectFactory;
 import org.gradle.api.internal.DefaultPolymorphicDomainObjectContainer;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.model.internal.core.rule.describe.ModelRuleDescriptor;
 
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 public abstract class RuleAwarePolymorphicDomainObjectContainer<T> extends
 		DefaultPolymorphicDomainObjectContainer<T> {

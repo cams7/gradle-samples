@@ -31,8 +31,8 @@ import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.ModelInstantiationException;
 import org.gradle.platform.base.internal.BinaryBuildAbility;
 import org.gradle.platform.base.internal.BinarySpecInternal;
-import org.gradle.platform.base.internal.FixedBuildAbility;
 import org.gradle.platform.base.internal.DefaultBinaryTasksCollection;
+import org.gradle.platform.base.internal.FixedBuildAbility;
 
 /**
  * Base class for custom binary implementations. A custom implementation of

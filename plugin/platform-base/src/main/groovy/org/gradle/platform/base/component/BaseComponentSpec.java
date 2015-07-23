@@ -16,6 +16,9 @@
 
 package org.gradle.platform.base.component;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.gradle.api.Action;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.Incubating;
@@ -25,11 +28,12 @@ import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.reflect.ObjectInstantiationException;
 import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.language.base.LanguageSourceSet;
-import org.gradle.platform.base.*;
+import org.gradle.platform.base.BinarySpec;
+import org.gradle.platform.base.ComponentSpec;
+import org.gradle.platform.base.ComponentSpecIdentifier;
+import org.gradle.platform.base.ModelInstantiationException;
+import org.gradle.platform.base.TransformationFileType;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
-
-import java.util.Collections;
-import java.util.Set;
 
 /**
  * Base class for custom component implementations. A custom implementation of

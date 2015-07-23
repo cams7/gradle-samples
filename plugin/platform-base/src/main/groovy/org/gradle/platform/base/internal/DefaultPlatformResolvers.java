@@ -15,7 +15,8 @@
  */
 package org.gradle.platform.base.internal;
 
-import com.google.common.collect.Lists;
+import java.util.List;
+
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.NamedDomainObjectSet;
 import org.gradle.api.specs.Spec;
@@ -23,7 +24,7 @@ import org.gradle.platform.base.Platform;
 import org.gradle.platform.base.PlatformContainer;
 import org.gradle.util.CollectionUtils;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 public class DefaultPlatformResolvers implements PlatformResolvers {
 	private final List<PlatformResolver<?>> platformResolvers = Lists

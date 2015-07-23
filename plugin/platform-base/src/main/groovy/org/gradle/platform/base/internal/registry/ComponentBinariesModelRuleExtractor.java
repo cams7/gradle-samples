@@ -16,21 +16,34 @@
 
 package org.gradle.platform.base.internal.registry;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 import org.gradle.internal.BiAction;
 import org.gradle.language.base.FunctionalSourceSet;
 import org.gradle.language.base.plugins.ComponentModelBasePlugin;
 import org.gradle.model.InvalidModelRuleDeclarationException;
 import org.gradle.model.collection.CollectionBuilder;
-import org.gradle.model.internal.core.*;
+import org.gradle.model.internal.core.DefaultCollectionBuilder;
 import org.gradle.model.internal.core.DelegatingCollectionBuilder;
+import org.gradle.model.internal.core.ExtractedModelAction;
+import org.gradle.model.internal.core.ExtractedModelRule;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.ModelPath;
+import org.gradle.model.internal.core.ModelReference;
+import org.gradle.model.internal.core.ModelView;
+import org.gradle.model.internal.core.ModelViews;
+import org.gradle.model.internal.core.MutableModelNode;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
-import org.gradle.platform.base.*;
+import org.gradle.platform.base.BinarySpec;
+import org.gradle.platform.base.ComponentBinaries;
+import org.gradle.platform.base.ComponentSpec;
+import org.gradle.platform.base.ComponentSpecContainer;
+import org.gradle.platform.base.InvalidModelException;
 import org.gradle.platform.base.internal.BinarySpecInternal;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public class ComponentBinariesModelRuleExtractor extends
 		AbstractAnnotationDrivenComponentModelRuleExtractor<ComponentBinaries> {

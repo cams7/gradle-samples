@@ -16,7 +16,7 @@
 
 package org.gradle.platform.base.internal.toolchain;
 
-import org.gradle.language.base.internal.compile.*;
+import org.gradle.language.base.internal.compile.CompileSpec;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.util.TreeVisitor;
 

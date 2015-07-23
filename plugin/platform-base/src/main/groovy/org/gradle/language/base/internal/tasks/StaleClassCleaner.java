@@ -15,9 +15,9 @@
  */
 package org.gradle.language.base.internal.tasks;
 
-import org.gradle.api.file.FileCollection;
-
 import java.io.File;
+
+import org.gradle.api.file.FileCollection;
 
 public abstract class StaleClassCleaner {
 	private File destinationDir;

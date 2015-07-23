@@ -15,9 +15,9 @@
  */
 package org.gradle.language.base.internal.tasks;
 
-import org.gradle.api.internal.TaskOutputsInternal;
-
 import java.io.File;
+
+import org.gradle.api.internal.TaskOutputsInternal;
 
 public class SimpleStaleClassCleaner extends StaleClassCleaner {
 	private final TaskOutputsInternal taskOutputs;

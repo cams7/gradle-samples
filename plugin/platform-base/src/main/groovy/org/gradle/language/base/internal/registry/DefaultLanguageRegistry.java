@@ -16,8 +16,9 @@
 
 package org.gradle.language.base.internal.registry;
 
-import com.google.common.reflect.TypeToken;
 import org.gradle.api.internal.DefaultDomainObjectSet;
+
+import com.google.common.reflect.TypeToken;
 
 public class DefaultLanguageRegistry extends
 		DefaultDomainObjectSet<LanguageRegistration<?>> implements

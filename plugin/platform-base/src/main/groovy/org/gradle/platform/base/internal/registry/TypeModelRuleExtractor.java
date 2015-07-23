@@ -16,18 +16,18 @@
 
 package org.gradle.platform.base.internal.registry;
 
+import java.lang.annotation.Annotation;
+
 import org.apache.commons.lang.StringUtils;
 import org.gradle.api.Nullable;
 import org.gradle.internal.Factory;
 import org.gradle.model.InvalidModelRuleDeclarationException;
-import org.gradle.model.internal.core.ModelReference;
 import org.gradle.model.internal.core.ExtractedModelRule;
+import org.gradle.model.internal.core.ModelReference;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
 import org.gradle.platform.base.InvalidModelException;
 import org.gradle.platform.base.internal.builder.TypeBuilderInternal;
-
-import java.lang.annotation.Annotation;
 
 public abstract class TypeModelRuleExtractor<A extends Annotation, T, U extends T>
 		extends AbstractAnnotationDrivenComponentModelRuleExtractor<A> {

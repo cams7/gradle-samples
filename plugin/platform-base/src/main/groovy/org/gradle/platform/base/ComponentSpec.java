@@ -16,7 +16,11 @@
 
 package org.gradle.platform.base;
 
-import org.gradle.api.*;
+import org.gradle.api.Action;
+import org.gradle.api.DomainObjectSet;
+import org.gradle.api.Incubating;
+import org.gradle.api.Named;
+import org.gradle.api.PolymorphicDomainObjectContainer;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.language.base.LanguageSourceSet;
 

@@ -16,10 +16,10 @@
 
 package org.gradle.platform.base.internal;
 
+import java.util.List;
+
 import org.gradle.api.Incubating;
 import org.gradle.platform.base.PlatformAwareComponentSpec;
-
-import java.util.List;
 
 /**
  * Defines Platform specific operations for ComponentSpecs

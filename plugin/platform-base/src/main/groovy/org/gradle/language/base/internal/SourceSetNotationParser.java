@@ -16,14 +16,17 @@
 
 package org.gradle.language.base.internal;
 
-import org.gradle.internal.typeconversion.*;
-import org.gradle.language.base.FunctionalSourceSet;
-import org.gradle.language.base.LanguageSourceSet;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.gradle.internal.typeconversion.NotationParser;
+import org.gradle.internal.typeconversion.NotationParserBuilder;
+import org.gradle.internal.typeconversion.TypeInfo;
+import org.gradle.internal.typeconversion.TypedNotationConverter;
+import org.gradle.language.base.FunctionalSourceSet;
+import org.gradle.language.base.LanguageSourceSet;
 
 public class SourceSetNotationParser {
 	public static NotationParser<Object, Set<LanguageSourceSet>> parser() {

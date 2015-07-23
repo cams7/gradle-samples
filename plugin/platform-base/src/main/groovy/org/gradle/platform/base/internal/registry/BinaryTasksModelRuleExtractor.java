@@ -16,7 +16,9 @@
 
 package org.gradle.platform.base.internal.registry;
 
-import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gradle.api.Action;
 import org.gradle.api.Task;
 import org.gradle.api.internal.TaskInternal;
@@ -25,7 +27,15 @@ import org.gradle.internal.Cast;
 import org.gradle.language.base.plugins.ComponentModelBasePlugin;
 import org.gradle.model.InvalidModelRuleDeclarationException;
 import org.gradle.model.collection.CollectionBuilder;
-import org.gradle.model.internal.core.*;
+import org.gradle.model.internal.core.DefaultCollectionBuilder;
+import org.gradle.model.internal.core.DirectNodeModelAction;
+import org.gradle.model.internal.core.ExtractedModelAction;
+import org.gradle.model.internal.core.ExtractedModelRule;
+import org.gradle.model.internal.core.InstanceModelView;
+import org.gradle.model.internal.core.ModelActionRole;
+import org.gradle.model.internal.core.ModelReference;
+import org.gradle.model.internal.core.ModelView;
+import org.gradle.model.internal.core.MutableModelNode;
 import org.gradle.model.internal.core.rule.describe.SimpleModelRuleDescriptor;
 import org.gradle.model.internal.inspect.MethodRuleDefinition;
 import org.gradle.model.internal.type.ModelType;
@@ -34,8 +44,7 @@ import org.gradle.platform.base.BinarySpec;
 import org.gradle.platform.base.BinaryTasks;
 import org.gradle.platform.base.InvalidModelException;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public class BinaryTasksModelRuleExtractor extends
 		AbstractAnnotationDrivenComponentModelRuleExtractor<BinaryTasks> {

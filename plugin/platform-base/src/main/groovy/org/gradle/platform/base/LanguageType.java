@@ -16,12 +16,12 @@
 
 package org.gradle.platform.base;
 
-import org.gradle.api.Incubating;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.gradle.api.Incubating;
 
 /**
  * The following example demonstrates how to register a custom language type
