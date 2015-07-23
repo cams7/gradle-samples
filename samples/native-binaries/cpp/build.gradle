@@ -5,7 +5,9 @@ buildscript {
 		maven {url uri('../../../repo')}
 	}
 	dependencies {	
-		classpath 'dom4j:dom4j:1.6.+'		
+		classpath 'dom4j:dom4j:1.6.+'	
+		classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
+		classpath 'br.com.cams7.plugin:platform-native:1.0-SNAPSHOT'
 		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
 	}
 }
@@ -14,43 +16,60 @@ apply plugin: 'br.com.cams7.cpp'
 
 model {
     components {
-        hello(NativeLibrarySpec)
-    }
-}
-
-model {
-    components {
+        hello(NativeLibrarySpec) {
+			sources {
+				cpp {
+					source {
+						srcDirs "src/hello/cpp"
+						include "**/*.cpp"                        
+					}
+                    exportedHeaders {
+						srcDirs "src/hello/include"
+                    }
+				}
+			}
+		}
+    
         main(NativeExecutableSpec) {
-            sources {
-                cpp {
-                    lib library: "hello", linkage: 'static'
-                }
-            }
+			sources {
+				cpp {
+					source {
+						srcDirs "src/main/cpp"
+                        include "**/*.cpp"
+					}
+					
+					lib library: "hello", linkage: 'static'
+				}
+            }   
+
+			binaries {
+				all {
+					// Define a preprocessor macro for every binary
+					cppCompiler.define "NDEBUG"
+
+					// Define toolchain-specific compiler and linker options
+					if (toolChain in Gcc) {
+						cppCompiler.args "-O2", "-fno-access-control"
+						linker.args "-Xlinker", "-S"
+					}
+					//if (toolChain in VisualCpp) {
+					//	cppCompiler.args "/Zi"
+					//	linker.args "/DEBUG"
+					//}
+				}
+
+				// For any shared library binaries built with Visual C++, define the DLL_EXPORT macro
+				//withType(SharedLibraryBinarySpec) {
+				//	if (toolChain in VisualCpp) {
+				//		cppCompiler.define "DLL_EXPORT"
+				//	}
+				//}
+			}
         }
     }
 }
 
 
-binaries.all {
-    // Define a preprocessor macro for every binary
-    cppCompiler.define "NDEBUG"
 
-    // Define toolchain-specific compiler and linker options
-    if (toolChain in Gcc) {
-        cppCompiler.args "-O2", "-fno-access-control"
-        linker.args "-Xlinker", "-S"
-    }
-    if (toolChain in VisualCpp) {
-        cppCompiler.args "/Zi"
-        linker.args "/DEBUG"
-    }
-}
-
-// For any shared library binaries built with Visual C++, define the DLL_EXPORT macro
-binaries.withType(SharedLibraryBinarySpec) {
-    if (toolChain in VisualCpp) {
-        cppCompiler.define "DLL_EXPORT"
-    }
-}
 
 

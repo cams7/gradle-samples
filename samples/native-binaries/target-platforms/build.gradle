@@ -4,7 +4,9 @@ buildscript {
 		maven {url uri('../../../repo')}
 	}
 	dependencies {	
-		classpath 'dom4j:dom4j:1.6.+'		
+		classpath 'dom4j:dom4j:1.6.+'
+		classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
+		classpath 'br.com.cams7.plugin:platform-native:1.0-SNAPSHOT'
 		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
 	}
 }

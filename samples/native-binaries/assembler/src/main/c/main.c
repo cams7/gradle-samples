@@ -1,8 +1,11 @@
 #include <stdio.h>
-#include "sum.h"
+#include <sum.h>
 
-int main () {
-  int x = sum(5, 7);
-  printf("5 + 7 = %d\n", x);
-  return 0;
+void main(void) __attribute__ ((noreturn));
+
+void main () {
+	int value1 = 3;
+	int value2 = 9;
+	int result = sum(value1, value2);
+	printf("%d + %d = %d\n", value1, value2, result);
 }

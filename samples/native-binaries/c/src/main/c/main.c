@@ -1,6 +1,7 @@
-#include "hello.h"
+#include <hello.h>
 
-int main () {
-  hello();
-  return 0;
+void main(void) __attribute__ ((noreturn));
+
+void main () {
+	hello();
 }
