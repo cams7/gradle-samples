@@ -42,34 +42,32 @@ model {
                     }
 				}
 			
-				asm {
-					source {
-						srcDirs "src/main/asm_i386_gcc"
-						include "**/*.s"
-					}
-				}
-			}
-			
-			binaries {
-				all {
-					//if (toolChain in VisualCpp) {
-					//    sources {
-					//        platformAsm(AssemblerSourceSet) {
-					//            source.srcDir "src/main/asm_i386_masm"
-					//        }
-					//    }
-					//    assembler.args "/Zi"
-					//} else {
-					//	sources {
-					//		platformAsm(AssemblerSourceSet) {
-					//			source.srcDir "src/main/asm_i386_gcc"
-					//		}
-					//	}
-					assembler.args "-g"
-					//}
-				}
-			}
+				//asm {
+				//	source {
+				//		srcDirs "src/main/asm_i386_gcc"
+				//		include "**/*.s"
+				//	}
+				//}
+			}			
         }
-    }
+    }	
+}
+
+binaries.all {
+	if (toolChain in VisualCpp) {
+		sources {
+			platformAsm(AssemblerSourceSet) {
+				source.srcDir "src/main/asm_i386_masm"
+			}
+		}
+		assembler.args "/Zi"
+	} else {
+		sources {
+			platformAsm(AssemblerSourceSet) {
+				source.srcDir "src/main/asm_i386_gcc"
+			}
+		}
+		assembler.args "-g"
+	}		
 }
 

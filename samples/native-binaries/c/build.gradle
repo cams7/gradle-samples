@@ -40,30 +40,30 @@ model {
 					
 					lib library: "hello", linkage: 'static'
 				}
-            }
-			
-			binaries {
-				all {
-					// Define toolchain-specific compiler and linker options
-					if (toolChain in Gcc) {
-						cCompiler.args "-O2"
-						linker.args "-Xlinker", "-S"
-					}
-					//if (toolChain in VisualCpp) {
-					//    cCompiler.args "/Zi"
-					//    linker.args "/DEBUG"
-					//}
-				}
-				
-				// For any shared library binaries built with Visual C++,
-				// define the DLL_EXPORT macro
-				//withType(SharedLibraryBinarySpec) {
-				//	if (toolChain in VisualCpp) {
-				//		cCompiler.args "/Zi"
-				//		cCompiler.define "DLL_EXPORT"
-				//	}
-				//}
-			}
-        }
+            }			
+        }		
     }
+	
+	binaries {
+		all {
+			// Define toolchain-specific compiler and linker options
+			if (toolChain in Gcc) {
+				cCompiler.args "-O2"
+				linker.args "-Xlinker", "-S"
+			}
+			if (toolChain in VisualCpp) {
+				cCompiler.args "/Zi"
+				linker.args "/DEBUG"
+			}
+		}
+		
+		// For any shared library binaries built with Visual C++,
+		// define the DLL_EXPORT macro
+		withType(SharedLibraryBinarySpec) {
+			if (toolChain in VisualCpp) {
+				cCompiler.args "/Zi"
+				cCompiler.define "DLL_EXPORT"
+			}
+		}
+	}
 }
