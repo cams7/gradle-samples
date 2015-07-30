@@ -19,13 +19,14 @@ model {
         debug
         release
     }
+	
     repositories {
         libs(PrebuiltLibraries) {
             boost {
                 headers.srcDir "3rd-party-lib/boost_1_55_0/boost"
             }
             util {
-                headers.srcDir "3rd-party-lib/util/src/util/headers"
+                headers.srcDir "3rd-party-lib/util/src/util/include"
                 binaries.withType(StaticLibraryBinary) {
                     def libName = targetPlatform.operatingSystem.windows ? 'util.lib' : 'libutil.a'
                     staticLibraryFile = file("3rd-party-lib/util/build/binaries/utilStaticLibrary/${buildType.name}/${libName}")
@@ -52,9 +53,15 @@ model {
     components {
         main(NativeExecutableSpec) {
             sources {
-                cpp.lib library: 'boost', linkage: 'api'
-               	cpp.lib library: 'util', linkage: 'static'
-               	//cpp.lib library: 'util'
+				cpp {
+					source {
+						srcDirs "src/main/cpp"
+                        include "**/*.cpp"
+					}
+					
+					lib library: 'boost', linkage: 'api'
+					lib library: 'util', linkage: 'static'
+				}                
             }
         }
     }

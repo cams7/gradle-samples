@@ -17,8 +17,20 @@ model {
         debug
         release
     }
+	
     components {
         util(NativeLibrarySpec) {
+			sources {
+				cpp {
+					source {
+						srcDirs "src/util/cpp"
+						include "**/*.cpp"                        
+					}
+                    exportedHeaders {
+						srcDirs "src/util/include"
+                    }
+				}
+			}
             binaries.all {
                 if (buildType == buildTypes.debug) {
                     cppCompiler.define 'DEBUG'

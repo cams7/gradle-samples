@@ -1,0 +1,33 @@
+import br.com.cams7.languageType.documentation.DocumentationComponent
+import br.com.cams7.languageType.markdown.MarkdownSourceSet
+
+buildscript {	
+    repositories {
+		mavenCentral()
+        maven {
+            url uri('../../../repo')
+        }
+    }
+	
+    dependencies {
+		classpath module('br.com.cams7.plugin:custom-model:1.0-SNAPSHOT') {
+			dependency("org.pegdown:pegdown:1.1.0")
+		}
+    }
+}
+apply {
+	plugin 'org.samples.languageType.documentation'
+	plugin 'org.samples.languageType.markdown'
+}
+
+model {
+    components {  
+		docs(DocumentationComponent) {
+            sources {
+                userguide(MarkdownSourceSet) {
+					source.srcDir "src/docs/userguide"
+				}
+            }
+        }
+    }
+}

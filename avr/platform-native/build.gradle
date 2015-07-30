@@ -4,11 +4,43 @@ buildscript {
 		maven {url uri('../../repo')}
 	}
 	dependencies {
-		classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
+		//classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
 		classpath 'br.com.cams7.plugin:platform-native:1.0-SNAPSHOT'
+		//classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
 	}
 }
 
 apply {
 	plugin 'br.com.cams7.native-component'	
 }
+
+model {
+	/*buildTypes {
+        debug
+        release
+    }
+	
+	flavors {
+        english
+        portuguese
+    }
+	
+	toolChains {
+        visualCpp(VisualCpp) {
+            // Specify the installDir if Visual Studio cannot be located
+            // installDir "C:/Apps/Microsoft Visual Studio 10.0"
+        }
+        gcc(Gcc) {
+            // Uncomment to use a GCC install that is not in the PATH
+            // path "/usr/bin/gcc"
+        }
+        clang(Clang)
+    }*/
+
+    components {
+		hello(NativeLibrarySpec)
+	
+		main(NativeExecutableSpec)
+	}
+}
+
