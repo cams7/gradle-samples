@@ -20,6 +20,10 @@ import org.gradle.api.internal.changedetection.state.TaskArtifactStateCacheAcces
 import org.gradle.cache.PersistentIndexedCache;
 import org.gradle.cache.PersistentStateCache;
 
+import br.com.cams7.language.nativeplatform.internal.incremental.CompilationState;
+import br.com.cams7.language.nativeplatform.internal.incremental.CompilationStateCacheFactory;
+import br.com.cams7.language.nativeplatform.internal.incremental.CompilationStateSerializer;
+
 public class DefaultCompilationStateCacheFactory implements
 		CompilationStateCacheFactory {
 

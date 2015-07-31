@@ -23,16 +23,24 @@ import org.gradle.language.nativeplatform.internal.incremental.IncrementalCompil
 
 public class NativeLanguageServices implements PluginServiceRegistry {
 	public void registerGlobalServices(ServiceRegistration registration) {
+		// System.out.println(this.getClass().getName()
+		// + ".registerGlobalServices(" + registration + ")");
 	}
 
 	public void registerBuildServices(ServiceRegistration registration) {
+		// System.out.println(this.getClass().getName()
+		// + ".registerBuildServices(" + registration + ")");
 	}
 
 	public void registerGradleServices(ServiceRegistration registration) {
 		registration.add(DefaultCompilationStateCacheFactory.class);
+		// System.out.println(this.getClass().getName()
+		// + ".registerGradleServices(" + registration + ")");
 	}
 
 	public void registerProjectServices(ServiceRegistration registration) {
 		registration.add(IncrementalCompilerBuilder.class);
+		// System.out.println(this.getClass().getName()
+		// + ".registerProjectServices(" + registration + ")");
 	}
 }

@@ -15,9 +15,14 @@ buildscript {
 }
 
 apply {
-	plugin "br.com.cams7.language-base"
-	plugin "br.com.cams7.native-component"
+	//plugin "br.com.cams7.language-base"
+	//plugin "br.com.cams7.native-component"
+	plugin "br.com.cams7.assembler"
 	plugin "br.com.cams7.c"
+	//plugin "br.com.cams7.cpp"
+	//plugin "br.com.cams7.objective-c"
+	//plugin "br.com.cams7.objective-cpp"
+	//plugin "br.com.cams7.windows-resources"
 	plugin "br.com.cams7.avr"			
 }
 
@@ -28,18 +33,38 @@ model {
         gcc(Gcc)
     }
     
-    components {        
+    components {
+		blink(NativeLibrarySpec) {
+			sources {	
+				asm {
+					source {
+						srcDirs "src/blink/asm"
+						include "**/*.s"
+					}
+				}
+				c {
+					source {
+						srcDirs "src/blink/c"
+						include "**/*.c"                        
+					}
+                    exportedHeaders {
+						srcDirs "src/blink/include"
+                    }
+				}
+			}
+		}		
         main(NativeExecutableSpec) {            
             sources {
-                c {
-                    source {
-                        srcDirs "src/main/c"
-						include "**/*.c"
+				c {
+					source {
+						srcDirs "src/main/c"
+						include "**/*.c"                        
+					}
+                    exportedHeaders {
+						srcDirs "src/main/include"
                     }
-					exportedHeaders {
-                        srcDirs "src/main/include"
-                    }
-                } 
+					lib library: "blink", linkage: 'static'
+				}                
             }           
         }
     }	
