@@ -16,23 +16,23 @@
 
 package org.gradle.nativeplatform.toolchain;
 
+
 import org.gradle.api.Incubating;
 
 /**
  * An executable tool used for GCC that allows customizing the executable.
  */
 @Incubating
-public interface GccCommandLineToolConfiguration extends
-		CommandLineToolConfiguration {
-	/**
-	 * The name of the executable file for this tool.
-	 */
-	String getExecutable();
+public interface GccCommandLineToolConfiguration extends CommandLineToolConfiguration {
+    /**
+     * The name of the executable file for this tool.
+     */
+    String getExecutable();
 
-	/**
-	 * Set the name of the executable file for this tool. The executable will be
-	 * located in the tool chain path.
-	 */
-	void setExecutable(String file);
+    /**
+     * Set the name of the executable file for this tool.
+     * The executable will be located in the tool chain path.
+     */
+    void setExecutable(String file);
 
 }

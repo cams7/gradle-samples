@@ -26,34 +26,26 @@ import org.gradle.nativeplatform.toolchain.internal.gcc.DefaultGccPlatformToolCh
 import org.gradle.nativeplatform.toolchain.internal.gcc.version.CompilerMetaDataProviderFactory;
 import org.gradle.process.internal.ExecActionFactory;
 
-public class ClangToolChain extends AbstractGccCompatibleToolChain implements
-		Clang {
-	public static final String DEFAULT_NAME = "clang";
+public class ClangToolChain extends AbstractGccCompatibleToolChain implements Clang {
+    public static final String DEFAULT_NAME = "clang";
 
-	public ClangToolChain(String name,
-			BuildOperationProcessor buildOperationProcessor,
-			OperatingSystem operatingSystem, FileResolver fileResolver,
-			ExecActionFactory execActionFactory,
-			CompilerMetaDataProviderFactory metaDataProviderFactory,
-			Instantiator instantiator) {
-		super(name, buildOperationProcessor, operatingSystem, fileResolver,
-				execActionFactory, metaDataProviderFactory.clang(),
-				instantiator);
-	}
+    public ClangToolChain(String name, BuildOperationProcessor buildOperationProcessor, OperatingSystem operatingSystem, FileResolver fileResolver, ExecActionFactory execActionFactory, CompilerMetaDataProviderFactory metaDataProviderFactory, Instantiator instantiator) {
+        super(name, buildOperationProcessor, operatingSystem, fileResolver, execActionFactory, metaDataProviderFactory.clang(), instantiator);
+    }
 
-	@Override
-	protected void configureDefaultTools(DefaultGccPlatformToolChain toolChain) {
-		toolChain.getLinker().setExecutable("clang++");
-		toolChain.getcCompiler().setExecutable("clang");
-		toolChain.getCppCompiler().setExecutable("clang++");
-		toolChain.getObjcCompiler().setExecutable("clang");
-		toolChain.getObjcppCompiler().setExecutable("clang++");
-		toolChain.getAssembler().setExecutable("clang");
-	}
+    @Override
+    protected void configureDefaultTools(DefaultGccPlatformToolChain toolChain) {
+        toolChain.getLinker().setExecutable("clang++");
+        toolChain.getcCompiler().setExecutable("clang");
+        toolChain.getCppCompiler().setExecutable("clang++");
+        toolChain.getObjcCompiler().setExecutable("clang");
+        toolChain.getObjcppCompiler().setExecutable("clang++");
+        toolChain.getAssembler().setExecutable("clang");
+    }
 
-	@Override
-	protected String getTypeName() {
-		return "Clang";
-	}
+    @Override
+    protected String getTypeName() {
+        return "Clang";
+    }
 
 }

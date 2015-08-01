@@ -21,12 +21,12 @@ import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 import org.gradle.util.VersionNumber;
 
 public interface GccVersionResult extends ToolSearchResult {
-	/**
-	 * Returns true if the implementation is Clang, false if GCC.
-	 */
-	boolean isClang();
+    /**
+     * Returns true if the implementation is Clang, false if GCC.
+     */
+    boolean isClang();
 
-	ArchitectureInternal getDefaultArchitecture();
+    ArchitectureInternal getDefaultArchitecture();
 
-	VersionNumber getVersion();
+    VersionNumber getVersion();
 }

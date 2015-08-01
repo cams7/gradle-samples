@@ -25,70 +25,62 @@ import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 import org.gradle.util.TreeVisitor;
 
 public class UnavailablePlatformToolProvider implements PlatformToolProvider {
-	private final ToolSearchResult failure;
-	private final OperatingSystemInternal targetOperatingSystem;
+    private final ToolSearchResult failure;
+    private final OperatingSystemInternal targetOperatingSystem;
 
-	public UnavailablePlatformToolProvider(
-			OperatingSystemInternal targetOperatingSystem,
-			ToolSearchResult failure) {
-		this.targetOperatingSystem = targetOperatingSystem;
-		this.failure = failure;
-	}
+    public UnavailablePlatformToolProvider(OperatingSystemInternal targetOperatingSystem, ToolSearchResult failure) {
+        this.targetOperatingSystem = targetOperatingSystem;
+        this.failure = failure;
+    }
 
-	public boolean isAvailable() {
-		return false;
-	}
+    public boolean isAvailable() {
+        return false;
+    }
 
-	public void explain(TreeVisitor<? super String> visitor) {
-		failure.explain(visitor);
-	}
+    public void explain(TreeVisitor<? super String> visitor) {
+        failure.explain(visitor);
+    }
 
-	private RuntimeException failure() {
-		TreeFormatter formatter = new TreeFormatter();
-		this.explain(formatter);
-		return new GradleException(formatter.toString());
-	}
+    private RuntimeException failure() {
+        TreeFormatter formatter = new TreeFormatter();
+        this.explain(formatter);
+        return new GradleException(formatter.toString());
+    }
 
-	@Override
-	public String getObjectFileExtension() {
-		return null;
-	}
+    @Override
+    public String getObjectFileExtension() {
+        return null;
+    }
 
-	@Override
-	public String getPCHFileExtension() {
-		return null;
-	}
+    @Override
+    public String getPCHFileExtension() {
+        return null;
+    }
 
-	public String getExecutableName(String executablePath) {
-		return targetOperatingSystem.getInternalOs().getExecutableName(
-				executablePath);
-	}
+    public String getExecutableName(String executablePath) {
+        return targetOperatingSystem.getInternalOs().getExecutableName(executablePath);
+    }
 
-	public String getSharedLibraryName(String libraryPath) {
-		return targetOperatingSystem.getInternalOs().getSharedLibraryName(
-				libraryPath);
-	}
+    public String getSharedLibraryName(String libraryPath) {
+        return targetOperatingSystem.getInternalOs().getSharedLibraryName(libraryPath);
+    }
 
-	public String getSharedLibraryLinkFileName(String libraryPath) {
-		return targetOperatingSystem.getInternalOs().getSharedLibraryName(
-				libraryPath);
-	}
+    public String getSharedLibraryLinkFileName(String libraryPath) {
+        return targetOperatingSystem.getInternalOs().getSharedLibraryName(libraryPath);
+    }
 
-	public String getStaticLibraryName(String libraryPath) {
-		return targetOperatingSystem.getInternalOs().getStaticLibraryName(
-				libraryPath);
-	}
+    public String getStaticLibraryName(String libraryPath) {
+        return targetOperatingSystem.getInternalOs().getStaticLibraryName(libraryPath);
+    }
 
-	@Override
-	public <T> T get(Class<T> toolType) {
-		throw new IllegalArgumentException(String.format(
-				"Don't know how to provide tool of type %s.",
-				toolType.getSimpleName()));
-	}
+    @Override
+    public <T> T get(Class<T> toolType) {
+        throw new IllegalArgumentException(String.format("Don't know how to provide tool of type %s.", toolType.getSimpleName()));
+    }
 
-	@Override
-	public <T extends CompileSpec> Compiler<T> newCompiler(Class<T> specType) {
-		throw failure();
-	}
+    @Override
+    public <T extends CompileSpec> Compiler<T> newCompiler(Class<T> specType) {
+        throw failure();
+    }
 
 }

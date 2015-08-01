@@ -16,18 +16,7 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc.version;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.google.common.base.Joiner;
 import org.gradle.api.UncheckedIOException;
 import org.gradle.nativeplatform.platform.internal.ArchitectureInternal;
 import org.gradle.nativeplatform.platform.internal.Architectures;
@@ -38,210 +27,192 @@ import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.util.TreeVisitor;
 import org.gradle.util.VersionNumber;
 
-import com.google.common.base.Joiner;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * Given a File pointing to an (existing) gcc/g++/clang/clang++ binary, extracts
- * the version number and default architecture by running with -dM -E and
- * scraping the output.
+ * Given a File pointing to an (existing) gcc/g++/clang/clang++ binary, extracts the version number and default architecture by running with -dM -E and scraping the output.
  */
 public class GccVersionDeterminer implements CompilerMetaDataProvider {
-	private static final Pattern DEFINE_PATTERN = Pattern
-			.compile("\\s*#define\\s+(\\S+)\\s+(.*)");
-	private final ExecActionFactory execActionFactory;
-	private final boolean clang;
+    private static final Pattern DEFINE_PATTERN = Pattern.compile("\\s*#define\\s+(\\S+)\\s+(.*)");
+    private final ExecActionFactory execActionFactory;
+    private final boolean clang;
 
-	public static GccVersionDeterminer forGcc(
-			ExecActionFactory execActionFactory) {
-		return new GccVersionDeterminer(execActionFactory, false);
-	}
+    public static GccVersionDeterminer forGcc(ExecActionFactory execActionFactory) {
+        return new GccVersionDeterminer(execActionFactory, false);
+    }
 
-	public static GccVersionDeterminer forClang(
-			ExecActionFactory execActionFactory) {
-		return new GccVersionDeterminer(execActionFactory, true);
-	}
+    public static GccVersionDeterminer forClang(ExecActionFactory execActionFactory) {
+        return new GccVersionDeterminer(execActionFactory, true);
+    }
 
-	GccVersionDeterminer(ExecActionFactory execActionFactory,
-			boolean expectClang) {
-		this.execActionFactory = execActionFactory;
-		this.clang = expectClang;
-	}
+    GccVersionDeterminer(ExecActionFactory execActionFactory, boolean expectClang) {
+        this.execActionFactory = execActionFactory;
+        this.clang = expectClang;
+    }
 
-	public GccVersionResult getGccMetaData(File gccBinary, List<String> args) {
-		List<String> allArgs = new ArrayList<String>(args);
-		allArgs.add("-dM");
-		allArgs.add("-E");
-		allArgs.add("-");
-		String output = transform(gccBinary, allArgs);
-		if (output == null) {
-			return new BrokenResult(String.format(
-					"Could not determine %s version: failed to execute %s %s.",
-					getDescription(), gccBinary.getName(),
-					Joiner.on(' ').join(allArgs)));
-		}
-		return transform(output, gccBinary);
-	}
+    public GccVersionResult getGccMetaData(File gccBinary, List<String> args) {
+        List<String> allArgs = new ArrayList<String>(args);
+        allArgs.add("-dM");
+        allArgs.add("-E");
+        allArgs.add("-");
+        String output = transform(gccBinary, allArgs);
+        if (output == null) {
+            return new BrokenResult(String.format("Could not determine %s version: failed to execute %s %s.", getDescription(), gccBinary.getName(), Joiner.on(' ').join(allArgs)));
+        }
+        return transform(output, gccBinary);
+    }
 
-	private String getDescription() {
-		return clang ? "Clang" : "GCC";
-	}
+    private String getDescription() {
+        return clang ? "Clang" : "GCC";
+    }
 
-	private String transform(File gccBinary, List<String> args) {
-		ExecAction exec = execActionFactory.newExecAction();
-		exec.executable(gccBinary.getAbsolutePath());
-		exec.setWorkingDir(gccBinary.getParentFile());
-		exec.args(args);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		exec.setStandardOutput(baos);
-		exec.setErrorOutput(new ByteArrayOutputStream());
-		exec.setIgnoreExitValue(true);
-		ExecResult result = exec.execute();
+    private String transform(File gccBinary, List<String> args) {
+        ExecAction exec = execActionFactory.newExecAction();
+        exec.executable(gccBinary.getAbsolutePath());
+        exec.setWorkingDir(gccBinary.getParentFile());
+        exec.args(args);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        exec.setStandardOutput(baos);
+        exec.setErrorOutput(new ByteArrayOutputStream());
+        exec.setIgnoreExitValue(true);
+        ExecResult result = exec.execute();
 
-		int exitValue = result.getExitValue();
-		if (exitValue == 0) {
-			return new String(baos.toByteArray());
-		} else {
-			return null;
-		}
-	}
+        int exitValue = result.getExitValue();
+        if (exitValue == 0) {
+            return new String(baos.toByteArray());
+        } else {
+            return null;
+        }
+    }
 
-	private GccVersionResult transform(String output, File gccBinary) {
-		BufferedReader reader = new BufferedReader(new StringReader(output));
-		String line;
-		Map<String, String> defines = new HashMap<String, String>();
-		try {
-			while ((line = reader.readLine()) != null) {
-				Matcher matcher = DEFINE_PATTERN.matcher(line);
-				if (!matcher.matches()) {
-					return new BrokenResult(
-							String.format(
-									"Could not determine %s version: %s produced unexpected output.",
-									getDescription(), gccBinary.getName()));
-				}
-				defines.put(matcher.group(1), matcher.group(2));
-			}
-		} catch (IOException e) {
-			// Should not happen reading from a StringReader
-			throw new UncheckedIOException(e);
-		}
-		if (!defines.containsKey("__GNUC__")) {
-			return new BrokenResult(
-					String.format(
-							"Could not determine %s version: %s produced unexpected output.",
-							getDescription(), gccBinary.getName()));
-		}
-		int major;
-		int minor;
-		int patch;
-		if (clang) {
-			if (!defines.containsKey("__clang__")) {
-				return new BrokenResult(
-						String.format(
-								"%s appears to be GCC rather than Clang. Treating it as GCC.",
-								gccBinary.getName()));
-			}
-			major = toInt(defines.get("__clang_major__"));
-			minor = toInt(defines.get("__clang_minor__"));
-			patch = toInt(defines.get("__clang_patchlevel__"));
-		} else {
-			if (defines.containsKey("__clang__")) {
-				return new BrokenResult(
-						String.format(
-								"XCode %s is a wrapper around Clang. Treating it as Clang and not GCC.",
-								gccBinary.getName()));
-			}
-			major = toInt(defines.get("__GNUC__"));
-			minor = toInt(defines.get("__GNUC_MINOR__"));
-			patch = toInt(defines.get("__GNUC_PATCHLEVEL__"));
-		}
-		final ArchitectureInternal architecture = determineArchitecture(defines);
-		return new DefaultGccVersionResult(new VersionNumber(major, minor,
-				patch, null), architecture, clang);
-	}
+    private GccVersionResult transform(String output, File gccBinary) {
+        BufferedReader reader = new BufferedReader(new StringReader(output));
+        String line;
+        Map<String, String> defines = new HashMap<String, String>();
+        try {
+            while ((line = reader.readLine()) != null) {
+                Matcher matcher = DEFINE_PATTERN.matcher(line);
+                if (!matcher.matches()) {
+                    return new BrokenResult(String.format("Could not determine %s version: %s produced unexpected output.", getDescription(), gccBinary.getName()));
+                }
+                defines.put(matcher.group(1), matcher.group(2));
+            }
+        } catch (IOException e) {
+            // Should not happen reading from a StringReader
+            throw new UncheckedIOException(e);
+        }
+        if (!defines.containsKey("__GNUC__")) {
+            return new BrokenResult(String.format("Could not determine %s version: %s produced unexpected output.", getDescription(), gccBinary.getName()));
+        }
+        int major;
+        int minor;
+        int patch;
+        if (clang) {
+            if (!defines.containsKey("__clang__")) {
+                return new BrokenResult(String.format("%s appears to be GCC rather than Clang. Treating it as GCC.", gccBinary.getName()));
+            }
+            major = toInt(defines.get("__clang_major__"));
+            minor = toInt(defines.get("__clang_minor__"));
+            patch = toInt(defines.get("__clang_patchlevel__"));
+        } else {
+            if (defines.containsKey("__clang__")) {
+                return new BrokenResult(String.format("XCode %s is a wrapper around Clang. Treating it as Clang and not GCC.", gccBinary.getName()));
+            }
+            major = toInt(defines.get("__GNUC__"));
+            minor = toInt(defines.get("__GNUC_MINOR__"));
+            patch = toInt(defines.get("__GNUC_PATCHLEVEL__"));
+        }
+        final ArchitectureInternal architecture = determineArchitecture(defines);
+        return new DefaultGccVersionResult(new VersionNumber(major, minor, patch, null), architecture, clang);
+    }
 
-	private ArchitectureInternal determineArchitecture(
-			Map<String, String> defines) {
-		boolean i386 = defines.containsKey("__i386__");
-		boolean amd64 = defines.containsKey("__amd64__");
-		final ArchitectureInternal architecture;
-		if (i386) {
-			architecture = Architectures.forInput("i386");
-		} else if (amd64) {
-			architecture = Architectures.forInput("amd64");
-		} else {
-			architecture = DefaultNativePlatform.getCurrentArchitecture();
-		}
-		return architecture;
-	}
+    private ArchitectureInternal determineArchitecture(Map<String, String> defines) {
+        boolean i386 = defines.containsKey("__i386__");
+        boolean amd64 = defines.containsKey("__amd64__");
+        final ArchitectureInternal architecture;
+        if (i386) {
+            architecture = Architectures.forInput("i386");
+        } else if (amd64) {
+            architecture = Architectures.forInput("amd64");
+        } else {
+            architecture = DefaultNativePlatform.getCurrentArchitecture();
+        }
+        return architecture;
+    }
 
-	private int toInt(String value) {
-		if (value == null) {
-			return 0;
-		}
-		try {
-			return Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
+    private int toInt(String value) {
+        if (value == null) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 
-	private static class DefaultGccVersionResult implements GccVersionResult {
-		private final VersionNumber scrapedVersion;
-		private final ArchitectureInternal architecture;
-		private final boolean clang;
+    private static class DefaultGccVersionResult implements GccVersionResult {
+        private final VersionNumber scrapedVersion;
+        private final ArchitectureInternal architecture;
+        private final boolean clang;
 
-		public DefaultGccVersionResult(VersionNumber scrapedVersion,
-				ArchitectureInternal architecture, boolean clang) {
-			this.scrapedVersion = scrapedVersion;
-			this.architecture = architecture;
-			this.clang = clang;
-		}
+        public DefaultGccVersionResult(VersionNumber scrapedVersion, ArchitectureInternal architecture, boolean clang) {
+            this.scrapedVersion = scrapedVersion;
+            this.architecture = architecture;
+            this.clang = clang;
+        }
 
-		public VersionNumber getVersion() {
-			return scrapedVersion;
-		}
+        public VersionNumber getVersion() {
+            return scrapedVersion;
+        }
 
-		public boolean isClang() {
-			return clang;
-		}
+        public boolean isClang() {
+            return clang;
+        }
 
-		public ArchitectureInternal getDefaultArchitecture() {
-			return architecture;
-		}
+        public ArchitectureInternal getDefaultArchitecture() {
+            return architecture;
+        }
 
-		public boolean isAvailable() {
-			return true;
-		}
+        public boolean isAvailable() {
+            return true;
+        }
 
-		public void explain(TreeVisitor<? super String> visitor) {
-		}
-	}
+        public void explain(TreeVisitor<? super String> visitor) {
+        }
+    }
 
-	private static class BrokenResult implements GccVersionResult {
-		private final String message;
+    private static class BrokenResult implements GccVersionResult {
+        private final String message;
 
-		private BrokenResult(String message) {
-			this.message = message;
-		}
+        private BrokenResult(String message) {
+            this.message = message;
+        }
 
-		public VersionNumber getVersion() {
-			throw new UnsupportedOperationException();
-		}
+        public VersionNumber getVersion() {
+            throw new UnsupportedOperationException();
+        }
 
-		public boolean isClang() {
-			throw new UnsupportedOperationException();
-		}
+        public boolean isClang() {
+            throw new UnsupportedOperationException();
+        }
 
-		public ArchitectureInternal getDefaultArchitecture() {
-			throw new UnsupportedOperationException();
-		}
+        public ArchitectureInternal getDefaultArchitecture() {
+            throw new UnsupportedOperationException();
+        }
 
-		public boolean isAvailable() {
-			return false;
-		}
+        public boolean isAvailable() {
+            return false;
+        }
 
-		public void explain(TreeVisitor<? super String> visitor) {
-			visitor.node(message);
-		}
-	}
+        public void explain(TreeVisitor<? super String> visitor) {
+            visitor.node(message);
+        }
+    }
 }

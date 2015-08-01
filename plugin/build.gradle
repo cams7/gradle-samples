@@ -20,77 +20,241 @@ subprojects {
 	}
 	
 	compileGroovy.options.encoding = 'UTF-8'
-	
-	dependencies {
-		compile gradleApi()
-		compile localGroovy()
-	}
-	
+		
 	repositories {  
 		mavenCentral()  
+		maven {url "https://gradle.artifactoryonline.com/gradle/libs-releases-local"}
+		maven {url "../../lib"}
 	}
-
-	dependencies {  
-		compile 'dom4j:dom4j:1.6.+'  
+		
+	dependencies {   
 		testCompile 'junit:junit:4.+'
 	}
 	
-	//configurations {
-	//    compile.exclude module: 'gradle-ide'
-	//}	
+	dependencies {
+		compile localGroovy()
+	}
 }
 
-project(':ui') {
+project(':base-services') {
     dependencies {
-        compile project(':open-api')
+        compile "com.google.guava:guava:18.+"
+		compile "org.slf4j:slf4j-api:1.7.+"
+		compile "commons-lang:commons-lang:2.+"
     }
 }
 
-project(':launcher') {
+project(':base-services-groovy') {
     dependencies {
-        compile project(':ui')
-    }		
-}
-
-project(':ide') {
-    dependencies {
-        compile project(':launcher')
+        compile project(':base-services')
     }
 }
 
-project(':eclipse-cdt') {
+project(':model-core') {
     dependencies {
-        compile project(':ide')
+		compile "net.jcip:jcip-annotations:1.+"	
+		compile "org.ow2.asm:asm-all:5.0.+"
+		compile project(':base-services-groovy')
     }
 }
 
-//project(':platform-base') {
-//    dependencies {
-//        compile project(':core')
-//        compile project(':base-services')     
-//    }
-//}
+project(':resources') {
+    dependencies {
+        compile "commons-io:commons-io:2.+"
+		compile project(':base-services')
+    }
+}
+
+project(':native') {		
+    dependencies {
+		compile "net.rubygrapefruit:native-platform:0.10"
+		compile "commons-io:commons-io:2.+"
+		compile "org.fusesource.jansi:jansi:1.+"
+        compile project(':base-services')
+    }
+}
+
+project(':messaging') {
+    dependencies {
+		compile "com.esotericsoftware.kryo:kryo:2.22"
+        compile project(':base-services')
+    }
+}
+
+project(':model-groovy') {
+    dependencies {
+		compile project(':model-core')
+    }
+}
+
+project(':core') {	
+    dependencies {
+		compile "javax.inject:javax.inject:1"
+		compile "org.apache.ant:ant:1.9.+"
+		compile "commons-collections:commons-collections:3.2.+"
+		compile "com.googlecode.jarjar:jarjar:1.+"
+		compile "org.slf4j:jul-to-slf4j:1.7.+"        
+		compile project(':resources')
+		compile project(':native')
+		compile project(':messaging')
+		compile project(':model-groovy')
+		compile project(':cli')
+    }
+}
+
+project(':dependency-management') {
+	dependencies {
+		compile "org.apache.ivy:ivy:2.2.0"
+		compile "org.gradle.plugins:jarjar-maven-settings:3.0.4"
+		compile "org.gradle.plugins:jarjar-maven-settings-builder:3.0.4"
+        compile project(':core')	
+    }
+}
+
+project(':platform-base') {	
+	dependencies {
+        compile project(':core')    
+    }
+}
+
+project(':reporting') {
+	dependencies {
+		compile "com.googlecode.jatl:jatl:0.2.+"
+        compile project(':core')
+    }
+}
+
+project(':diagnostics') {
+	dependencies {
+		compile project(':platform-base')
+		compile project(':reporting')
+		compile project(':dependency-management')
+    }
+}
 
 project(':platform-native') {
-    dependencies {
-        compile project(':platform-base')
+	dependencies {
+        compile project(':diagnostics')
     }
 }
 
 project(':language-native') {
-    dependencies {
+	dependencies {
         compile project(':platform-native')        
     }
 }
 
 project(':testing-native') {
+	dependencies {
+        compile project(':language-native')
+    }
+}
+
+project(':ui') {
+	dependencies {
+		compile "dom4j:dom4j:1.6.+"
+        compile project(':open-api')
+		compile project(':core')
+    }
+}
+
+project(':wrapper') {
     dependencies {
-        compile project(':platform-native')
+        compile project(':cli')
+    }
+}
+
+project(':tooling-api') {
+	dependencies {
+        compile project(':core')
+		compile project(':wrapper')
+    }
+}
+
+project(':launcher') {
+	dependencies {
+        compile project(':ui')
+		compile project(':tooling-api')
+    }		
+}
+
+project(':platform-jvm') {
+    dependencies {
+        compile project(':diagnostics')
+    }
+}
+
+project(':language-jvm') {
+    dependencies {
+        compile project(':platform-jvm')
+    }
+}
+
+project(':language-java') {
+    dependencies {
+        compile project(':language-jvm')
+    }
+}
+
+project(':language-groovy') {
+    dependencies {
+        compile project(':language-java')
+    }
+}
+
+project(':language-scala') {
+    dependencies {
+		compile 'com.typesafe.sbt:sbt-interface:0.13.+'
+		compile 'com.typesafe.zinc:zinc:0.3.+'
+        compile project(':language-java')
+    }
+}
+
+project(':plugins') {
+    dependencies {
+		compile 'junit:junit:4.+'
+		compile 'org.testng:testng:6.9.+'
+        compile project(':language-groovy')
+    }
+}
+
+project(':ear') {
+    dependencies {
+		compile project(':plugins')
+    }
+}
+
+project(':scala') {
+    dependencies {
+		compile project(':language-scala')
+		compile project(':plugins')
+    }
+}
+
+project(':ide') {
+	dependencies {
+        compile project(':launcher')
+		compile project(':ear')
+		compile project(':scala')
     }
 }
 
 project(':avr') {
-    dependencies {
+	dependencies {
         compile project(':language-native')        
+    }
+}
+
+project(':eclipse-cdt') {
+    dependencies {
+		compile project(':language-native')
+        compile project(':ide')
+    }
+}
+
+project(':custom-model') {
+	dependencies {
+		compile "org.pegdown:pegdown:1.5.+"
+        compile project(':platform-base')      
     }
 }

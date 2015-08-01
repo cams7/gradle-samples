@@ -8,6 +8,6 @@
 #ifndef INCLUDE_PRINT_H_
 #define INCLUDE_PRINT_H_
 
-void print(void);
+void printCalc(int);
 
 #endif /* INCLUDE_PRINT_H_ */

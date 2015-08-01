@@ -18,10 +18,9 @@ package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-public class VisualCppPCHCompilerArgsTransformer<T extends NativeCompileSpec>
-		extends VisualCppCompilerArgsTransformer<T> {
-	@Override
-	protected String getLanguageOption() {
-		return "/Yc";
-	}
+public class VisualCppPCHCompilerArgsTransformer<T extends NativeCompileSpec> extends VisualCppCompilerArgsTransformer<T> {
+    @Override
+    protected String getLanguageOption() {
+        return "/Yc";
+    }
 }

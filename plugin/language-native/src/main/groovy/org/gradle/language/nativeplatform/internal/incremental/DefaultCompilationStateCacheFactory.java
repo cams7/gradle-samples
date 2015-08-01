@@ -20,49 +20,37 @@ import org.gradle.api.internal.changedetection.state.TaskArtifactStateCacheAcces
 import org.gradle.cache.PersistentIndexedCache;
 import org.gradle.cache.PersistentStateCache;
 
-import br.com.cams7.language.nativeplatform.internal.incremental.CompilationState;
-import br.com.cams7.language.nativeplatform.internal.incremental.CompilationStateCacheFactory;
-import br.com.cams7.language.nativeplatform.internal.incremental.CompilationStateSerializer;
+public class DefaultCompilationStateCacheFactory implements CompilationStateCacheFactory {
 
-public class DefaultCompilationStateCacheFactory implements
-		CompilationStateCacheFactory {
+    private final PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache;
 
-	private final PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache;
+    public DefaultCompilationStateCacheFactory(TaskArtifactStateCacheAccess cacheAccess) {
+        compilationStateIndexedCache = cacheAccess.createCache("compilationState", String.class, new CompilationStateSerializer());
+    }
 
-	public DefaultCompilationStateCacheFactory(
-			TaskArtifactStateCacheAccess cacheAccess) {
-		compilationStateIndexedCache = cacheAccess.createCache(
-				"compilationState", String.class,
-				new CompilationStateSerializer());
-	}
+    public PersistentStateCache<CompilationState> create(final String taskPath) {
+        return new PersistentCompilationStateCache(taskPath, compilationStateIndexedCache);
+    }
 
-	public PersistentStateCache<CompilationState> create(final String taskPath) {
-		return new PersistentCompilationStateCache(taskPath,
-				compilationStateIndexedCache);
-	}
+    private static class PersistentCompilationStateCache implements PersistentStateCache<CompilationState> {
+        private final String taskPath;
+        private final PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache;
 
-	private static class PersistentCompilationStateCache implements
-			PersistentStateCache<CompilationState> {
-		private final String taskPath;
-		private final PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache;
+        public PersistentCompilationStateCache(String taskPath, PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache) {
+            this.taskPath = taskPath;
+            this.compilationStateIndexedCache = compilationStateIndexedCache;
+        }
 
-		public PersistentCompilationStateCache(
-				String taskPath,
-				PersistentIndexedCache<String, CompilationState> compilationStateIndexedCache) {
-			this.taskPath = taskPath;
-			this.compilationStateIndexedCache = compilationStateIndexedCache;
-		}
+        public CompilationState get() {
+            return compilationStateIndexedCache.get(taskPath);
+        }
 
-		public CompilationState get() {
-			return compilationStateIndexedCache.get(taskPath);
-		}
+        public void set(CompilationState newValue) {
+            compilationStateIndexedCache.put(taskPath, newValue);
+        }
 
-		public void set(CompilationState newValue) {
-			compilationStateIndexedCache.put(taskPath, newValue);
-		}
-
-		public void update(UpdateAction<CompilationState> updateAction) {
-			throw new UnsupportedOperationException();
-		}
-	}
+        public void update(UpdateAction<CompilationState> updateAction) {
+            throw new UnsupportedOperationException();
+        }
+    }
 }

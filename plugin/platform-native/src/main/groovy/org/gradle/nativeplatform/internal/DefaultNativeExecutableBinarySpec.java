@@ -16,8 +16,6 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-
 import org.gradle.nativeplatform.NativeExecutableBinary;
 import org.gradle.nativeplatform.NativeExecutableBinarySpec;
 import org.gradle.nativeplatform.NativeExecutableSpec;
@@ -27,57 +25,55 @@ import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
-public class DefaultNativeExecutableBinarySpec extends AbstractNativeBinarySpec
-		implements NativeExecutableBinary, NativeExecutableBinarySpecInternal {
-	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
-			super.getTasks());
-	private File executableFile;
+import java.io.File;
 
-	@Override
-	public NativeExecutableSpec getComponent() {
-		return (NativeExecutableSpec) super.getComponent();
-	}
+public class DefaultNativeExecutableBinarySpec extends AbstractNativeBinarySpec implements NativeExecutableBinary, NativeExecutableBinarySpecInternal {
+    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
+    private File executableFile;
 
-	@Override
-	public NativeExecutableSpec getApplication() {
-		return getComponent();
-	}
+    @Override
+    public NativeExecutableSpec getComponent() {
+        return (NativeExecutableSpec) super.getComponent();
+    }
 
-	public File getExecutableFile() {
-		return executableFile;
-	}
+    @Override
+    public NativeExecutableSpec getApplication() {
+        return getComponent();
+    }
 
-	public void setExecutableFile(File executableFile) {
-		this.executableFile = executableFile;
-	}
+    public File getExecutableFile() {
+        return executableFile;
+    }
 
-	public File getPrimaryOutput() {
-		return getExecutableFile();
-	}
+    public void setExecutableFile(File executableFile) {
+        this.executableFile = executableFile;
+    }
 
-	@Override
-	protected ObjectFilesToBinary getCreateOrLink() {
-		return tasks.getLink();
-	}
+    public File getPrimaryOutput() {
+        return getExecutableFile();
+    }
 
-	public NativeExecutableBinarySpec.TasksCollection getTasks() {
-		return tasks;
-	}
+    @Override
+    protected ObjectFilesToBinary getCreateOrLink() {
+        return tasks.getLink();
+    }
 
-	private static class DefaultTasksCollection extends
-			BinaryTasksCollectionWrapper implements
-			NativeExecutableBinarySpec.TasksCollection {
+    public NativeExecutableBinarySpec.TasksCollection getTasks() {
+        return tasks;
+    }
 
-		public DefaultTasksCollection(BinaryTasksCollection delegate) {
-			super(delegate);
-		}
+    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements NativeExecutableBinarySpec.TasksCollection {
 
-		public LinkExecutable getLink() {
-			return findSingleTaskWithType(LinkExecutable.class);
-		}
+        public DefaultTasksCollection(BinaryTasksCollection delegate) {
+            super(delegate);
+        }
 
-		public InstallExecutable getInstall() {
-			return findSingleTaskWithType(InstallExecutable.class);
-		}
-	}
+        public LinkExecutable getLink() {
+            return findSingleTaskWithType(LinkExecutable.class);
+        }
+
+        public InstallExecutable getInstall() {
+            return findSingleTaskWithType(InstallExecutable.class);
+        }
+    }
 }

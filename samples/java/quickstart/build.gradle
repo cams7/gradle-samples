@@ -1,23 +1,18 @@
 buildscript {	                
 	repositories {
-		mavenCentral()
 		maven {url uri('../../../repo')}
 	}
 	dependencies {
-		classpath 'dom4j:dom4j:1.6.+'
-		classpath 'br.com.cams7.plugin:open-api:1.0-SNAPSHOT'	
-		classpath 'br.com.cams7.plugin:ui:1.0-SNAPSHOT'	
-		classpath 'br.com.cams7.plugin:launcher:1.0-SNAPSHOT'			
-		classpath 'br.com.cams7.plugin:ide:1.0-SNAPSHOT'
+		classpath module('br.com.cams7.plugin:ide:1.0-SNAPSHOT')
 	}
 }
 
 apply {
 	plugin 'java'
-	plugin 'br.com.cams7.eclipse'
+	plugin 'eclipse'
 }
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.7
 version = '1.0'
 jar {
     manifest {

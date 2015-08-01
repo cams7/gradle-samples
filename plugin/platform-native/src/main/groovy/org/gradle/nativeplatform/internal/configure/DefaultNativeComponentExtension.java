@@ -18,37 +18,32 @@ package org.gradle.nativeplatform.internal.configure;
 
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
-import org.gradle.nativeplatform.NativeComponentExtension;
 import org.gradle.nativeplatform.NativeExecutableSpec;
 import org.gradle.nativeplatform.NativeLibrarySpec;
+import org.gradle.nativeplatform.NativeComponentExtension;
 
-public class DefaultNativeComponentExtension implements
-		NativeComponentExtension {
-	private final NamedDomainObjectContainer<NativeExecutableSpec> executables;
-	private final NamedDomainObjectContainer<NativeLibrarySpec> libraries;
+public class DefaultNativeComponentExtension implements NativeComponentExtension {
+    private final NamedDomainObjectContainer<NativeExecutableSpec> executables;
+    private final NamedDomainObjectContainer<NativeLibrarySpec> libraries;
 
-	public DefaultNativeComponentExtension(
-			NamedDomainObjectContainer<NativeExecutableSpec> executables,
-			NamedDomainObjectContainer<NativeLibrarySpec> libraries) {
-		this.executables = executables;
-		this.libraries = libraries;
-	}
+    public DefaultNativeComponentExtension(NamedDomainObjectContainer<NativeExecutableSpec> executables, NamedDomainObjectContainer<NativeLibrarySpec> libraries) {
+        this.executables = executables;
+        this.libraries = libraries;
+    }
 
-	public NamedDomainObjectContainer<NativeExecutableSpec> getExecutables() {
-		return executables;
-	}
+    public NamedDomainObjectContainer<NativeExecutableSpec> getExecutables() {
+        return executables;
+    }
 
-	public void executables(
-			Action<? super NamedDomainObjectContainer<? super NativeExecutableSpec>> action) {
-		action.execute(executables);
-	}
+    public void executables(Action<? super NamedDomainObjectContainer<? super NativeExecutableSpec>> action) {
+        action.execute(executables);
+    }
 
-	public NamedDomainObjectContainer<NativeLibrarySpec> getLibraries() {
-		return libraries;
-	}
+    public NamedDomainObjectContainer<NativeLibrarySpec> getLibraries() {
+        return libraries;
+    }
 
-	public void libraries(
-			Action<? super NamedDomainObjectContainer<? super NativeLibrarySpec>> action) {
-		action.execute(libraries);
-	}
+    public void libraries(Action<? super NamedDomainObjectContainer<? super NativeLibrarySpec>> action) {
+        action.execute(libraries);
+    }
 }

@@ -18,6 +18,5 @@ package org.gradle.nativeplatform.internal;
 
 import org.gradle.nativeplatform.StaticLibraryBinarySpec;
 
-public interface StaticLibraryBinarySpecInternal extends
-		StaticLibraryBinarySpec, NativeBinarySpecInternal {
+public interface StaticLibraryBinarySpecInternal extends StaticLibraryBinarySpec, NativeBinarySpecInternal {
 }

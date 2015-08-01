@@ -23,42 +23,37 @@ import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.PrebuiltLibraries;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 
-public class DefaultPrebuiltLibraries extends
-		AbstractNamedDomainObjectContainer<PrebuiltLibrary> implements
-		PrebuiltLibraries {
-	private final FileResolver fileResolver;
-	private final Action<PrebuiltLibrary> libraryInitializer;
-	private String name;
+public class DefaultPrebuiltLibraries extends AbstractNamedDomainObjectContainer<PrebuiltLibrary> implements PrebuiltLibraries {
+    private final FileResolver fileResolver;
+    private final Action<PrebuiltLibrary> libraryInitializer;
+    private String name;
 
-	public DefaultPrebuiltLibraries(String name, Instantiator instantiator,
-			FileResolver fileResolver,
-			Action<PrebuiltLibrary> libraryInitializer) {
-		super(PrebuiltLibrary.class, instantiator);
-		this.name = name;
-		this.fileResolver = fileResolver;
-		this.libraryInitializer = libraryInitializer;
-	}
+    public DefaultPrebuiltLibraries(String name, Instantiator instantiator, FileResolver fileResolver, Action<PrebuiltLibrary> libraryInitializer) {
+        super(PrebuiltLibrary.class, instantiator);
+        this.name = name;
+        this.fileResolver = fileResolver;
+        this.libraryInitializer = libraryInitializer;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	protected PrebuiltLibrary doCreate(String name) {
-		return getInstantiator().newInstance(DefaultPrebuiltLibrary.class,
-				name, fileResolver);
-	}
+    @Override
+    protected PrebuiltLibrary doCreate(String name) {
+        return getInstantiator().newInstance(DefaultPrebuiltLibrary.class, name, fileResolver);
+    }
 
-	public PrebuiltLibrary resolveLibrary(String name) {
-		PrebuiltLibrary library = findByName(name);
-		if (library != null && library.getBinaries().isEmpty()) {
-			libraryInitializer.execute(library);
-		}
-		return library;
-	}
+    public PrebuiltLibrary resolveLibrary(String name) {
+        PrebuiltLibrary library = findByName(name);
+        if (library != null && library.getBinaries().isEmpty()) {
+            libraryInitializer.execute(library);
+        }
+        return library;
+    }
 
 }

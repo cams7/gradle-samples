@@ -16,19 +16,17 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
-import org.gradle.internal.exceptions.Contextual;
 import org.gradle.internal.exceptions.DefaultMultiCauseException;
+import org.gradle.internal.exceptions.Contextual;
 
 @Contextual
 class LibraryResolveException extends DefaultMultiCauseException {
 
-	private static final long serialVersionUID = 1L;
+    public LibraryResolveException(String message) {
+        super(message);
+    }
 
-	public LibraryResolveException(String message) {
-		super(message);
-	}
-
-	LibraryResolveException(String message, Iterable<? extends Throwable> causes) {
-		super(message, causes);
-	}
+    LibraryResolveException(String message, Iterable<? extends Throwable> causes) {
+        super(message, causes);
+    }
 }

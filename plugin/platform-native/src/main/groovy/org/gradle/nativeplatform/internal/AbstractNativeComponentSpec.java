@@ -15,8 +15,7 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.gradle.nativeplatform.NativeComponentSpec;
 import org.gradle.nativeplatform.ObjectFile;
 import org.gradle.platform.base.TransformationFileType;
@@ -24,24 +23,22 @@ import org.gradle.platform.base.component.BaseComponentSpec;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
 import org.gradle.util.GUtil;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
 
-public abstract class AbstractNativeComponentSpec extends BaseComponentSpec
-		implements NativeComponentSpec, ComponentSpecInternal {
-	private String baseName;
+public abstract class AbstractNativeComponentSpec extends BaseComponentSpec implements NativeComponentSpec, ComponentSpecInternal {
+    private String baseName;
 
-	public String getBaseName() {
-		return GUtil.elvis(baseName, getName());
-	}
+    public String getBaseName() {
+        return GUtil.elvis(baseName, getName());
+    }
 
-	public void setBaseName(String baseName) {
-		this.baseName = baseName;
-	}
+    public void setBaseName(String baseName) {
+        this.baseName = baseName;
+    }
 
-	public Set<Class<? extends TransformationFileType>> getInputTypes() {
-		Set<Class<? extends TransformationFileType>> inputTypes = Sets
-				.newHashSet();
-		inputTypes.add(ObjectFile.class);
-		return inputTypes;
-	}
+    public Set<Class<? extends TransformationFileType>> getInputTypes() {
+        Set<Class<? extends TransformationFileType>> inputTypes = Sets.newHashSet();
+        inputTypes.add(ObjectFile.class);
+        return inputTypes;
+    }
 }

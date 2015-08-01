@@ -7,8 +7,7 @@ buildscript {
         }
     }
     dependencies {
-		classpath module('br.com.cams7.plugin:custom-model:1.0-SNAPSHOT') {
-		}
+		classpath module('br.com.cams7.plugin:custom-model:1.0-SNAPSHOT')
     }
 }
 apply plugin: 'org.samples.componentType'
@@ -23,10 +22,5 @@ model {
             title = "TitleB"
             sizes = ["14px", "28px", "40px"]
         }
-		
-		/*cams7(ImageComponent) {
-			title = "Cams7"
-			sizes = ["16px", "24px", "64px"]
-		}*/
     }
 }

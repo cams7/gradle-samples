@@ -16,10 +16,6 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gradle.api.internal.tasks.SimpleWorkResult;
 import org.gradle.api.tasks.WorkResult;
 import org.gradle.internal.operations.BuildOperationProcessor;
@@ -29,92 +25,87 @@ import org.gradle.nativeplatform.internal.LinkerSpec;
 import org.gradle.nativeplatform.internal.SharedLibraryLinkerSpec;
 import org.gradle.nativeplatform.platform.OperatingSystem;
 import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
-import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 class GccLinker implements Compiler<LinkerSpec> {
 
-	private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
-	private final ArgsTransformer<LinkerSpec> argsTransformer;
-	private final CommandLineToolContext invocationContext;
-	private final boolean useCommandFile;
-	private final BuildOperationProcessor buildOperationProcessor;
+    private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
+    private final ArgsTransformer<LinkerSpec> argsTransformer;
+    private final CommandLineToolContext invocationContext;
+    private final boolean useCommandFile;
+    private final BuildOperationProcessor buildOperationProcessor;
 
-	GccLinker(BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
-			CommandLineToolContext invocationContext, boolean useCommandFile) {
-		this.buildOperationProcessor = buildOperationProcessor;
-		this.argsTransformer = new GccLinkerArgsTransformer();
-		this.invocationContext = invocationContext;
-		this.useCommandFile = useCommandFile;
-		this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
-	}
 
-	public WorkResult execute(LinkerSpec spec) {
-		BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor
-				.newQueue(commandLineToolInvocationWorker, spec
-						.getOperationLogger().getLogLocation());
+    GccLinker(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, boolean useCommandFile) {
+        this.buildOperationProcessor = buildOperationProcessor;
+        this.argsTransformer = new GccLinkerArgsTransformer();
+        this.invocationContext = invocationContext;
+        this.useCommandFile = useCommandFile;
+        this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
+    }
 
-		List<String> args = argsTransformer.transform(spec);
-		invocationContext.getArgAction().execute(args);
-		if (useCommandFile) {
-			new GccOptionsFileArgsWriter(spec.getTempDir()).execute(args);
-		}
-		CommandLineToolInvocation invocation = invocationContext
-				.createInvocation(String.format("linking %s", spec
-						.getOutputFile().getName()), args, spec
-						.getOperationLogger());
-		queue.add(invocation);
-		queue.waitForCompletion();
-		return new SimpleWorkResult(true);
-	}
+    public WorkResult execute(LinkerSpec spec) {
+        BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor.newQueue(commandLineToolInvocationWorker, spec.getOperationLogger().getLogLocation());
 
-	private static class GccLinkerArgsTransformer implements
-			ArgsTransformer<LinkerSpec> {
-		public List<String> transform(LinkerSpec spec) {
-			List<String> args = new ArrayList<String>();
+        List<String> args = argsTransformer.transform(spec);
+        invocationContext.getArgAction().execute(args);
+        if (useCommandFile) {
+            new GccOptionsFileArgsWriter(spec.getTempDir()).execute(args);
+        }
+        CommandLineToolInvocation invocation = invocationContext.createInvocation(
+                String.format("linking %s", spec.getOutputFile().getName()), args, spec.getOperationLogger());
+        queue.add(invocation);
+        queue.waitForCompletion();
+        return new SimpleWorkResult(true);
+    }
 
-			args.addAll(spec.getSystemArgs());
+    private static class GccLinkerArgsTransformer implements ArgsTransformer<LinkerSpec> {
+        public List<String> transform(LinkerSpec spec) {
+            List<String> args = new ArrayList<String>();
+            
+            args.addAll(spec.getSystemArgs());
 
-			if (spec instanceof SharedLibraryLinkerSpec) {
-				args.add("-shared");
-				maybeSetInstallName((SharedLibraryLinkerSpec) spec, args);
-			}
-			args.add("-o");
-			args.add(spec.getOutputFile().getAbsolutePath());
-			for (File file : spec.getObjectFiles()) {
-				args.add(file.getAbsolutePath());
-			}
-			for (File file : spec.getLibraries()) {
-				args.add(file.getAbsolutePath());
-			}
-			if (!spec.getLibraryPath().isEmpty()) {
-				throw new UnsupportedOperationException(
-						"Library Path not yet supported on GCC");
-			}
+            if (spec instanceof SharedLibraryLinkerSpec) {
+                args.add("-shared");
+                maybeSetInstallName((SharedLibraryLinkerSpec) spec, args);
+            }
+            args.add("-o");
+            args.add(spec.getOutputFile().getAbsolutePath());
+            for (File file : spec.getObjectFiles()) {
+                args.add(file.getAbsolutePath());
+            }
+            for (File file : spec.getLibraries()) {
+                args.add(file.getAbsolutePath());
+            }
+            if (!spec.getLibraryPath().isEmpty()) {
+                throw new UnsupportedOperationException("Library Path not yet supported on GCC");
+            }
 
-			for (String userArg : spec.getArgs()) {
-				args.add(userArg);
-			}
+            for (String userArg : spec.getArgs()) {
+                args.add(userArg);
+            }
 
-			return args;
-		}
+            return args;
+        }
 
-		private void maybeSetInstallName(SharedLibraryLinkerSpec spec,
-				List<String> args) {
-			String installName = spec.getInstallName();
-			OperatingSystem targetOs = spec.getTargetPlatform()
-					.getOperatingSystem();
+        private void maybeSetInstallName(SharedLibraryLinkerSpec spec, List<String> args) {
+            String installName = spec.getInstallName();
+            OperatingSystem targetOs = spec.getTargetPlatform().getOperatingSystem();
 
-			if (installName == null || targetOs.isWindows()) {
-				return;
-			}
-			if (targetOs.isMacOsX()) {
-				args.add("-Wl,-install_name," + installName);
-			} else {
-				args.add("-Wl,-soname," + installName);
-			}
-		}
-	}
+            if (installName == null || targetOs.isWindows()) {
+                return;
+            }
+            if (targetOs.isMacOsX()) {
+                args.add("-Wl,-install_name," + installName);
+            } else {
+                args.add("-Wl,-soname," + installName);
+            }
+        }
+    }
 }

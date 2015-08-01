@@ -16,8 +16,6 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
-import java.io.File;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.collections.SimpleFileCollection;
 import org.gradle.nativeplatform.BuildType;
@@ -26,34 +24,32 @@ import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.PrebuiltStaticLibraryBinary;
 import org.gradle.nativeplatform.platform.NativePlatform;
 
-public class DefaultPrebuiltStaticLibraryBinary extends
-		AbstractPrebuiltLibraryBinary implements PrebuiltStaticLibraryBinary {
-	private File staticLibraryFile;
+import java.io.File;
 
-	public DefaultPrebuiltStaticLibraryBinary(String name,
-			PrebuiltLibrary library, BuildType buildType,
-			NativePlatform targetPlatform, Flavor flavor) {
-		super(name, library, buildType, targetPlatform, flavor);
-	}
+public class DefaultPrebuiltStaticLibraryBinary extends AbstractPrebuiltLibraryBinary implements PrebuiltStaticLibraryBinary {
+    private File staticLibraryFile;
 
-	public String getDisplayName() {
-		return String.format("static library '%s'", getName());
-	}
+    public DefaultPrebuiltStaticLibraryBinary(String name, PrebuiltLibrary library, BuildType buildType, NativePlatform targetPlatform, Flavor flavor) {
+        super(name, library, buildType, targetPlatform, flavor);
+    }
 
-	public void setStaticLibraryFile(File staticLibraryFile) {
-		this.staticLibraryFile = staticLibraryFile;
-	}
+    public String getDisplayName() {
+        return String.format("static library '%s'", getName());
+    }
 
-	public File getStaticLibraryFile() {
-		return staticLibraryFile;
-	}
+    public void setStaticLibraryFile(File staticLibraryFile) {
+        this.staticLibraryFile = staticLibraryFile;
+    }
 
-	public FileCollection getLinkFiles() {
-		return createFileCollection(getStaticLibraryFile(),
-				"Static library file");
-	}
+    public File getStaticLibraryFile() {
+        return staticLibraryFile;
+    }
 
-	public FileCollection getRuntimeFiles() {
-		return new SimpleFileCollection();
-	}
+    public FileCollection getLinkFiles() {
+        return createFileCollection(getStaticLibraryFile(), "Static library file");
+    }
+
+    public FileCollection getRuntimeFiles() {
+        return new SimpleFileCollection();
+    }
 }

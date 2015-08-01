@@ -16,40 +16,29 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import java.util.List;
-
+import com.google.common.collect.Iterables;
 import org.gradle.api.Transformer;
 import org.gradle.internal.operations.BuildOperationProcessor;
-import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
+import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.AssembleSpec;
 
-import com.google.common.collect.Iterables;
+import java.util.List;
 
 class Assembler extends VisualCppNativeCompiler<AssembleSpec> {
 
-	Assembler(BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineTool,
-			CommandLineToolContext invocationContext,
-			Transformer<AssembleSpec, AssembleSpec> specTransformer,
-			String objectFileExtension, boolean useCommandFile) {
-		super(buildOperationProcessor, commandLineTool, invocationContext,
-				new AssemblerArgsTransformer(), specTransformer,
-				objectFileExtension, useCommandFile);
-	}
+    Assembler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, Transformer<AssembleSpec, AssembleSpec> specTransformer, String objectFileExtension, boolean useCommandFile) {
+        super(buildOperationProcessor, commandLineTool, invocationContext, new AssemblerArgsTransformer(), specTransformer, objectFileExtension, useCommandFile);
+    }
 
-	@Override
-	protected Iterable<String> buildPerFileArgs(List<String> genericArgs,
-			List<String> sourceArgs, List<String> outputArgs,
-			List<String> pchArgss) {
-		// ml/ml64 have position sensitive arguments,
-		// e.g., /Fo must appear before /c and /c must appear before the source
-		// file.
+    @Override
+    protected Iterable<String> buildPerFileArgs(List<String> genericArgs, List<String> sourceArgs, List<String> outputArgs, List<String> pchArgss) {
+        // ml/ml64 have position sensitive arguments,
+        // e.g., /Fo must appear before /c and /c must appear before the source file.
 
-		return Iterables.concat(outputArgs, genericArgs, sourceArgs);
-	}
+        return Iterables.concat(outputArgs, genericArgs, sourceArgs);
+    }
 
-	private static class AssemblerArgsTransformer extends
-			VisualCppCompilerArgsTransformer<AssembleSpec> {
-	}
+    private static class AssemblerArgsTransformer extends VisualCppCompilerArgsTransformer<AssembleSpec> {
+    }
 }

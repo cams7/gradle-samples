@@ -24,31 +24,24 @@ import org.gradle.nativeplatform.toolchain.internal.gcc.version.CompilerMetaData
 import org.gradle.nativeplatform.toolchain.internal.gcc.version.GccVersionResult;
 import org.gradle.process.internal.ExecActionFactory;
 
+
 /**
  * Compiler adapter for GCC.
  */
 public class GccToolChain extends AbstractGccCompatibleToolChain implements Gcc {
-	public static final String DEFAULT_NAME = "gcc";
+    public static final String DEFAULT_NAME = "gcc";
 
-	public GccToolChain(Instantiator instantiator, String name,
-			BuildOperationProcessor buildOperationProcessor,
-			OperatingSystem operatingSystem, FileResolver fileResolver,
-			ExecActionFactory execActionFactory,
-			CompilerMetaDataProviderFactory metaDataProviderFactory) {
-		super(name, buildOperationProcessor, operatingSystem, fileResolver,
-				execActionFactory, metaDataProviderFactory.gcc(), instantiator);
-	}
+    public GccToolChain(Instantiator instantiator, String name, BuildOperationProcessor buildOperationProcessor, OperatingSystem operatingSystem, FileResolver fileResolver, ExecActionFactory execActionFactory, CompilerMetaDataProviderFactory metaDataProviderFactory) {
+        super(name, buildOperationProcessor, operatingSystem, fileResolver, execActionFactory, metaDataProviderFactory.gcc(), instantiator);
+    }
 
-	@Override
-	protected String getTypeName() {
-		return "GNU GCC";
-	}
+    @Override
+    protected String getTypeName() {
+        return "GNU GCC";
+    }
 
-	@Override
-	protected void initForImplementation(
-			DefaultGccPlatformToolChain platformToolChain,
-			GccVersionResult versionResult) {
-		platformToolChain.setCanUseCommandFile(versionResult.getVersion()
-				.getMajor() >= 4);
-	}
+    @Override
+    protected void initForImplementation(DefaultGccPlatformToolChain platformToolChain, GccVersionResult versionResult) {
+        platformToolChain.setCanUseCommandFile(versionResult.getVersion().getMajor() >= 4);
+    }
 }

@@ -16,23 +16,18 @@
 
 package org.gradle.nativeplatform.internal.pch;
 
+import com.google.common.reflect.TypeToken;
 import org.gradle.api.internal.DefaultDomainObjectSet;
 import org.gradle.language.base.internal.registry.LanguageTransform;
 
-import com.google.common.reflect.TypeToken;
+public class DefaultPreCompiledHeaderTransformContainer extends DefaultDomainObjectSet<LanguageTransform<?, ?>> implements PreCompiledHeaderTransformContainer {
+    public DefaultPreCompiledHeaderTransformContainer() {
+        super(getLanguageTransformType());
+    }
 
-public class DefaultPreCompiledHeaderTransformContainer extends
-		DefaultDomainObjectSet<LanguageTransform<?, ?>> implements
-		PreCompiledHeaderTransformContainer {
-	public DefaultPreCompiledHeaderTransformContainer() {
-		super(getLanguageTransformType());
-	}
-
-	private static Class<LanguageTransform<?, ?>> getLanguageTransformType() {
-		@SuppressWarnings("unchecked")
-		Class<LanguageTransform<?, ?>> rawType = (Class<LanguageTransform<?, ?>>) new TypeToken<LanguageTransform<?, ?>>() {
-			private static final long serialVersionUID = 1L;
-		}.getRawType();
-		return rawType;
-	}
+    private static Class<LanguageTransform<?, ?>> getLanguageTransformType() {
+        @SuppressWarnings("unchecked")
+        Class<LanguageTransform<?, ?>> rawType = (Class<LanguageTransform<?, ?>>) new TypeToken<LanguageTransform<?, ?>>() {}.getRawType();
+        return rawType;
+    }
 }

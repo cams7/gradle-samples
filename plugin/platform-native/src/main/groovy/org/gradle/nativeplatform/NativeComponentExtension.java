@@ -25,26 +25,23 @@ import org.gradle.api.NamedDomainObjectContainer;
  */
 @Incubating
 public interface NativeComponentExtension {
-	/**
-	 * The {@link NativeExecutableSpec} components produced by the build.
-	 */
-	NamedDomainObjectContainer<NativeExecutableSpec> getExecutables();
+    /**
+     * The {@link NativeExecutableSpec} components produced by the build.
+     */
+    NamedDomainObjectContainer<NativeExecutableSpec> getExecutables();
 
-	/**
-	 * Configure the {@link NativeExecutableSpec} components produced by the
-	 * build.
-	 */
-	void executables(
-			Action<? super NamedDomainObjectContainer<? super NativeExecutableSpec>> action);
+    /**
+     * Configure the {@link NativeExecutableSpec} components produced by the build.
+     */
+    void executables(Action<? super NamedDomainObjectContainer<? super NativeExecutableSpec>> action);
 
-	/**
-	 * The {@link NativeLibrarySpec} components produced by the build.
-	 */
-	NamedDomainObjectContainer<NativeLibrarySpec> getLibraries();
+    /**
+     * The {@link NativeLibrarySpec} components produced by the build.
+     */
+    NamedDomainObjectContainer<NativeLibrarySpec> getLibraries();
 
-	/**
-	 * Configure the {@link NativeLibrarySpec} components produced by the build.
-	 */
-	void libraries(
-			Action<? super NamedDomainObjectContainer<? super NativeLibrarySpec>> action);
+    /**
+     * Configure the {@link NativeLibrarySpec} components produced by the build.
+     */
+    void libraries(Action<? super NamedDomainObjectContainer<? super NativeLibrarySpec>> action);
 }

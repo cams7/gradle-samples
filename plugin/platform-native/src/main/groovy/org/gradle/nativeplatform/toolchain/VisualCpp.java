@@ -16,39 +16,38 @@
 
 package org.gradle.nativeplatform.toolchain;
 
-import java.io.File;
-
 import org.gradle.api.Action;
 import org.gradle.api.Incubating;
+
+import java.io.File;
 
 /**
  * The Visual C++ tool chain.
  */
 @Incubating
 public interface VisualCpp extends NativeToolChain {
-	/**
-	 * The directory where Visual Studio or Visual C++ is installed.
-	 */
-	File getInstallDir();
+    /**
+     * The directory where Visual Studio or Visual C++ is installed.
+     */
+    File getInstallDir();
 
-	/**
-	 * The directory where Visual Studio or Visual C++ is installed.
-	 */
-	void setInstallDir(Object installDir);
+    /**
+     * The directory where Visual Studio or Visual C++ is installed.
+     */
+    void setInstallDir(Object installDir);
 
-	/**
-	 * The directory where Windows SDK is installed.
-	 */
-	File getWindowsSdkDir();
+    /**
+     * The directory where Windows SDK is installed.
+     */
+    File getWindowsSdkDir();
 
-	/**
-	 * The directory where Windows SDK is installed.
-	 */
-	void setWindowsSdkDir(Object installDir);
+    /**
+     * The directory where Windows SDK is installed.
+     */
+    void setWindowsSdkDir(Object installDir);
 
-	/**
-	 * Adds an action that can fine-tune the tool configuration for each
-	 * platform supported by this tool chain.
-	 */
-	public void eachPlatform(Action<? super VisualCppPlatformToolChain> action);
+    /**
+     * Adds an action that can fine-tune the tool configuration for each platform supported by this tool chain.
+     */
+    public void eachPlatform(Action<? super VisualCppPlatformToolChain> action);
 }

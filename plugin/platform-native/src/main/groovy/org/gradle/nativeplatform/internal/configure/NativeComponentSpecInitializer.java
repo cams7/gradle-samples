@@ -16,12 +16,6 @@
 
 package org.gradle.nativeplatform.internal.configure;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.gradle.api.Action;
 import org.gradle.api.Named;
 import org.gradle.api.Transformer;
@@ -35,111 +29,81 @@ import org.gradle.nativeplatform.platform.internal.NativePlatforms;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainInternal;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal;
 import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
+import org.gradle.platform.base.internal.PlatformResolvers;
 import org.gradle.platform.base.internal.BinaryNamingSchemeBuilder;
 import org.gradle.platform.base.internal.DefaultPlatformRequirement;
 import org.gradle.platform.base.internal.PlatformRequirement;
-import org.gradle.platform.base.internal.PlatformResolvers;
 import org.gradle.util.CollectionUtils;
 
-public class NativeComponentSpecInitializer implements
-		Action<NativeComponentSpec> {
-	private final NativeBinariesFactory factory;
-	private final NativeToolChainRegistryInternal toolChainRegistry;
-	private final PlatformResolvers platforms;
-	private final Set<BuildType> allBuildTypes = new LinkedHashSet<BuildType>();
-	private final Set<Flavor> allFlavors = new LinkedHashSet<Flavor>();
+import java.util.*;
 
-	private final BinaryNamingSchemeBuilder namingSchemeBuilder;
+public class NativeComponentSpecInitializer implements Action<NativeComponentSpec> {
+    private final NativeBinariesFactory factory;
+    private final NativeToolChainRegistryInternal toolChainRegistry;
+    private final PlatformResolvers platforms;
+    private final Set<BuildType> allBuildTypes = new LinkedHashSet<BuildType>();
+    private final Set<Flavor> allFlavors = new LinkedHashSet<Flavor>();
 
-	public NativeComponentSpecInitializer(NativeBinariesFactory factory,
-			BinaryNamingSchemeBuilder namingSchemeBuilder,
-			NativeToolChainRegistryInternal toolChainRegistry,
-			PlatformResolvers platforms,
-			Collection<? extends BuildType> allBuildTypes,
-			Collection<? extends Flavor> allFlavors) {
-		this.factory = factory;
-		this.namingSchemeBuilder = namingSchemeBuilder;
-		this.toolChainRegistry = toolChainRegistry;
-		this.allBuildTypes.addAll(allBuildTypes);
-		this.allFlavors.addAll(allFlavors);
-		this.platforms = platforms;
-	}
+    private final BinaryNamingSchemeBuilder namingSchemeBuilder;
 
-	public void execute(NativeComponentSpec projectNativeComponent) {
-		TargetedNativeComponentInternal targetedComponent = (TargetedNativeComponentInternal) projectNativeComponent;
-		List<NativePlatform> resolvedPlatforms = resolvePlatforms(targetedComponent);
+    public NativeComponentSpecInitializer(NativeBinariesFactory factory, BinaryNamingSchemeBuilder namingSchemeBuilder, NativeToolChainRegistryInternal toolChainRegistry,
+                                          PlatformResolvers platforms, Collection<? extends BuildType> allBuildTypes, Collection<? extends Flavor> allFlavors) {
+        this.factory = factory;
+        this.namingSchemeBuilder = namingSchemeBuilder;
+        this.toolChainRegistry = toolChainRegistry;
+        this.allBuildTypes.addAll(allBuildTypes);
+        this.allFlavors.addAll(allFlavors);
+        this.platforms = platforms;
+    }
 
-		for (NativePlatform platform : resolvedPlatforms) {
-			NativeToolChainInternal toolChain = (NativeToolChainInternal) toolChainRegistry
-					.getForPlatform(platform);
-			PlatformToolProvider toolProvider = toolChain
-					.select((NativePlatformInternal) platform);
+    public void execute(NativeComponentSpec projectNativeComponent) {
+        TargetedNativeComponentInternal targetedComponent = (TargetedNativeComponentInternal) projectNativeComponent;
+        List<NativePlatform> resolvedPlatforms = resolvePlatforms(targetedComponent);
 
-			BinaryNamingSchemeBuilder builder = namingSchemeBuilder
-					.withComponentName(projectNativeComponent.getName());
-			builder = maybeAddDimension(builder, platform, resolvedPlatforms);
-			executeForEachBuildType(projectNativeComponent,
-					(NativePlatformInternal) platform, builder, toolChain,
-					toolProvider);
-		}
-	}
+        for (NativePlatform platform: resolvedPlatforms) {
+            NativeToolChainInternal toolChain = (NativeToolChainInternal) toolChainRegistry.getForPlatform(platform);
+            PlatformToolProvider toolProvider = toolChain.select((NativePlatformInternal) platform);
 
-	private List<NativePlatform> resolvePlatforms(
-			TargetedNativeComponentInternal targetedComponent) {
-		List<PlatformRequirement> targetPlatforms = targetedComponent
-				.getTargetPlatforms();
-		if (targetPlatforms.isEmpty()) {
-			PlatformRequirement requirement = DefaultPlatformRequirement
-					.create(NativePlatforms.getDefaultPlatformName());
-			targetPlatforms = Collections.singletonList(requirement);
-		}
-		return CollectionUtils.collect(targetPlatforms,
-				new Transformer<NativePlatform, PlatformRequirement>() {
-					@Override
-					public NativePlatform transform(
-							PlatformRequirement platformRequirement) {
-						return platforms.resolve(NativePlatform.class,
-								platformRequirement);
-					}
-				});
-	}
+            BinaryNamingSchemeBuilder builder = namingSchemeBuilder.withComponentName(projectNativeComponent.getName());
+            builder = maybeAddDimension(builder, platform, resolvedPlatforms);
+            executeForEachBuildType(projectNativeComponent, (NativePlatformInternal) platform, builder, toolChain, toolProvider);
+        }
+    }
 
-	private void executeForEachBuildType(
-			NativeComponentSpec projectNativeComponent,
-			NativePlatformInternal platform, BinaryNamingSchemeBuilder builder,
-			NativeToolChainInternal toolChain, PlatformToolProvider toolProvider) {
-		Set<BuildType> targetBuildTypes = ((TargetedNativeComponentInternal) projectNativeComponent)
-				.chooseBuildTypes(allBuildTypes);
-		for (BuildType buildType : targetBuildTypes) {
-			BinaryNamingSchemeBuilder nameBuilder = maybeAddDimension(builder,
-					buildType, targetBuildTypes);
-			executeForEachFlavor(projectNativeComponent, platform, buildType,
-					nameBuilder, toolChain, toolProvider);
-		}
-	}
+    private List<NativePlatform> resolvePlatforms(TargetedNativeComponentInternal targetedComponent) {
+        List<PlatformRequirement> targetPlatforms = targetedComponent.getTargetPlatforms();
+        if (targetPlatforms.isEmpty()) {
+            PlatformRequirement requirement = DefaultPlatformRequirement.create(NativePlatforms.getDefaultPlatformName());
+            targetPlatforms = Collections.singletonList(requirement);
+        }
+        return CollectionUtils.collect(targetPlatforms, new Transformer<NativePlatform, PlatformRequirement>() {
+            @Override
+            public NativePlatform transform(PlatformRequirement platformRequirement) {
+                return platforms.resolve(NativePlatform.class, platformRequirement);
+            }
+        });
+    }
 
-	private void executeForEachFlavor(
-			NativeComponentSpec projectNativeComponent,
-			NativePlatform platform, BuildType buildType,
-			BinaryNamingSchemeBuilder buildTypedNameBuilder,
-			NativeToolChainInternal toolChain, PlatformToolProvider toolProvider) {
-		Set<Flavor> targetFlavors = ((TargetedNativeComponentInternal) projectNativeComponent)
-				.chooseFlavors(allFlavors);
-		for (Flavor flavor : targetFlavors) {
-			BinaryNamingSchemeBuilder flavoredNameBuilder = maybeAddDimension(
-					buildTypedNameBuilder, flavor, targetFlavors);
-			factory.createNativeBinaries(projectNativeComponent,
-					flavoredNameBuilder, toolChain, toolProvider, platform,
-					buildType, flavor);
-		}
-	}
+    private void executeForEachBuildType(NativeComponentSpec projectNativeComponent, NativePlatformInternal platform, BinaryNamingSchemeBuilder builder, NativeToolChainInternal toolChain, PlatformToolProvider toolProvider) {
+        Set<BuildType> targetBuildTypes = ((TargetedNativeComponentInternal) projectNativeComponent).chooseBuildTypes(allBuildTypes);
+        for (BuildType buildType : targetBuildTypes) {
+            BinaryNamingSchemeBuilder nameBuilder = maybeAddDimension(builder, buildType, targetBuildTypes);
+            executeForEachFlavor(projectNativeComponent, platform, buildType, nameBuilder, toolChain, toolProvider);
+        }
+    }
 
-	private <T extends Named> BinaryNamingSchemeBuilder maybeAddDimension(
-			BinaryNamingSchemeBuilder builder, T variation,
-			Collection<T> variations) {
-		if (variations.size() > 1) {
-			builder = builder.withVariantDimension(variation.getName());
-		}
-		return builder;
-	}
+    private void executeForEachFlavor(NativeComponentSpec projectNativeComponent, NativePlatform platform, BuildType buildType, BinaryNamingSchemeBuilder buildTypedNameBuilder, NativeToolChainInternal toolChain, PlatformToolProvider toolProvider) {
+        Set<Flavor> targetFlavors = ((TargetedNativeComponentInternal) projectNativeComponent).chooseFlavors(allFlavors);
+        for (Flavor flavor : targetFlavors) {
+            BinaryNamingSchemeBuilder flavoredNameBuilder = maybeAddDimension(buildTypedNameBuilder, flavor, targetFlavors);
+            factory.createNativeBinaries(projectNativeComponent, flavoredNameBuilder, toolChain, toolProvider, platform, buildType, flavor);
+        }
+    }
+
+    private <T extends Named> BinaryNamingSchemeBuilder maybeAddDimension(BinaryNamingSchemeBuilder builder, T variation, Collection<T> variations) {
+        if (variations.size() > 1) {
+            builder = builder.withVariantDimension(variation.getName());
+        }
+        return builder;
+    }
 }

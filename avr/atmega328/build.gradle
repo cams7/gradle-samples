@@ -1,28 +1,19 @@
 buildscript {	                
 	repositories {
-		mavenCentral()
 		maven {url uri('../../repo')}
 	}
 	dependencies {
-		//classpath 'dom4j:dom4j:1.6.+'
-		classpath "br.com.cams7.plugin:platform-base:1.0-SNAPSHOT"
-		classpath "br.com.cams7.plugin:platform-native:1.0-SNAPSHOT"
-		classpath "br.com.cams7.plugin:language-native:1.0-SNAPSHOT"
-		classpath module("br.com.cams7.plugin:avr:1.0-SNAPSHOT") {
-			dependency("com.google.guava:guava:18.+")
-		}
+		classpath module("br.com.cams7.plugin:avr:1.0-SNAPSHOT")
 	}	
 }
 
 apply {
-	//plugin "br.com.cams7.language-base"
-	//plugin "br.com.cams7.native-component"
-	plugin "br.com.cams7.assembler"
-	plugin "br.com.cams7.c"
-	//plugin "br.com.cams7.cpp"
-	//plugin "br.com.cams7.objective-c"
-	//plugin "br.com.cams7.objective-cpp"
-	//plugin "br.com.cams7.windows-resources"
+	plugin "assembler"
+	plugin "c"
+	plugin "cpp"
+	//plugin "objective-c"
+	//plugin "objective-cpp"
+	//plugin "windows-resources"
 	plugin "br.com.cams7.avr"			
 }
 
@@ -54,7 +45,7 @@ model {
 			}
 		}		
         main(NativeExecutableSpec) {            
-            sources {
+            sources {				
 				c {
 					source {
 						srcDirs "src/main/c"
@@ -64,7 +55,17 @@ model {
 						srcDirs "src/main/include"
                     }
 					lib library: "blink", linkage: 'static'
-				}                
+				}
+				cpp {
+					source {
+						srcDirs "src/main/cpp"
+						include "**/*.cpp"                        
+					}
+                    exportedHeaders {
+						srcDirs "src/main/include"
+                    }
+					lib library: "blink", linkage: 'static'
+				}
             }           
         }
     }	

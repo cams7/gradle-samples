@@ -16,86 +16,75 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-
+import com.google.common.base.Joiner;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.process.internal.ExecAction;
 import org.gradle.process.internal.ExecActionFactory;
 import org.gradle.process.internal.ExecException;
 import org.gradle.util.GFileUtils;
 
-import com.google.common.base.Joiner;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStream;
 
-public class DefaultCommandLineToolInvocationWorker implements
-		CommandLineToolInvocationWorker {
-	private final String name;
-	private final File executable;
-	private final ExecActionFactory execActionFactory;
+public class DefaultCommandLineToolInvocationWorker implements CommandLineToolInvocationWorker {
+    private final String name;
+    private final File executable;
+    private final ExecActionFactory execActionFactory;
 
-	public DefaultCommandLineToolInvocationWorker(String name, File executable,
-			ExecActionFactory execActionFactory) {
-		this.name = name;
-		this.executable = executable;
-		this.execActionFactory = execActionFactory;
-	}
+    public DefaultCommandLineToolInvocationWorker(String name, File executable, ExecActionFactory execActionFactory) {
+        this.name = name;
+        this.executable = executable;
+        this.execActionFactory = execActionFactory;
+    }
 
-	public String getDisplayName() {
-		return String.format("command line tool '%s'", name);
-	}
+    public String getDisplayName() {
+        return String.format("command line tool '%s'", name);
+    }
 
-	@Override
-	public String toString() {
-		return getDisplayName();
-	}
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 
-	public void execute(CommandLineToolInvocation invocation) {
-		ExecAction toolExec = execActionFactory.newExecAction();
+    public void execute(CommandLineToolInvocation invocation) {
+        ExecAction toolExec = execActionFactory.newExecAction();
 
-		toolExec.executable(executable);
-		if (invocation.getWorkDirectory() != null) {
-			GFileUtils.mkdirs(invocation.getWorkDirectory());
-			toolExec.workingDir(invocation.getWorkDirectory());
-		}
+        toolExec.executable(executable);
+        if (invocation.getWorkDirectory() != null) {
+            GFileUtils.mkdirs(invocation.getWorkDirectory());
+            toolExec.workingDir(invocation.getWorkDirectory());
+        }
 
-		toolExec.args(invocation.getArgs());
+        toolExec.args(invocation.getArgs());
 
-		if (!invocation.getPath().isEmpty()) {
-			String pathVar = OperatingSystem.current().getPathVar();
-			String toolPath = Joiner.on(File.pathSeparator).join(
-					invocation.getPath());
-			toolPath = toolPath + File.pathSeparator + System.getenv(pathVar);
-			toolExec.environment(pathVar, toolPath);
-			if (OperatingSystem.current().isWindows()
-					&& toolExec.getEnvironment().containsKey(
-							pathVar.toUpperCase())) {
-				toolExec.getEnvironment().remove(pathVar.toUpperCase());
-			}
-		}
+        if (!invocation.getPath().isEmpty()) {
+            String pathVar = OperatingSystem.current().getPathVar();
+            String toolPath = Joiner.on(File.pathSeparator).join(invocation.getPath());
+            toolPath = toolPath + File.pathSeparator + System.getenv(pathVar);
+            toolExec.environment(pathVar, toolPath);
+            if (OperatingSystem.current().isWindows() && toolExec.getEnvironment().containsKey(pathVar.toUpperCase())) {
+                toolExec.getEnvironment().remove(pathVar.toUpperCase());
+            }
+        }
 
-		toolExec.environment(invocation.getEnvironment());
+        toolExec.environment(invocation.getEnvironment());
 
-		ByteArrayOutputStream errOutput = new ByteArrayOutputStream();
-		ByteArrayOutputStream stdOutput = new ByteArrayOutputStream();
-		toolExec.setErrorOutput(errOutput);
-		toolExec.setStandardOutput(stdOutput);
+        ByteArrayOutputStream errOutput = new ByteArrayOutputStream();
+        ByteArrayOutputStream stdOutput = new ByteArrayOutputStream();
+        toolExec.setErrorOutput(errOutput);
+        toolExec.setStandardOutput(stdOutput);
 
-		try {
-			toolExec.execute();
-			invocation.getLogger().operationSuccess(
-					invocation.getDescription(),
-					combineOutput(stdOutput, errOutput));
-		} catch (ExecException e) {
-			invocation.getLogger().operationFailed(invocation.getDescription(),
-					combineOutput(stdOutput, errOutput));
-			throw new CommandLineToolInvocationFailure(invocation,
-					String.format("%s failed while %s.", name,
-							invocation.getDescription()));
-		}
-	}
+        try {
+            toolExec.execute();
+            invocation.getLogger().operationSuccess(invocation.getDescription(), combineOutput(stdOutput, errOutput));
+        } catch (ExecException e) {
+            invocation.getLogger().operationFailed(invocation.getDescription(), combineOutput(stdOutput, errOutput));
+            throw new CommandLineToolInvocationFailure(invocation, String.format("%s failed while %s.", name, invocation.getDescription()));
+        }
+    }
 
-	private String combineOutput(OutputStream stdOutput, OutputStream errOutput) {
-		return stdOutput.toString() + errOutput.toString();
-	}
+    private String combineOutput(OutputStream stdOutput, OutputStream errOutput) {
+        return stdOutput.toString() + errOutput.toString();
+    }
 }

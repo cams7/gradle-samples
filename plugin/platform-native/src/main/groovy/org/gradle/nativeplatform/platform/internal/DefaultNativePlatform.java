@@ -17,75 +17,69 @@
 package org.gradle.nativeplatform.platform.internal;
 
 import net.rubygrapefruit.platform.SystemInfo;
-
 import org.gradle.internal.nativeintegration.NativeIntegrationUnavailableException;
 import org.gradle.internal.nativeintegration.services.NativeServices;
 import org.gradle.internal.os.OperatingSystem;
 
 public class DefaultNativePlatform implements NativePlatformInternal {
-	private final String name;
-	private ArchitectureInternal architecture;
-	private OperatingSystemInternal operatingSystem;
+    private final String name;
+    private ArchitectureInternal architecture;
+    private OperatingSystemInternal operatingSystem;
 
-	public DefaultNativePlatform(String name) {
-		this(name, getCurrentOperatingSystem(), getCurrentArchitecture());
-	}
+    public DefaultNativePlatform(String name) {
+        this(name, getCurrentOperatingSystem(), getCurrentArchitecture());
+    }
 
-	protected DefaultNativePlatform(String name,
-			OperatingSystemInternal operatingSystem,
-			ArchitectureInternal architecture) {
-		this.name = name;
-		this.architecture = architecture;
-		this.operatingSystem = operatingSystem;
-	}
+    protected DefaultNativePlatform(String name, OperatingSystemInternal operatingSystem, ArchitectureInternal architecture) {
+        this.name = name;
+        this.architecture = architecture;
+        this.operatingSystem = operatingSystem;
+    }
 
-	private static DefaultOperatingSystem getCurrentOperatingSystem() {
-		return new DefaultOperatingSystem(System.getProperty("os.name"),
-				OperatingSystem.current());
-	}
+    private static DefaultOperatingSystem getCurrentOperatingSystem() {
+        return new DefaultOperatingSystem(System.getProperty("os.name"), OperatingSystem.current());
+    }
 
-	public static ArchitectureInternal getCurrentArchitecture() {
-		String architectureName;
-		try {
-			architectureName = NativeServices.getInstance()
-					.get(SystemInfo.class).getArchitectureName();
-		} catch (NativeIntegrationUnavailableException e) {
-			architectureName = System.getProperty("os.arch");
-		}
-		return Architectures.forInput(architectureName);
-	}
+    public static ArchitectureInternal getCurrentArchitecture() {
+        String architectureName;
+        try {
+            architectureName = NativeServices.getInstance().get(SystemInfo.class).getArchitectureName();
+        } catch (NativeIntegrationUnavailableException e) {
+            architectureName = System.getProperty("os.arch");
+        }
+        return Architectures.forInput(architectureName);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String toString() {
-		return getDisplayName();
-	}
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 
-	public String getDisplayName() {
-		return String.format("platform '%s'", name);
-	}
+    public String getDisplayName() {
+        return String.format("platform '%s'", name);
+    }
 
-	public ArchitectureInternal getArchitecture() {
-		return architecture;
-	}
+    public ArchitectureInternal getArchitecture() {
+        return architecture;
+    }
 
-	public void architecture(String name) {
-		architecture = Architectures.forInput(name);
-	}
+    public void architecture(String name) {
+        architecture = Architectures.forInput(name);
+    }
 
-	public OperatingSystemInternal getOperatingSystem() {
-		return operatingSystem;
-	}
+    public OperatingSystemInternal getOperatingSystem() {
+        return operatingSystem;
+    }
 
-	public void operatingSystem(String name) {
-		operatingSystem = new DefaultOperatingSystem(name);
-	}
+    public void operatingSystem(String name) {
+        operatingSystem = new DefaultOperatingSystem(name);
+    }
 
-	public String getCompatibilityString() {
-		return String.format("%s:%s", getArchitecture().getName(),
-				getOperatingSystem().getName());
-	}
+    public String getCompatibilityString() {
+        return String.format("%s:%s", getArchitecture().getName(), getOperatingSystem().getName());
+    }
 }

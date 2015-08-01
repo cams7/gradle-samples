@@ -27,45 +27,46 @@ import org.gradle.logging.ConsoleRenderer
  * Runs a compiled and installed test executable.
  */
 @Incubating
+@SuppressWarnings("unchecked")
 @ParallelizableTask
 public class RunTestExecutable extends AbstractExecTask<RunTestExecutable> {
-	public RunTestExecutable() {
-		super(RunTestExecutable.class);
-	}
+    public RunTestExecutable() {
+        super(RunTestExecutable.class);
+    }
 
-	/**
-	 * The directory where the results should be generated.
-	 */
-	@OutputDirectory File outputDir
+    /**
+     * The directory where the results should be generated.
+     */
+    @OutputDirectory File outputDir
 
-	/**
-	 * Should the build continue if a test fails, or should the build break?
-	 */
-	@Input boolean ignoreFailures
+    /**
+     * Should the build continue if a test fails, or should the build break?
+     */
+    @Input boolean ignoreFailures
 
-	@TaskAction
-	@Override
-	protected void exec() {
-		// Make convention mapping work
-		setExecutable(getExecutable());
-		setWorkingDir(getOutputDir());
+    @TaskAction
+    @Override
+    protected void exec() {
+        // Make convention mapping work
+        setExecutable(getExecutable());
+        setWorkingDir(getOutputDir());
 
-		try {
-			super.exec();
-		} catch (Exception e) {
-			handleTestFailures(e);
-		}
-	}
+        try {
+            super.exec();
+        } catch (Exception e) {
+            handleTestFailures(e);
+        }
+    }
 
-	private void handleTestFailures(Exception e) {
-		String message = "There were failing tests";
-		String resultsUrl = new ConsoleRenderer().asClickableFileUrl(getOutputDir());
-		message = message.concat(". See the results at: " + resultsUrl);
+    private void handleTestFailures(Exception e) {
+        String message = "There were failing tests";
+        String resultsUrl = new ConsoleRenderer().asClickableFileUrl(getOutputDir());
+        message = message.concat(". See the results at: " + resultsUrl);
 
-		if (isIgnoreFailures()) {
-			getLogger().warn(message);
-		} else {
-			throw new GradleException(message, e);
-		}
-	}
+        if (isIgnoreFailures()) {
+            getLogger().warn(message);
+        } else {
+            throw new GradleException(message, e);
+        }
+    }
 }

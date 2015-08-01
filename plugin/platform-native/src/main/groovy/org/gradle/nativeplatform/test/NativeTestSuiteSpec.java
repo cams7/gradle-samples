@@ -24,10 +24,10 @@ import org.gradle.platform.base.test.TestSuiteSpec;
  */
 @Incubating
 public interface NativeTestSuiteSpec extends TestSuiteSpec, NativeComponentSpec {
-	/**
-	 * {@inheritDoc}
-	 */
-	NativeComponentSpec getTestedComponent();
+    /**
+     * {@inheritDoc}
+     */
+    NativeComponentSpec getTestedComponent();
 
-	void setTestedComponent(NativeComponentSpec testedComponent);
+    void setTestedComponent(NativeComponentSpec testedComponent);
 }

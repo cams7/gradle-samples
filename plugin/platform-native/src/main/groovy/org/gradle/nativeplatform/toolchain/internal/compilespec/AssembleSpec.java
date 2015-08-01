@@ -19,8 +19,7 @@ package org.gradle.nativeplatform.toolchain.internal.compilespec;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
 /**
- * A compile spec that will be used to generate object files for combining into
- * a native binary.
+ * A compile spec that will be used to generate object files for combining into a native binary.
  */
 public interface AssembleSpec extends NativeCompileSpec {
 

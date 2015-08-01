@@ -16,53 +16,52 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.io.File;
-
 import org.gradle.api.internal.tasks.SimpleWorkResult;
-import org.gradle.api.tasks.WorkResult;
 import org.gradle.language.base.internal.compile.Compiler;
+import org.gradle.api.tasks.WorkResult;
 import org.gradle.nativeplatform.internal.CompilerOutputFileNamingScheme;
 
-public class OutputCleaningCompiler<T extends NativeCompileSpec> implements
-		Compiler<T> {
+import java.io.File;
 
-	private final Compiler<T> compiler;
-	private final String outputFileSuffix;
+public class OutputCleaningCompiler<T extends NativeCompileSpec> implements Compiler<T> {
 
-	public OutputCleaningCompiler(Compiler<T> compiler, String outputFileSuffix) {
-		this.compiler = compiler;
-		this.outputFileSuffix = outputFileSuffix;
-	}
+    private final Compiler<T> compiler;
+    private final String outputFileSuffix;
 
-	public WorkResult execute(T spec) {
-		boolean didRemove = deleteOutputsForRemovedSources(spec);
-		boolean didCompile = compileSources(spec);
-		return new SimpleWorkResult(didRemove || didCompile);
-	}
+    public OutputCleaningCompiler(Compiler<T> compiler, String outputFileSuffix) {
+        this.compiler = compiler;
+        this.outputFileSuffix = outputFileSuffix;
+    }
 
-	private boolean compileSources(T spec) {
-		if (spec.getSourceFiles().isEmpty()) {
-			return false;
-		}
-		return compiler.execute(spec).getDidWork();
-	}
+    public WorkResult execute(T spec) {
+        boolean didRemove = deleteOutputsForRemovedSources(spec);
+        boolean didCompile = compileSources(spec);
+        return new SimpleWorkResult(didRemove || didCompile);
+    }
 
-	private boolean deleteOutputsForRemovedSources(NativeCompileSpec spec) {
-		boolean didRemove = false;
-		for (File removedSource : spec.getRemovedSourceFiles()) {
-			File objectFile = getObjectFile(spec.getObjectFileDir(),
-					removedSource);
-			if (objectFile.delete()) {
-				didRemove = true;
-				objectFile.getParentFile().delete();
-			}
-		}
-		return didRemove;
-	}
+    private boolean compileSources(T spec) {
+        if (spec.getSourceFiles().isEmpty()) {
+            return false;
+        }
+        return compiler.execute(spec).getDidWork();
+    }
 
-	private File getObjectFile(File objectFileRoot, File sourceFile) {
-		return new CompilerOutputFileNamingScheme()
-				.withObjectFileNameSuffix(outputFileSuffix)
-				.withOutputBaseFolder(objectFileRoot).map(sourceFile);
-	}
+    private boolean deleteOutputsForRemovedSources(NativeCompileSpec spec) {
+        boolean didRemove = false;
+        for (File removedSource : spec.getRemovedSourceFiles()) {
+            File objectFile = getObjectFile(spec.getObjectFileDir(), removedSource);
+            if (objectFile.delete()) {
+                didRemove = true;
+                objectFile.getParentFile().delete();
+            }
+        }
+        return didRemove;
+    }
+
+    private File getObjectFile(File objectFileRoot, File sourceFile) {
+        return new CompilerOutputFileNamingScheme()
+                        .withObjectFileNameSuffix(outputFileSuffix)
+                        .withOutputBaseFolder(objectFileRoot)
+                        .map(sourceFile);
+    }
 }

@@ -10,8 +10,8 @@ import org.gradle.api.Project
 import org.gradle.api.internal.project.ProjectInternal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.service.ServiceRegistry
-import org.gradle.nativeplatform.BuildTypeContainer
-import org.gradle.nativeplatform.FlavorContainer
+import org.gradle.nativeplatform.BuildTypeContainer;
+import org.gradle.nativeplatform.FlavorContainer;
 import org.gradle.nativeplatform.toolchain.internal.NativeToolChainRegistryInternal
 
 /**

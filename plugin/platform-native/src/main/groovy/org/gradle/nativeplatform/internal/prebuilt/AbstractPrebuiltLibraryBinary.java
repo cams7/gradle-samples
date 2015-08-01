@@ -16,10 +16,6 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.AbstractBuildableModelElement;
 import org.gradle.api.internal.file.collections.FileCollectionAdapter;
@@ -31,87 +27,81 @@ import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.PrebuiltLibrary;
 import org.gradle.nativeplatform.platform.NativePlatform;
 
-public abstract class AbstractPrebuiltLibraryBinary extends
-		AbstractBuildableModelElement implements NativeLibraryBinary {
-	private final String name;
-	private final PrebuiltLibrary library;
-	private final BuildType buildType;
-	private final NativePlatform targetPlatform;
-	private final Flavor flavor;
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 
-	public AbstractPrebuiltLibraryBinary(String name, PrebuiltLibrary library,
-			BuildType buildType, NativePlatform targetPlatform, Flavor flavor) {
-		this.name = name;
-		this.library = library;
-		this.buildType = buildType;
-		this.targetPlatform = targetPlatform;
-		this.flavor = flavor;
-	}
+public abstract class AbstractPrebuiltLibraryBinary extends AbstractBuildableModelElement implements NativeLibraryBinary {
+    private final String name;
+    private final PrebuiltLibrary library;
+    private final BuildType buildType;
+    private final NativePlatform targetPlatform;
+    private final Flavor flavor;
 
-	@Override
-	public String toString() {
-		return getDisplayName();
-	}
+    public AbstractPrebuiltLibraryBinary(String name, PrebuiltLibrary library, BuildType buildType, NativePlatform targetPlatform, Flavor flavor) {
+        this.name = name;
+        this.library = library;
+        this.buildType = buildType;
+        this.targetPlatform = targetPlatform;
+        this.flavor = flavor;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 
-	public PrebuiltLibrary getComponent() {
-		return library;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public BuildType getBuildType() {
-		return buildType;
-	}
+    public PrebuiltLibrary getComponent() {
+        return library;
+    }
 
-	public Flavor getFlavor() {
-		return flavor;
-	}
+    public BuildType getBuildType() {
+        return buildType;
+    }
 
-	public NativePlatform getTargetPlatform() {
-		return targetPlatform;
-	}
+    public Flavor getFlavor() {
+        return flavor;
+    }
 
-	public FileCollection getHeaderDirs() {
-		return new SimpleFileCollection(library.getHeaders().getSrcDirs());
-	}
+    public NativePlatform getTargetPlatform() {
+        return targetPlatform;
+    }
 
-	protected FileCollection createFileCollection(File file,
-			String fileDescription) {
-		return new FileCollectionAdapter(new ValidatingFileSet(file,
-				getComponent().getName(), fileDescription));
-	}
+    public FileCollection getHeaderDirs() {
+        return new SimpleFileCollection(library.getHeaders().getSrcDirs());
+    }
 
-	private static class ValidatingFileSet implements MinimalFileSet {
-		private final File file;
-		private final String libraryName;
-		private final String fileDescription;
+    protected FileCollection createFileCollection(File file, String fileDescription) {
+        return new FileCollectionAdapter(new ValidatingFileSet(file, getComponent().getName(), fileDescription));
+    }
 
-		private ValidatingFileSet(File file, String libraryName,
-				String fileDescription) {
-			this.file = file;
-			this.libraryName = libraryName;
-			this.fileDescription = fileDescription;
-		}
+    private static class ValidatingFileSet implements MinimalFileSet {
+        private final File file;
+        private final String libraryName;
+        private final String fileDescription;
 
-		public String getDisplayName() {
-			return String.format("%s for prebuilt library '%s'",
-					fileDescription, libraryName);
-		}
+        private ValidatingFileSet(File file, String libraryName, String fileDescription) {
+            this.file = file;
+            this.libraryName = libraryName;
+            this.fileDescription = fileDescription;
+        }
 
-		public Set<File> getFiles() {
-			if (file == null) {
-				throw new PrebuiltLibraryResolveException(String.format(
-						"%s not set for prebuilt library '%s'.",
-						fileDescription, libraryName));
-			}
-			if (!file.exists() || !file.isFile()) {
-				throw new PrebuiltLibraryResolveException(String.format(
-						"%s %s does not exist for prebuilt library '%s'.",
-						fileDescription, file.getAbsolutePath(), libraryName));
-			}
-			return Collections.singleton(file);
-		}
-	}
+        public String getDisplayName() {
+            return String.format("%s for prebuilt library '%s'", fileDescription, libraryName);
+        }
+
+        public Set<File> getFiles() {
+            if (file == null) {
+                throw new PrebuiltLibraryResolveException(String.format("%s not set for prebuilt library '%s'.", fileDescription, libraryName));
+            }
+            if (!file.exists() || !file.isFile()) {
+                throw new PrebuiltLibraryResolveException(String.format("%s %s does not exist for prebuilt library '%s'.", fileDescription, file.getAbsolutePath(), libraryName));
+            }
+            return Collections.singleton(file);
+        }
+    }
 }

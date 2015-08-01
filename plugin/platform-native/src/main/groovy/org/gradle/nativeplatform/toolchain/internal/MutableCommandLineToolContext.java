@@ -16,19 +16,19 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import org.gradle.api.Action;
+
 import java.io.File;
 import java.util.List;
 
-import org.gradle.api.Action;
-
 public interface MutableCommandLineToolContext extends CommandLineToolContext {
 
-	void setArgAction(Action<List<String>> argAction);
+    void setArgAction(Action<List<String>> argAction);
 
-	void addPath(File pathEntry);
+    void addPath(File pathEntry);
 
-	void addPath(List<File> path);
+    void addPath(List<File> path);
 
-	void addEnvironmentVar(String key, String value);
+    void addEnvironmentVar(String key, String value);
 
 }

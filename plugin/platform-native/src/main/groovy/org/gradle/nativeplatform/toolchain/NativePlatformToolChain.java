@@ -24,8 +24,8 @@ import org.gradle.nativeplatform.platform.NativePlatform;
  */
 @Incubating
 public interface NativePlatformToolChain {
-	/**
-	 * Returns the platform which this tool chain builds for.
-	 */
-	NativePlatform getPlatform();
+    /**
+     * Returns the platform which this tool chain builds for.
+     */
+    NativePlatform getPlatform();
 }

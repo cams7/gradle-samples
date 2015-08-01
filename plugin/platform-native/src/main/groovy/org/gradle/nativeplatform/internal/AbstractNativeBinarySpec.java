@@ -16,19 +16,9 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.nativeplatform.DependentSourceSet;
-import org.gradle.nativeplatform.BuildType;
-import org.gradle.nativeplatform.Flavor;
-import org.gradle.nativeplatform.NativeComponentSpec;
-import org.gradle.nativeplatform.NativeDependencySet;
-import org.gradle.nativeplatform.NativeLibraryBinary;
-import org.gradle.nativeplatform.Tool;
+import org.gradle.nativeplatform.*;
 import org.gradle.nativeplatform.internal.resolve.NativeBinaryResolveResult;
 import org.gradle.nativeplatform.internal.resolve.NativeDependencyResolver;
 import org.gradle.nativeplatform.platform.NativePlatform;
@@ -43,138 +33,134 @@ import org.gradle.platform.base.internal.BinaryNamingScheme;
 import org.gradle.platform.base.internal.ComponentSpecInternal;
 import org.gradle.platform.base.internal.ToolSearchBuildAbility;
 
-public abstract class AbstractNativeBinarySpec extends BaseBinarySpec implements
-		NativeBinarySpecInternal {
-	private final Set<? super Object> libs = new LinkedHashSet<Object>();
-	private final DefaultTool linker = new DefaultTool();
-	private final DefaultTool staticLibArchiver = new DefaultTool();
-	private NativeComponentSpec component;
-	private PlatformToolProvider toolProvider;
-	private BinaryNamingScheme namingScheme;
-	private Flavor flavor;
-	private NativeToolChain toolChain;
-	private NativePlatform targetPlatform;
-	private BuildType buildType;
-	private NativeDependencyResolver resolver;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-	public String getDisplayName() {
-		return namingScheme.getDescription();
-	}
+public abstract class AbstractNativeBinarySpec extends BaseBinarySpec implements NativeBinarySpecInternal {
+    private final Set<? super Object> libs = new LinkedHashSet<Object>();
+    private final DefaultTool linker = new DefaultTool();
+    private final DefaultTool staticLibArchiver = new DefaultTool();
+    private NativeComponentSpec component;
+    private PlatformToolProvider toolProvider;
+    private BinaryNamingScheme namingScheme;
+    private Flavor flavor;
+    private NativeToolChain toolChain;
+    private NativePlatform targetPlatform;
+    private BuildType buildType;
+    private NativeDependencyResolver resolver;
 
-	public NativeComponentSpec getComponent() {
-		return component;
-	}
+    public String getDisplayName() {
+        return namingScheme.getDescription();
+    }
 
-	public void setComponent(NativeComponentSpec component) {
-		this.component = component;
-		setBinarySources(((ComponentSpecInternal) component).getSources().copy(
-				getName()));
-	}
+    public NativeComponentSpec getComponent() {
+        return component;
+    }
 
-	public Flavor getFlavor() {
-		return flavor;
-	}
+    public void setComponent(NativeComponentSpec component) {
+        this.component = component;
+        setBinarySources(((ComponentSpecInternal) component).getSources().copy(getName()));
+    }
 
-	public void setFlavor(Flavor flavor) {
-		this.flavor = flavor;
-	}
+    public Flavor getFlavor() {
+        return flavor;
+    }
 
-	public NativeToolChain getToolChain() {
-		return toolChain;
-	}
+    public void setFlavor(Flavor flavor) {
+        this.flavor = flavor;
+    }
 
-	public void setToolChain(NativeToolChain toolChain) {
-		this.toolChain = toolChain;
-	}
+    public NativeToolChain getToolChain() {
+        return toolChain;
+    }
 
-	public NativePlatform getTargetPlatform() {
-		return targetPlatform;
-	}
+    public void setToolChain(NativeToolChain toolChain) {
+        this.toolChain = toolChain;
+    }
 
-	public void setTargetPlatform(NativePlatform targetPlatform) {
-		this.targetPlatform = targetPlatform;
-	}
+    public NativePlatform getTargetPlatform() {
+        return targetPlatform;
+    }
 
-	public BuildType getBuildType() {
-		return buildType;
-	}
+    public void setTargetPlatform(NativePlatform targetPlatform) {
+        this.targetPlatform = targetPlatform;
+    }
 
-	public void setBuildType(BuildType buildType) {
-		this.buildType = buildType;
-	}
+    public BuildType getBuildType() {
+        return buildType;
+    }
 
-	public Tool getLinker() {
-		return linker;
-	}
+    public void setBuildType(BuildType buildType) {
+        this.buildType = buildType;
+    }
 
-	public Tool getStaticLibArchiver() {
-		return staticLibArchiver;
-	}
+    public Tool getLinker() {
+        return linker;
+    }
 
-	public BinaryNamingScheme getNamingScheme() {
-		return namingScheme;
-	}
+    public Tool getStaticLibArchiver() {
+        return staticLibArchiver;
+    }
 
-	public void setNamingScheme(BinaryNamingScheme namingScheme) {
-		this.namingScheme = namingScheme;
-	}
+    public BinaryNamingScheme getNamingScheme() {
+        return namingScheme;
+    }
 
-	public Collection<NativeDependencySet> getLibs() {
-		return resolve(getSource().withType(DependentSourceSet.class))
-				.getAllResults();
-	}
+    public void setNamingScheme(BinaryNamingScheme namingScheme) {
+        this.namingScheme = namingScheme;
+    }
 
-	public Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet) {
-		return resolve(Collections.singleton(sourceSet)).getAllResults();
-	}
+    public Collection<NativeDependencySet> getLibs() {
+        return resolve(getSource().withType(DependentSourceSet.class)).getAllResults();
+    }
 
-	public void lib(Object notation) {
-		libs.add(notation);
-	}
+    public Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet) {
+        return resolve(Collections.singleton(sourceSet)).getAllResults();
+    }
 
-	public Collection<NativeLibraryBinary> getDependentBinaries() {
-		return resolve(getSource().withType(DependentSourceSet.class))
-				.getAllLibraryBinaries();
-	}
+    public void lib(Object notation) {
+        libs.add(notation);
+    }
 
-	private NativeBinaryResolveResult resolve(
-			Collection<? extends DependentSourceSet> sourceSets) {
-		Set<? super Object> allLibs = new LinkedHashSet<Object>(libs);
-		for (DependentSourceSet dependentSourceSet : sourceSets) {
-			allLibs.addAll(dependentSourceSet.getLibs());
-		}
-		NativeBinaryResolveResult resolution = new NativeBinaryResolveResult(
-				this, allLibs);
-		resolver.resolve(resolution);
-		return resolution;
-	}
+    public Collection<NativeLibraryBinary> getDependentBinaries() {
+        return resolve(getSource().withType(DependentSourceSet.class)).getAllLibraryBinaries();
+    }
 
-	public PlatformToolProvider getPlatformToolProvider() {
-		return toolProvider;
-	}
+    private NativeBinaryResolveResult resolve(Collection<? extends DependentSourceSet> sourceSets) {
+        Set<? super Object> allLibs = new LinkedHashSet<Object>(libs);
+        for (DependentSourceSet dependentSourceSet : sourceSets) {
+            allLibs.addAll(dependentSourceSet.getLibs());
+        }
+        NativeBinaryResolveResult resolution = new NativeBinaryResolveResult(this, allLibs);
+        resolver.resolve(resolution);
+        return resolution;
+    }
 
-	public void setPlatformToolProvider(PlatformToolProvider toolProvider) {
-		this.toolProvider = toolProvider;
-	}
+    public PlatformToolProvider getPlatformToolProvider() {
+        return toolProvider;
+    }
 
-	public void setResolver(NativeDependencyResolver resolver) {
-		this.resolver = resolver;
-	}
+    public void setPlatformToolProvider(PlatformToolProvider toolProvider) {
+        this.toolProvider = toolProvider;
+    }
 
-	@Override
-	protected BinaryBuildAbility getBinaryBuildAbility() {
-		NativeToolChainInternal toolChainInternal = (NativeToolChainInternal) getToolChain();
-		NativePlatformInternal platformInternal = (NativePlatformInternal) getTargetPlatform();
-		return new ToolSearchBuildAbility(
-				toolChainInternal.select(platformInternal));
-	}
+    public void setResolver(NativeDependencyResolver resolver) {
+        this.resolver = resolver;
+    }
 
-	public void binaryInputs(FileCollection files) {
-		// TODO - should split this up, so that the inputs are attached to an
-		// object that represents the binary, which is then later used to
-		// configure the link/assemble tasks
-		getCreateOrLink().source(files);
-	}
+    @Override
+    protected BinaryBuildAbility getBinaryBuildAbility() {
+        NativeToolChainInternal toolChainInternal = (NativeToolChainInternal) getToolChain();
+        NativePlatformInternal platformInternal = (NativePlatformInternal) getTargetPlatform();
+        return new ToolSearchBuildAbility(toolChainInternal.select(platformInternal));
+    }
 
-	protected abstract ObjectFilesToBinary getCreateOrLink();
+    public void binaryInputs(FileCollection files) {
+        // TODO - should split this up, so that the inputs are attached to an object that represents the binary, which is then later used to configure the link/assemble tasks
+        getCreateOrLink().source(files);
+    }
+
+    protected abstract ObjectFilesToBinary getCreateOrLink();
 }

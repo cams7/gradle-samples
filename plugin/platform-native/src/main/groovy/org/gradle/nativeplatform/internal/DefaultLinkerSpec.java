@@ -21,49 +21,48 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DefaultLinkerSpec extends AbstractBinaryToolSpec implements
-		LinkerSpec {
+public class DefaultLinkerSpec extends AbstractBinaryToolSpec implements LinkerSpec {
 
-	private final List<File> objectFiles = new ArrayList<File>();
-	private final List<File> libraries = new ArrayList<File>();
-	private final List<File> libraryPath = new ArrayList<File>();
-	private File outputFile;
+    private final List<File> objectFiles = new ArrayList<File>();
+    private final List<File> libraries = new ArrayList<File>();
+    private final List<File> libraryPath = new ArrayList<File>();
+    private File outputFile;
 
-	public List<File> getObjectFiles() {
-		return objectFiles;
-	}
+    public List<File> getObjectFiles() {
+        return objectFiles;
+    }
 
-	public void objectFiles(Iterable<File> objectFiles) {
-		addAll(this.objectFiles, objectFiles);
-	}
+    public void objectFiles(Iterable<File> objectFiles) {
+        addAll(this.objectFiles, objectFiles);
+    }
 
-	public List<File> getLibraries() {
-		return libraries;
-	}
+    public List<File> getLibraries() {
+        return libraries;
+    }
 
-	public void libraries(Iterable<File> libraries) {
-		addAll(this.libraries, libraries);
-	}
+    public void libraries(Iterable<File> libraries) {
+        addAll(this.libraries, libraries);
+    }
 
-	public List<File> getLibraryPath() {
-		return libraryPath;
-	}
+    public List<File> getLibraryPath() {
+        return libraryPath;
+    }
 
-	public void libraryPath(File... libraryPath) {
-		Collections.addAll(this.libraryPath, libraryPath);
-	}
+    public void libraryPath(File... libraryPath) {
+        Collections.addAll(this.libraryPath, libraryPath);
+    }
 
-	public File getOutputFile() {
-		return outputFile;
-	}
+    public File getOutputFile() {
+        return outputFile;
+    }
 
-	public void setOutputFile(File outputFile) {
-		this.outputFile = outputFile;
-	}
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
+    }
 
-	private void addAll(List<File> list, Iterable<File> iterable) {
-		for (File file : iterable) {
-			list.add(file);
-		}
-	}
+    private void addAll(List<File> list, Iterable<File> iterable) {
+        for (File file : iterable) {
+            list.add(file);
+        }
+    }
 }

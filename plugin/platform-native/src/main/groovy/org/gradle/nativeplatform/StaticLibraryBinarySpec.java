@@ -16,47 +16,46 @@
 
 package org.gradle.nativeplatform;
 
-import java.io.File;
-
 import org.gradle.api.Incubating;
 import org.gradle.api.Task;
 import org.gradle.api.file.FileCollection;
 import org.gradle.platform.base.BinaryTasksCollection;
+
+import java.io.File;
 
 /**
  * A static library binary built by Gradle for a native library.
  */
 @Incubating
 public interface StaticLibraryBinarySpec extends NativeLibraryBinarySpec {
-	/**
-	 * Provides access to key tasks used for building the binary.
-	 */
-	public interface TasksCollection extends BinaryTasksCollection {
-		/**
-		 * The create static library task.
-		 */
-		Task getCreateStaticLib();
-	}
+    /**
+     * Provides access to key tasks used for building the binary.
+     */
+    public interface TasksCollection extends BinaryTasksCollection {
+        /**
+         * The create static library task.
+         */
+        Task getCreateStaticLib();
+    }
 
-	/**
-	 * The static library file.
-	 */
-	File getStaticLibraryFile();
+    /**
+     * The static library file.
+     */
+    File getStaticLibraryFile();
 
-	/**
-	 * The static library binary file.
-	 */
-	void setStaticLibraryFile(File staticLibraryFile);
+    /**
+     * The static library binary file.
+     */
+    void setStaticLibraryFile(File staticLibraryFile);
 
-	/**
-	 * Add some additional files required by consumers of this library at link
-	 * time.
-	 */
-	void additionalLinkFiles(FileCollection files);
+    /**
+     * Add some additional files required by consumers of this library at link time.
+     */
+    void additionalLinkFiles(FileCollection files);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	TasksCollection getTasks();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    TasksCollection getTasks();
 }

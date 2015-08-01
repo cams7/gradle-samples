@@ -15,8 +15,6 @@
  */
 package org.gradle.nativeplatform.test;
 
-import java.io.File;
-
 import org.gradle.api.Incubating;
 import org.gradle.api.Task;
 import org.gradle.internal.HasInternalProtocol;
@@ -24,63 +22,63 @@ import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.test.TestSuiteBinarySpec;
 
+import java.io.File;
+
 /**
  * An executable which runs a suite of tests.
  */
-@Incubating
-@HasInternalProtocol
-public interface NativeTestSuiteBinarySpec extends TestSuiteBinarySpec,
-		NativeBinarySpec {
-	/**
-	 * Provides access to key tasks used for building the binary.
-	 */
-	public interface TasksCollection extends BinaryTasksCollection {
-		/**
-		 * The link task.
-		 */
-		Task getLink();
+@Incubating @HasInternalProtocol
+public interface NativeTestSuiteBinarySpec extends TestSuiteBinarySpec, NativeBinarySpec {
+    /**
+     * Provides access to key tasks used for building the binary.
+     */
+    public interface TasksCollection extends BinaryTasksCollection {
+        /**
+         * The link task.
+         */
+        Task getLink();
 
-		/**
-		 * The install task.
-		 */
-		Task getInstall();
+        /**
+         * The install task.
+         */
+        Task getInstall();
 
-		/**
-		 * The run task.
-		 */
-		Task getRun();
-	}
+        /**
+         * The run task.
+         */
+        Task getRun();
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	NativeTestSuiteSpec getTestSuite();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    NativeTestSuiteSpec getTestSuite();
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	NativeTestSuiteSpec getComponent();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    NativeTestSuiteSpec getComponent();
 
-	/**
-	 * The tested binary.
-	 */
-	NativeBinarySpec getTestedBinary();
+    /**
+     * The tested binary.
+     */
+    NativeBinarySpec getTestedBinary();
 
-	/**
-	 * The executable file.
-	 */
-	File getExecutableFile();
+    /**
+     * The executable file.
+     */
+    File getExecutableFile();
 
-	/**
-	 * The executable file.
-	 */
-	void setExecutableFile(File executableFile);
+    /**
+     * The executable file.
+     */
+    void setExecutableFile(File executableFile);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	TasksCollection getTasks();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    TasksCollection getTasks();
 }

@@ -19,6 +19,5 @@ package org.gradle.nativeplatform.internal.pch;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.language.base.internal.registry.LanguageTransform;
 
-public interface PreCompiledHeaderTransformContainer extends
-		DomainObjectSet<LanguageTransform<?, ?>> {
+public interface PreCompiledHeaderTransformContainer extends DomainObjectSet<LanguageTransform<?, ?>> {
 }

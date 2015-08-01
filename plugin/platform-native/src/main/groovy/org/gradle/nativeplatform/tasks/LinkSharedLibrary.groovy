@@ -30,17 +30,17 @@ import org.gradle.nativeplatform.internal.SharedLibraryLinkerSpec
 @Incubating
 @ParallelizableTask
 class LinkSharedLibrary extends AbstractLinkTask {
-	@Input @Optional
-	String installName;
+    @Input @Optional
+    String installName;
 
-	@Override
-	protected LinkerSpec createLinkerSpec() {
-		final spec = new Spec()
-		spec.installName = getInstallName()
-		return spec
-	}
+    @Override
+    protected LinkerSpec createLinkerSpec() {
+        final spec = new Spec()
+        spec.installName = getInstallName()
+        return spec
+    }
 
-	private static class Spec extends DefaultLinkerSpec implements SharedLibraryLinkerSpec {
-		String installName;
-	}
+    private static class Spec extends DefaultLinkerSpec implements SharedLibraryLinkerSpec {
+        String installName;
+    }
 }

@@ -26,8 +26,8 @@ import org.gradle.nativeplatform.internal.LinkerSpec
 @ParallelizableTask
 class LinkExecutable extends AbstractLinkTask {
 
-	@Override
-	protected LinkerSpec createLinkerSpec() {
-		return new DefaultLinkerSpec()
-	}
+    @Override
+    protected LinkerSpec createLinkerSpec() {
+        return new DefaultLinkerSpec()
+    }
 }

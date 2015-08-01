@@ -16,5 +16,5 @@
 package org.gradle.nativeplatform.internal.resolve;
 
 public interface NativeDependencyResolver {
-	void resolve(NativeBinaryResolveResult resolution);
+    void resolve(NativeBinaryResolveResult resolution);
 }

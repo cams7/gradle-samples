@@ -22,22 +22,15 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppCompileSpec;
 
-class CppCompiler extends GccCompatibleNativeCompiler<CppCompileSpec> {
+class CppCompiler extends GccCompatibleNativeCompiler<CppCompileSpec>  {
 
-	CppCompiler(BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
-			CommandLineToolContext invocationContext,
-			String objectFileExtension, boolean useCommandFile) {
-		super(buildOperationProcessor, commandLineToolInvocationWorker,
-				invocationContext, new CppCompileArgsTransformer(),
-				Transformers.<CppCompileSpec> noOpTransformer(),
-				objectFileExtension, useCommandFile);
-	}
+    CppCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
+        super(buildOperationProcessor, commandLineToolInvocationWorker, invocationContext, new CppCompileArgsTransformer(), Transformers.<CppCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
+    }
 
-	private static class CppCompileArgsTransformer extends
-			GccCompilerArgsTransformer<CppCompileSpec> {
-		protected String getLanguage() {
-			return "c++";
-		}
-	}
+    private static class CppCompileArgsTransformer extends GccCompilerArgsTransformer<CppCompileSpec> {
+        protected String getLanguage() {
+            return "c++";
+        }
+    }
 }

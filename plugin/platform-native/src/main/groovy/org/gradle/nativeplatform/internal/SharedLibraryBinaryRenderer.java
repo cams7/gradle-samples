@@ -19,16 +19,14 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.nativeplatform.SharedLibraryBinarySpec;
 
-public class SharedLibraryBinaryRenderer extends
-		AbstractNativeBinaryRenderer<SharedLibraryBinarySpec> {
-	@Override
-	public Class<SharedLibraryBinarySpec> getTargetType() {
-		return SharedLibraryBinarySpec.class;
-	}
+public class SharedLibraryBinaryRenderer extends AbstractNativeBinaryRenderer<SharedLibraryBinarySpec> {
+    @Override
+    public Class<SharedLibraryBinarySpec> getTargetType() {
+        return SharedLibraryBinarySpec.class;
+    }
 
-	@Override
-	protected void renderOutputs(SharedLibraryBinarySpec binary,
-			TextReportBuilder builder) {
-		builder.item("shared library file", binary.getSharedLibraryFile());
-	}
+    @Override
+    protected void renderOutputs(SharedLibraryBinarySpec binary, TextReportBuilder builder) {
+        builder.item("shared library file", binary.getSharedLibraryFile());
+    }
 }

@@ -19,25 +19,21 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 import org.gradle.nativeplatform.NativeLibrarySpec;
 
-public class DefaultNativeLibrarySpec extends
-		AbstractTargetedNativeComponentSpec implements NativeLibrarySpec {
-	public String getDisplayName() {
-		return String.format("native library '%s'", getName());
-	}
+public class DefaultNativeLibrarySpec extends AbstractTargetedNativeComponentSpec implements NativeLibrarySpec {
+    public String getDisplayName() {
+        return String.format("native library '%s'", getName());
+    }
 
-	public NativeLibraryRequirement getShared() {
-		return new ProjectNativeLibraryRequirement(getProjectPath(),
-				this.getName(), "shared");
-	}
+    public NativeLibraryRequirement getShared() {
+        return new ProjectNativeLibraryRequirement(getProjectPath(), this.getName(), "shared");
+    }
 
-	public NativeLibraryRequirement getStatic() {
-		return new ProjectNativeLibraryRequirement(getProjectPath(),
-				this.getName(), "static");
-	}
+    public NativeLibraryRequirement getStatic() {
+        return new ProjectNativeLibraryRequirement(getProjectPath(), this.getName(), "static");
+    }
 
-	public NativeLibraryRequirement getApi() {
-		return new ProjectNativeLibraryRequirement(getProjectPath(),
-				this.getName(), "api");
-	}
+    public NativeLibraryRequirement getApi() {
+        return new ProjectNativeLibraryRequirement(getProjectPath(), this.getName(), "api");
+    }
 
 }

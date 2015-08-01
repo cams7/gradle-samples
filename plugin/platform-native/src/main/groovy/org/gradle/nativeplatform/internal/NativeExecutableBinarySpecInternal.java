@@ -18,6 +18,5 @@ package org.gradle.nativeplatform.internal;
 
 import org.gradle.nativeplatform.NativeExecutableBinarySpec;
 
-public interface NativeExecutableBinarySpecInternal extends
-		NativeExecutableBinarySpec, NativeBinarySpecInternal {
+public interface NativeExecutableBinarySpecInternal extends NativeExecutableBinarySpec, NativeBinarySpecInternal {
 }

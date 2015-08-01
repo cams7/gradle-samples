@@ -20,24 +20,23 @@ import org.gradle.api.internal.artifacts.dsl.dependencies.ProjectFinder;
 import org.gradle.api.internal.project.ProjectInternal;
 
 public class DefaultProjectLocator implements ProjectLocator {
-	private final String projectPath;
-	private final ProjectFinder delegate;
+    private final String projectPath;
+    private final ProjectFinder delegate;
 
-	public DefaultProjectLocator(String projectPath, ProjectFinder delegate) {
-		this.projectPath = projectPath;
-		this.delegate = delegate;
-	}
+    public DefaultProjectLocator(String projectPath, ProjectFinder delegate) {
+        this.projectPath = projectPath;
+        this.delegate = delegate;
+    }
 
-	public ProjectInternal locateProject(String path) {
-		if (path == null || path.length() == 0) {
-			return delegate.getProject(projectPath);
-		}
+    public ProjectInternal locateProject(String path) {
+        if (path == null || path.length() == 0) {
+            return delegate.getProject(projectPath);
+        }
 
-		ProjectInternal referencedProject = delegate.getProject(path);
-		// TODO This is a brain-dead way to ensure that the reference project's
-		// model is ready to access
-		referencedProject.evaluate();
-		referencedProject.getTasks().discoverTasks();
-		return referencedProject;
-	}
+        ProjectInternal referencedProject = delegate.getProject(path);
+        // TODO This is a brain-dead way to ensure that the reference project's model is ready to access
+        referencedProject.evaluate();
+        referencedProject.getTasks().discoverTasks();
+        return referencedProject;
+    }
 }

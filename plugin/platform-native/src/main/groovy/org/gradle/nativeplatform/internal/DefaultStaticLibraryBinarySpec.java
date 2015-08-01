@@ -16,12 +16,6 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.file.collections.SimpleFileCollection;
 import org.gradle.nativeplatform.StaticLibraryBinary;
@@ -31,75 +25,76 @@ import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
-public class DefaultStaticLibraryBinarySpec extends
-		AbstractNativeLibraryBinarySpec implements StaticLibraryBinary,
-		StaticLibraryBinarySpecInternal {
-	private final List<FileCollection> additionalLinkFiles = new ArrayList<FileCollection>();
-	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
-			super.getTasks());
-	private File staticLibraryFile;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
-	public File getStaticLibraryFile() {
-		return staticLibraryFile;
-	}
+public class DefaultStaticLibraryBinarySpec extends AbstractNativeLibraryBinarySpec implements StaticLibraryBinary, StaticLibraryBinarySpecInternal {
+    private final List<FileCollection> additionalLinkFiles = new ArrayList<FileCollection>();
+    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
+    private File staticLibraryFile;
 
-	public void setStaticLibraryFile(File staticLibraryFile) {
-		this.staticLibraryFile = staticLibraryFile;
-	}
+    public File getStaticLibraryFile() {
+        return staticLibraryFile;
+    }
 
-	public File getPrimaryOutput() {
-		return getStaticLibraryFile();
-	}
+    public void setStaticLibraryFile(File staticLibraryFile) {
+        this.staticLibraryFile = staticLibraryFile;
+    }
 
-	public void additionalLinkFiles(FileCollection files) {
-		this.additionalLinkFiles.add(files);
-	}
+    public File getPrimaryOutput() {
+        return getStaticLibraryFile();
+    }
 
-	public FileCollection getLinkFiles() {
-		return new StaticLibraryLinkOutputs();
-	}
+    public void additionalLinkFiles(FileCollection files) {
+        this.additionalLinkFiles.add(files);
+    }
 
-	public FileCollection getRuntimeFiles() {
-		return new SimpleFileCollection();
-	}
+    public FileCollection getLinkFiles() {
+        return new StaticLibraryLinkOutputs();
+    }
 
-	@Override
-	protected ObjectFilesToBinary getCreateOrLink() {
-		return tasks.getCreateStaticLib();
-	}
+    public FileCollection getRuntimeFiles() {
+        return new SimpleFileCollection();
+    }
 
-	public StaticLibraryBinarySpec.TasksCollection getTasks() {
-		return tasks;
-	}
+    @Override
+    protected ObjectFilesToBinary getCreateOrLink() {
+        return tasks.getCreateStaticLib();
+    }
 
-	private static class DefaultTasksCollection extends
-			BinaryTasksCollectionWrapper implements
-			StaticLibraryBinarySpec.TasksCollection {
-		public DefaultTasksCollection(BinaryTasksCollection delegate) {
-			super(delegate);
-		}
+    public StaticLibraryBinarySpec.TasksCollection getTasks() {
+        return tasks;
+    }
 
-		public CreateStaticLibrary getCreateStaticLib() {
-			return findSingleTaskWithType(CreateStaticLibrary.class);
-		}
-	}
+    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements StaticLibraryBinarySpec.TasksCollection {
+        public DefaultTasksCollection(BinaryTasksCollection delegate) {
+            super(delegate);
+        }
 
-	private class StaticLibraryLinkOutputs extends LibraryOutputs {
-		@Override
-		protected boolean hasOutputs() {
-			return hasSources() || !additionalLinkFiles.isEmpty();
-		}
+        public CreateStaticLibrary getCreateStaticLib() {
+            return findSingleTaskWithType(CreateStaticLibrary.class);
+        }
+    }
 
-		@Override
-		protected Set<File> getOutputs() {
-			Set<File> allFiles = new LinkedHashSet<File>();
-			if (hasSources()) {
-				allFiles.add(getStaticLibraryFile());
-			}
-			for (FileCollection resourceSet : additionalLinkFiles) {
-				allFiles.addAll(resourceSet.getFiles());
-			}
-			return allFiles;
-		}
-	}
+    private class StaticLibraryLinkOutputs extends LibraryOutputs {
+        @Override
+        protected boolean hasOutputs() {
+            return hasSources() || !additionalLinkFiles.isEmpty();
+        }
+
+        @Override
+        protected Set<File> getOutputs() {
+            Set<File> allFiles = new LinkedHashSet<File>();
+            if (hasSources()) {
+                allFiles.add(getStaticLibraryFile());
+            }
+            for (FileCollection resourceSet : additionalLinkFiles) {
+                allFiles.addAll(resourceSet.getFiles());
+            }
+            return allFiles;
+        }
+    }
 }

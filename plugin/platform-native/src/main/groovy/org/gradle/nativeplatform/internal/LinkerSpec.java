@@ -20,25 +20,24 @@ import java.io.File;
 import java.util.List;
 
 /**
- * A high level interface to the linker, specifying what is to be linked and
- * how.
+ * A high level interface to the linker, specifying what is to be linked and how.
  */
 public interface LinkerSpec extends BinaryToolSpec {
 
-	List<File> getObjectFiles();
+    List<File> getObjectFiles();
 
-	void objectFiles(Iterable<File> objectFiles);
+    void objectFiles(Iterable<File> objectFiles);
 
-	List<File> getLibraries();
+    List<File> getLibraries();
 
-	void libraries(Iterable<File> libraries);
+    void libraries(Iterable<File> libraries);
 
-	List<File> getLibraryPath();
+    List<File> getLibraryPath();
 
-	void libraryPath(File... libraryPath);
+    void libraryPath(File... libraryPath);
 
-	File getOutputFile();
+    File getOutputFile();
 
-	void setOutputFile(File outputFile);
+    void setOutputFile(File outputFile);
 
 }

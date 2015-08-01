@@ -16,34 +16,34 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-import java.util.List;
-
 import org.gradle.internal.operations.logging.BuildOperationLogger;
 import org.gradle.language.base.internal.compile.CompileSpec;
 import org.gradle.nativeplatform.platform.NativePlatform;
 
+import java.io.File;
+import java.util.List;
+
 public interface BinaryToolSpec extends CompileSpec {
-	NativePlatform getTargetPlatform();
+    NativePlatform getTargetPlatform();
 
-	void setTargetPlatform(NativePlatform platform);
+    void setTargetPlatform(NativePlatform platform);
 
-	File getTempDir();
+    File getTempDir();
 
-	void setTempDir(File tempDir);
+    void setTempDir(File tempDir);
 
-	List<String> getArgs();
+    List<String> getArgs();
 
-	void args(List<String> args);
+    void args(List<String> args);
 
-	List<String> getSystemArgs();
+    List<String> getSystemArgs();
 
-	void systemArgs(List<String> args);
+    void systemArgs(List<String> args);
 
-	List<String> getAllArgs();
+    List<String> getAllArgs();
 
-	BuildOperationLogger getOperationLogger();
+    BuildOperationLogger getOperationLogger();
 
-	void setOperationLogger(BuildOperationLogger oplogger);
+    void setOperationLogger(BuildOperationLogger oplogger);
 
 }

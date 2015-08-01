@@ -15,15 +15,15 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import java.io.File;
-
 import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
+
+import java.io.File;
 
 public interface WindowsSdkLocator {
 
-	SearchResult locateWindowsSdks(File candidate);
+    SearchResult locateWindowsSdks(File candidate);
 
-	interface SearchResult extends ToolSearchResult {
-		WindowsSdk getSdk();
-	}
+    interface SearchResult extends ToolSearchResult {
+        WindowsSdk getSdk();
+    }
 }

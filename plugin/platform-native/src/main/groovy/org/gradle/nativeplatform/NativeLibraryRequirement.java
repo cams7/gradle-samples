@@ -22,18 +22,18 @@ import org.gradle.api.Incubating;
  */
 @Incubating
 public interface NativeLibraryRequirement {
-	/**
-	 * The path to the project containing the library.
-	 */
-	String getProjectPath();
+    /**
+     * The path to the project containing the library.
+     */
+    String getProjectPath();
 
-	/**
-	 * The name of the required library.
-	 */
-	String getLibraryName();
+    /**
+     * The name of the required library.
+     */
+    String getLibraryName();
 
-	/**
-	 * The required linkage.
-	 */
-	String getLinkage();
+    /**
+     * The required linkage.
+     */
+    String getLinkage();
 }

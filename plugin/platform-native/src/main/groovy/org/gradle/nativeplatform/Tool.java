@@ -15,22 +15,22 @@
  */
 package org.gradle.nativeplatform;
 
-import java.util.List;
-
 import org.gradle.api.Incubating;
+
+import java.util.List;
 
 /**
  * Configuration of the arguments of a ToolChain executable.
  */
 @Incubating
 public interface Tool {
-	/**
-	 * The arguments passed when executing this tool.
-	 */
-	List<String> getArgs();
+    /**
+     * The arguments passed when executing this tool.
+     */
+    List<String> getArgs();
 
-	/**
-	 * Adds a number of arguments to be passed to the tool.
-	 */
-	void args(String... args);
+    /**
+     * Adds a number of arguments to be passed to the tool.
+     */
+    void args(String... args);
 }

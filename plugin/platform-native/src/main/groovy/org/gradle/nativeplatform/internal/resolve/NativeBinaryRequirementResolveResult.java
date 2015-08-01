@@ -21,44 +21,44 @@ import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 
 public class NativeBinaryRequirementResolveResult {
-	private Object input;
-	private NativeLibraryRequirement requirement;
-	private NativeLibraryBinary libraryBinary;
-	private NativeDependencySet nativeDependencySet;
+    private Object input;
+    private NativeLibraryRequirement requirement;
+    private NativeLibraryBinary libraryBinary;
+    private NativeDependencySet nativeDependencySet;
 
-	public NativeBinaryRequirementResolveResult(Object input) {
-		this.input = input;
-	}
+    public NativeBinaryRequirementResolveResult(Object input) {
+        this.input = input;
+    }
 
-	public Object getInput() {
-		return input;
-	}
+    public Object getInput() {
+        return input;
+    }
 
-	public void setRequirement(NativeLibraryRequirement requirement) {
-		this.requirement = requirement;
-	}
+    public void setRequirement(NativeLibraryRequirement requirement) {
+        this.requirement = requirement;
+    }
 
-	public NativeLibraryRequirement getRequirement() {
-		return requirement;
-	}
+    public NativeLibraryRequirement getRequirement() {
+        return requirement;
+    }
 
-	public NativeLibraryBinary getLibraryBinary() {
-		return libraryBinary;
-	}
+    public NativeLibraryBinary getLibraryBinary() {
+        return libraryBinary;
+    }
 
-	public void setLibraryBinary(NativeLibraryBinary libraryBinary) {
-		this.libraryBinary = libraryBinary;
-	}
+    public void setLibraryBinary(NativeLibraryBinary libraryBinary) {
+        this.libraryBinary = libraryBinary;
+    }
 
-	public NativeDependencySet getNativeDependencySet() {
-		return nativeDependencySet;
-	}
+    public NativeDependencySet getNativeDependencySet() {
+        return nativeDependencySet;
+    }
 
-	public void setNativeDependencySet(NativeDependencySet nativeDependencySet) {
-		this.nativeDependencySet = nativeDependencySet;
-	}
+    public void setNativeDependencySet(NativeDependencySet nativeDependencySet) {
+        this.nativeDependencySet = nativeDependencySet;
+    }
 
-	public boolean isComplete() {
-		return nativeDependencySet != null;
-	}
+    public boolean isComplete() {
+        return nativeDependencySet != null;
+    }
 }

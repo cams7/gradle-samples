@@ -24,10 +24,9 @@ import org.gradle.api.Task;
  */
 @Incubating
 public interface ObjectFilesToBinary extends Task {
-	/**
-	 * Adds a set of object files to be combined into the file binary. The
-	 * provided source object is evaluated as per
-	 * {@link org.gradle.api.Project#files(Object...)}.
-	 */
-	void source(Object source);
+    /**
+     * Adds a set of object files to be combined into the file binary.
+     * The provided source object is evaluated as per {@link org.gradle.api.Project#files(Object...)}.
+     */
+    void source(Object source);
 }

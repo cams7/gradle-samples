@@ -22,23 +22,14 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCppPCHCompileSpec;
 
-public class ObjectiveCppPCHCompiler extends
-		GccCompatibleNativeCompiler<ObjectiveCppPCHCompileSpec> {
-	public ObjectiveCppPCHCompiler(
-			BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineTool,
-			CommandLineToolContext invocationContext,
-			String objectFileExtension, boolean useCommandFile) {
-		super(buildOperationProcessor, commandLineTool, invocationContext,
-				new ObjectiveCppPCHCompileArgsTransformer(), Transformers
-						.<ObjectiveCppPCHCompileSpec> noOpTransformer(),
-				objectFileExtension, useCommandFile);
-	}
+public class ObjectiveCppPCHCompiler extends GccCompatibleNativeCompiler<ObjectiveCppPCHCompileSpec> {
+    public ObjectiveCppPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
+        super(buildOperationProcessor, commandLineTool, invocationContext, new ObjectiveCppPCHCompileArgsTransformer(), Transformers.<ObjectiveCppPCHCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
+    }
 
-	private static class ObjectiveCppPCHCompileArgsTransformer extends
-			GccCompilerArgsTransformer<ObjectiveCppPCHCompileSpec> {
-		protected String getLanguage() {
-			return "objective-c++-header";
-		}
-	}
+    private static class ObjectiveCppPCHCompileArgsTransformer extends GccCompilerArgsTransformer<ObjectiveCppPCHCompileSpec> {
+        protected String getLanguage() {
+            return "objective-c++-header";
+        }
+    }
 }

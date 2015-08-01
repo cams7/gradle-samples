@@ -18,5 +18,5 @@ package org.gradle.nativeplatform.internal.resolve;
 import org.gradle.api.internal.project.ProjectInternal;
 
 public interface ProjectLocator {
-	ProjectInternal locateProject(String path);
+    ProjectInternal locateProject(String path);
 }

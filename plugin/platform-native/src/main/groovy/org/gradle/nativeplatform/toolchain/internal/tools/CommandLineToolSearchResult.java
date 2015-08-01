@@ -16,10 +16,10 @@
 
 package org.gradle.nativeplatform.toolchain.internal.tools;
 
-import java.io.File;
-
 import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 
+import java.io.File;
+
 public interface CommandLineToolSearchResult extends ToolSearchResult {
-	File getTool();
+    File getTool();
 }

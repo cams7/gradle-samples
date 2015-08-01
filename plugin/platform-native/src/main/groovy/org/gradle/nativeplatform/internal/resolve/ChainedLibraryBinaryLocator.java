@@ -16,42 +16,36 @@
 
 package org.gradle.nativeplatform.internal.resolve;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gradle.api.DomainObjectSet;
 import org.gradle.nativeplatform.NativeLibraryBinary;
 import org.gradle.nativeplatform.NativeLibraryRequirement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChainedLibraryBinaryLocator implements LibraryBinaryLocator {
-	private final List<LibraryBinaryLocator> locators = new ArrayList<LibraryBinaryLocator>();
+    private final List<LibraryBinaryLocator> locators = new ArrayList<LibraryBinaryLocator>();
 
-	public ChainedLibraryBinaryLocator(
-			List<? extends LibraryBinaryLocator> locators) {
-		this.locators.addAll(locators);
-	}
+    public ChainedLibraryBinaryLocator(List<? extends LibraryBinaryLocator> locators) {
+        this.locators.addAll(locators);
+    }
 
-	public DomainObjectSet<NativeLibraryBinary> getBinaries(
-			NativeLibraryRequirement requirement) {
-		List<Exception> failures = new ArrayList<Exception>();
-		for (LibraryBinaryLocator locator : locators) {
-			try {
-				return locator.getBinaries(requirement);
-			} catch (Exception e) {
-				failures.add(e);
-			}
-		}
-		throw new LibraryResolveException(getFailureMessage(requirement),
-				failures);
-	}
+    public DomainObjectSet<NativeLibraryBinary> getBinaries(NativeLibraryRequirement requirement) {
+        List<Exception> failures = new ArrayList<Exception>();
+        for (LibraryBinaryLocator locator : locators) {
+            try {
+                return locator.getBinaries(requirement);
+            } catch (Exception e) {
+                failures.add(e);
+            }
+        }
+        throw new LibraryResolveException(getFailureMessage(requirement), failures);
+    }
 
-	private String getFailureMessage(NativeLibraryRequirement requirement) {
-		return requirement.getProjectPath() == null ? String.format(
-				"Could not locate library '%s'.", requirement.getLibraryName())
-				: String.format(
-						"Could not locate library '%s' for project '%s'.",
-						requirement.getLibraryName(),
-						requirement.getProjectPath());
-	}
+    private String getFailureMessage(NativeLibraryRequirement requirement) {
+        return requirement.getProjectPath() == null
+                ? String.format("Could not locate library '%s'.", requirement.getLibraryName())
+                : String.format("Could not locate library '%s' for project '%s'.", requirement.getLibraryName(), requirement.getProjectPath());
+    }
 
 }

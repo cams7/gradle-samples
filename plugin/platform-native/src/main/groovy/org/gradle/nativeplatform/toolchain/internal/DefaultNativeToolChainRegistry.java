@@ -15,11 +15,6 @@
  */
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.gradle.api.Action;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.internal.DefaultPolymorphicDomainObjectContainer;
@@ -30,122 +25,110 @@ import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.platform.base.internal.toolchain.ToolSearchResult;
 import org.gradle.util.TreeVisitor;
 
-public class DefaultNativeToolChainRegistry extends
-		DefaultPolymorphicDomainObjectContainer<NativeToolChain> implements
-		NativeToolChainRegistryInternal {
-	private final Map<String, Class<? extends NativeToolChain>> registeredDefaults = new LinkedHashMap<String, Class<? extends NativeToolChain>>();
-	private final List<NativeToolChainInternal> searchOrder = new ArrayList<NativeToolChainInternal>();
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-	public DefaultNativeToolChainRegistry(Instantiator instantiator) {
-		super(NativeToolChain.class, instantiator);
-		whenObjectAdded(new Action<NativeToolChain>() {
-			public void execute(NativeToolChain toolChain) {
-				searchOrder.add((NativeToolChainInternal) toolChain);
-			}
-		});
-		whenObjectRemoved(new Action<NativeToolChain>() {
-			public void execute(NativeToolChain toolChain) {
-				searchOrder.remove(toolChain);
-			}
-		});
-	}
+public class DefaultNativeToolChainRegistry extends DefaultPolymorphicDomainObjectContainer<NativeToolChain> implements NativeToolChainRegistryInternal {
+    private final Map<String, Class<? extends NativeToolChain>> registeredDefaults = new LinkedHashMap<String, Class<? extends NativeToolChain>>();
+    private final List<NativeToolChainInternal> searchOrder = new ArrayList<NativeToolChainInternal>();
 
-	@Override
-	protected void handleAttemptToAddItemWithNonUniqueName(
-			NativeToolChain toolChain) {
-		throw new InvalidUserDataException(String.format(
-				"ToolChain with name '%s' added multiple times",
-				toolChain.getName()));
-	}
+    public DefaultNativeToolChainRegistry(Instantiator instantiator) {
+        super(NativeToolChain.class, instantiator);
+        whenObjectAdded(new Action<NativeToolChain>() {
+            public void execute(NativeToolChain toolChain) {
+                searchOrder.add((NativeToolChainInternal) toolChain);
+            }
+        });
+        whenObjectRemoved(new Action<NativeToolChain>() {
+            public void execute(NativeToolChain toolChain) {
+                searchOrder.remove(toolChain);
+            }
+        });
+    }
 
-	public void registerDefaultToolChain(String name,
-			Class<? extends NativeToolChain> type) {
-		registeredDefaults.put(name, type);
-	}
+    @Override
+    protected void handleAttemptToAddItemWithNonUniqueName(NativeToolChain toolChain) {
+        throw new InvalidUserDataException(String.format("ToolChain with name '%s' added multiple times", toolChain.getName()));
+    }
 
-	public void addDefaultToolChains() {
-		for (String name : registeredDefaults.keySet()) {
-			create(name, registeredDefaults.get(name));
-		}
-	}
+    public void registerDefaultToolChain(String name, Class<? extends NativeToolChain> type) {
+        registeredDefaults.put(name, type);
+    }
 
-	public NativeToolChain getForPlatform(NativePlatform targetPlatform) {
-		for (NativeToolChainInternal toolChain : searchOrder) {
-			if (toolChain.select((NativePlatformInternal) targetPlatform)
-					.isAvailable()) {
-				return toolChain;
-			}
-		}
+    public void addDefaultToolChains() {
+        for (String name : registeredDefaults.keySet()) {
+            create(name, registeredDefaults.get(name));
+        }
+    }
 
-		// No tool chains can build for this platform. Assemble a description of
-		// why
-		Map<String, PlatformToolProvider> candidates = new LinkedHashMap<String, PlatformToolProvider>();
-		for (NativeToolChainInternal toolChain : searchOrder) {
-			candidates.put(toolChain.getDisplayName(),
-					toolChain.select((NativePlatformInternal) targetPlatform));
-		}
+    public NativeToolChain getForPlatform(NativePlatform targetPlatform) {
+        for (NativeToolChainInternal toolChain : searchOrder) {
+            if (toolChain.select((NativePlatformInternal) targetPlatform).isAvailable()) {
+                return toolChain;
+            }
+        }
 
-		return new UnavailableNativeToolChain(
-				new UnavailableToolChainDescription(targetPlatform, candidates));
-	}
+        // No tool chains can build for this platform. Assemble a description of why
+        Map<String, PlatformToolProvider> candidates = new LinkedHashMap<String, PlatformToolProvider>();
+        for (NativeToolChainInternal toolChain : searchOrder) {
+            candidates.put(toolChain.getDisplayName(), toolChain.select((NativePlatformInternal) targetPlatform));
+        }
 
-	private static class UnavailableToolChainDescription implements
-			ToolSearchResult {
-		private final NativePlatform targetPlatform;
-		private final Map<String, PlatformToolProvider> candidates;
+        return new UnavailableNativeToolChain(new UnavailableToolChainDescription(targetPlatform, candidates));
+    }
 
-		private UnavailableToolChainDescription(NativePlatform targetPlatform,
-				Map<String, PlatformToolProvider> candidates) {
-			this.targetPlatform = targetPlatform;
-			this.candidates = candidates;
-		}
+    private static class UnavailableToolChainDescription implements ToolSearchResult {
+        private final NativePlatform targetPlatform;
+        private final Map<String, PlatformToolProvider> candidates;
 
-		public boolean isAvailable() {
-			return false;
-		}
+        private UnavailableToolChainDescription(NativePlatform targetPlatform, Map<String, PlatformToolProvider> candidates) {
+            this.targetPlatform = targetPlatform;
+            this.candidates = candidates;
+        }
 
-		public void explain(TreeVisitor<? super String> visitor) {
-			visitor.node(String.format(
-					"No tool chain is available to build for platform '%s'",
-					targetPlatform.getName()));
-			visitor.startChildren();
-			for (Map.Entry<String, PlatformToolProvider> entry : candidates
-					.entrySet()) {
-				visitor.node(entry.getKey());
-				visitor.startChildren();
-				entry.getValue().explain(visitor);
-				visitor.endChildren();
-			}
-			if (candidates.isEmpty()) {
-				visitor.node("No tool chain plugin applied.");
-			}
-			visitor.endChildren();
-		}
-	}
+        public boolean isAvailable() {
+            return false;
+        }
 
-	private static class UnavailableNativeToolChain implements
-			NativeToolChainInternal {
-		private final ToolSearchResult failure;
+        public void explain(TreeVisitor<? super String> visitor) {
+            visitor.node(String.format("No tool chain is available to build for platform '%s'", targetPlatform.getName()));
+            visitor.startChildren();
+            for (Map.Entry<String, PlatformToolProvider> entry : candidates.entrySet()) {
+                visitor.node(entry.getKey());
+                visitor.startChildren();
+                entry.getValue().explain(visitor);
+                visitor.endChildren();
+            }
+            if (candidates.isEmpty()) {
+                visitor.node("No tool chain plugin applied.");
+            }
+            visitor.endChildren();
+        }
+    }
 
-		UnavailableNativeToolChain(ToolSearchResult failure) {
-			this.failure = failure;
-		}
+    private static class UnavailableNativeToolChain implements NativeToolChainInternal {
+        private final ToolSearchResult failure;
 
-		public String getDisplayName() {
-			return getName();
-		}
+        UnavailableNativeToolChain(ToolSearchResult failure) {
+            this.failure = failure;
+        }
 
-		public String getName() {
-			return "unavailable";
-		}
+        public String getDisplayName() {
+            return getName();
+        }
 
-		public PlatformToolProvider select(NativePlatformInternal targetPlatform) {
-			return new UnavailablePlatformToolProvider(
-					targetPlatform.getOperatingSystem(), failure);
-		}
+        public String getName() {
+            return "unavailable";
+        }
 
-		public String getOutputType() {
-			return "unavailable";
-		}
-	}
+        public PlatformToolProvider select(NativePlatformInternal targetPlatform) {
+            return new UnavailablePlatformToolProvider(targetPlatform.getOperatingSystem(), failure);
+        }
+
+        public String getOutputType() {
+            return "unavailable";
+        }
+    }
 }

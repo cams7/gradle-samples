@@ -22,36 +22,18 @@ import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import br.com.cams7.language.nativeplatform.internal.incremental.CompilationStateCacheFactory;
-import br.com.cams7.language.nativeplatform.internal.incremental.IncrementalNativeCompiler;
-
 public class IncrementalCompilerBuilder {
-	private final TaskArtifactStateCacheAccess cacheAccess;
-	private final FileSnapshotter fileSnapshotter;
-	private final CompilationStateCacheFactory compilationStateCacheFactory;
+    private final TaskArtifactStateCacheAccess cacheAccess;
+    private final FileSnapshotter fileSnapshotter;
+    private final CompilationStateCacheFactory compilationStateCacheFactory;
 
-	public IncrementalCompilerBuilder(TaskArtifactStateCacheAccess cacheAccess,
-			FileSnapshotter fileSnapshotter,
-			CompilationStateCacheFactory compilationStateCacheFactory) {
-		this.cacheAccess = cacheAccess;
-		this.fileSnapshotter = fileSnapshotter;
-		this.compilationStateCacheFactory = compilationStateCacheFactory;
+    public IncrementalCompilerBuilder(TaskArtifactStateCacheAccess cacheAccess, FileSnapshotter fileSnapshotter, CompilationStateCacheFactory compilationStateCacheFactory) {
+        this.cacheAccess = cacheAccess;
+        this.fileSnapshotter = fileSnapshotter;
+        this.compilationStateCacheFactory = compilationStateCacheFactory;
+    }
 
-		// System.out.println(this.getClass().getName());
-		// System.out.println("cacheAccess = " + cacheAccess);
-		// System.out.println("fileSnapshotter = " + fileSnapshotter);
-		// System.out.println("compilationStateCacheFactory = "
-		// + compilationStateCacheFactory);
-	}
-
-	public <T extends NativeCompileSpec> Compiler<T> createIncrementalCompiler(
-			TaskInternal task, Compiler<T> compiler, NativeToolChain toolchain) {
-		// System.out.println(this.getClass().getName()
-		// + "createIncrementalCompiler(task = " + task.getName()
-		// + ", compiler = " + compiler + ", toolchain = "
-		// + toolchain.getName());
-		return new IncrementalNativeCompiler<T>(task, cacheAccess,
-				fileSnapshotter, compilationStateCacheFactory, compiler,
-				toolchain);
-	}
+    public <T extends NativeCompileSpec> Compiler<T> createIncrementalCompiler(TaskInternal task, Compiler<T> compiler, NativeToolChain toolchain) {
+        return new IncrementalNativeCompiler<T>(task, cacheAccess, fileSnapshotter, compilationStateCacheFactory, compiler, toolchain);
+    }
 }

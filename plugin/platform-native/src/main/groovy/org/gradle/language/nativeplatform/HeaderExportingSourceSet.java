@@ -26,19 +26,18 @@ import org.gradle.language.base.LanguageSourceSet;
 @Incubating
 public interface HeaderExportingSourceSet extends LanguageSourceSet {
 
-	/**
-	 * Configure the exported header directories.
-	 */
-	void exportedHeaders(Action<? super SourceDirectorySet> config);
+    /**
+     * Configure the exported header directories.
+     */
+    void exportedHeaders(Action<? super SourceDirectorySet> config);
 
-	/**
-	 * The headers as a directory set.
-	 */
-	SourceDirectorySet getExportedHeaders();
+    /**
+     * The headers as a directory set.
+     */
+    SourceDirectorySet getExportedHeaders();
 
-	/**
-	 * The headers that are private to this source set and implicitly available.
-	 * These are not explicitly made available for compilation.
-	 */
-	SourceDirectorySet getImplicitHeaders();
+    /**
+     * The headers that are private to this source set and implicitly available. These are not explicitly made available for compilation.
+     */
+    SourceDirectorySet getImplicitHeaders();
 }

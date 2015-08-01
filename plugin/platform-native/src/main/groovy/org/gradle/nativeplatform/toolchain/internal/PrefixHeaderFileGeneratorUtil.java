@@ -16,37 +16,34 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-
 import org.apache.commons.io.FileUtils;
 import org.gradle.api.Transformer;
 import org.gradle.api.UncheckedIOException;
 import org.gradle.util.CollectionUtils;
 
-public class PrefixHeaderFileGeneratorUtil {
-	public static void generatePCHFile(Set<String> headers, File headerFile) {
-		if (!headerFile.getParentFile().exists()) {
-			headerFile.getParentFile().mkdirs();
-		}
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
 
-		try {
-			FileUtils.writeLines(headerFile, CollectionUtils.collect(
-					CollectionUtils.toList(headers),
-					new Transformer<String, String>() {
-						@Override
-						public String transform(String header) {
-							if (header.startsWith("<")) {
-								return "#include ".concat(header);
-							} else {
-								return "#include \"".concat(header)
-										.concat("\"");
-							}
-						}
-					}));
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
+public class PrefixHeaderFileGeneratorUtil {
+    public static void generatePCHFile(Set<String> headers, File headerFile) {
+        if (!headerFile.getParentFile().exists()) {
+            headerFile.getParentFile().mkdirs();
+        }
+
+        try {
+            FileUtils.writeLines(headerFile, CollectionUtils.collect(CollectionUtils.toList(headers), new Transformer<String, String>() {
+                @Override
+                public String transform(String header) {
+                    if (header.startsWith("<")) {
+                        return "#include ".concat(header);
+                    } else {
+                        return "#include \"".concat(header).concat("\"");
+                    }
+                }
+            }));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
 }

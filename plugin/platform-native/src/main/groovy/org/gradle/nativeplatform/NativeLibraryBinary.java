@@ -25,9 +25,9 @@ import org.gradle.api.file.FileCollection;
 @Incubating
 public interface NativeLibraryBinary extends NativeBinary {
 
-	FileCollection getHeaderDirs();
+    FileCollection getHeaderDirs();
 
-	FileCollection getLinkFiles();
+    FileCollection getLinkFiles();
 
-	FileCollection getRuntimeFiles();
+    FileCollection getRuntimeFiles();
 }

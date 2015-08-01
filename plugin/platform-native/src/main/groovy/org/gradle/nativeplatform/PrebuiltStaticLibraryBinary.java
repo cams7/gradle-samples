@@ -16,17 +16,17 @@
 
 package org.gradle.nativeplatform;
 
-import java.io.File;
-
 import org.gradle.api.Incubating;
+
+import java.io.File;
 
 /**
  * A static library that exists at a known location on the filesystem.
  */
 @Incubating
 public interface PrebuiltStaticLibraryBinary extends StaticLibraryBinary {
-	/**
-	 * The static library binary file.
-	 */
-	void setStaticLibraryFile(File staticLibraryFile);
+    /**
+     * The static library binary file.
+     */
+    void setStaticLibraryFile(File staticLibraryFile);
 }

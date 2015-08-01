@@ -16,83 +16,77 @@
 
 package org.gradle.nativeplatform;
 
-import java.util.Collection;
-
 import org.gradle.api.Incubating;
 import org.gradle.internal.HasInternalProtocol;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
 import org.gradle.platform.base.BinarySpec;
 
+import java.util.Collection;
+
 /**
- * Represents a binary artifact that is the result of building a native
- * component.
+ * Represents a binary artifact that is the result of building a native component.
  */
-@Incubating
-@HasInternalProtocol
+@Incubating @HasInternalProtocol
 public interface NativeBinarySpec extends BinarySpec {
-	/**
-	 * The component that this binary was built from.
-	 */
-	NativeComponentSpec getComponent();
+    /**
+     * The component that this binary was built from.
+     */
+    NativeComponentSpec getComponent();
 
-	/**
-	 * The flavor that this binary was built with.
-	 */
-	Flavor getFlavor();
+    /**
+     * The flavor that this binary was built with.
+     */
+    Flavor getFlavor();
 
-	/**
-	 * Returns the {@link org.gradle.nativeplatform.platform.NativePlatform}
-	 * that this binary is targeted to run on.
-	 */
-	NativePlatform getTargetPlatform();
+    /**
+     * Returns the {@link org.gradle.nativeplatform.platform.NativePlatform} that this binary is targeted to run on.
+     */
+    NativePlatform getTargetPlatform();
 
-	/**
-	 * Returns the {@link BuildType} used to construct this binary.
-	 */
-	BuildType getBuildType();
+    /**
+     * Returns the {@link BuildType} used to construct this binary.
+     */
+    BuildType getBuildType();
 
-	/**
-	 * The libraries that should be linked into this binary.
-	 */
-	Collection<NativeDependencySet> getLibs();
+    /**
+     * The libraries that should be linked into this binary.
+     */
+    Collection<NativeDependencySet> getLibs();
 
-	/**
-	 * Adds a library as input to this binary.
-	 * <p/>
-	 * This method accepts the following types:
-	 *
-	 * <ul>
-	 * <li>A {@link NativeLibrarySpec}</li>
-	 * <li>A {@link NativeDependencySet}</li>
-	 * <li>A {@link java.util.Map} containing the library selector.</li>
-	 * </ul>
-	 *
-	 * The Map notation supports the following String attributes:
-	 *
-	 * <ul>
-	 * <li>project: the path to the project containing the library (optional,
-	 * defaults to current project)</li>
-	 * <li>library: the name of the library (required)</li>
-	 * <li>linkage: the library linkage required ['shared'/'static'] (optional,
-	 * defaults to 'shared')</li>
-	 * </ul>
-	 */
-	void lib(Object library);
+    /**
+     * Adds a library as input to this binary.
+     * <p/>
+     * This method accepts the following types:
+     *
+     * <ul>
+     *     <li>A {@link NativeLibrarySpec}</li>
+     *     <li>A {@link NativeDependencySet}</li>
+     *     <li>A {@link java.util.Map} containing the library selector.</li>
+     * </ul>
+     *
+     * The Map notation supports the following String attributes:
+     *
+     * <ul>
+     *     <li>project: the path to the project containing the library (optional, defaults to current project)</li>
+     *     <li>library: the name of the library (required)</li>
+     *     <li>linkage: the library linkage required ['shared'/'static'] (optional, defaults to 'shared')</li>
+     * </ul>
+     */
+    void lib(Object library);
 
-	/**
-	 * Returns the {@link org.gradle.nativeplatform.toolchain.NativeToolChain}
-	 * that will be used to build this binary.
-	 */
-	NativeToolChain getToolChain();
+    /**
+     * Returns the {@link org.gradle.nativeplatform.toolchain.NativeToolChain} that will be used to build this binary.
+     */
+    NativeToolChain getToolChain();
 
-	/**
-	 * The settings used for linking this binary.
-	 */
-	Tool getLinker();
+    /**
+     * The settings used for linking this binary.
+     */
+    Tool getLinker();
 
-	/**
-	 * The static archiver settings used for creating this binary.
-	 */
-	Tool getStaticLibArchiver();
+    /**
+     * The static archiver settings used for creating this binary.
+     */
+    Tool getStaticLibArchiver();
 }

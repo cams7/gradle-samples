@@ -8,12 +8,9 @@
 #include <print.h>
 
 #include <stdio.h>
-
-#include <blink.h>
 #include <math.h>
 
-void print(void) {
-	int delayInMs = getDelayInMs();
+void printCalc(int delayInMs) {	
 	printf("%d + %d = %d\n", delayInMs, delayInMs, addition(delayInMs, delayInMs));
 	printf("%d - %d = %d\n", delayInMs, delayInMs, subtraction(delayInMs, delayInMs));
 }

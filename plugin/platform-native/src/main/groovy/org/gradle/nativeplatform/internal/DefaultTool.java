@@ -15,23 +15,23 @@
  */
 package org.gradle.nativeplatform.internal;
 
+import org.gradle.nativeplatform.Tool;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.gradle.nativeplatform.Tool;
 
 /**
  * A tool that is part of a tool chain (compiler, linker, assembler, etc).
  */
 public class DefaultTool implements Tool {
-	private final ArrayList<String> args = new ArrayList<String>();
+    private final ArrayList<String> args = new ArrayList<String>();
 
-	public List<String> getArgs() {
-		return args;
-	}
+    public List<String> getArgs() {
+        return args;
+    }
 
-	public void args(String... args) {
-		Collections.addAll(this.args, args);
-	}
+    public void args(String... args) {
+        Collections.addAll(this.args, args);
+    }
 }

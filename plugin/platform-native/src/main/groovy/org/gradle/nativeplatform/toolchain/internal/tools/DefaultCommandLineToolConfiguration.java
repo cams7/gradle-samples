@@ -16,31 +16,30 @@
 
 package org.gradle.nativeplatform.toolchain.internal.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gradle.api.Action;
 import org.gradle.internal.Actions;
 import org.gradle.nativeplatform.toolchain.internal.ToolType;
 
-public class DefaultCommandLineToolConfiguration implements
-		CommandLineToolConfigurationInternal {
-	private final ToolType toolType;
-	private List<Action<? super List<String>>> argActions = new ArrayList<Action<? super List<String>>>();
+import java.util.ArrayList;
+import java.util.List;
 
-	public DefaultCommandLineToolConfiguration(ToolType toolType) {
-		this.toolType = toolType;
-	}
+public class DefaultCommandLineToolConfiguration implements CommandLineToolConfigurationInternal {
+    private final ToolType toolType;
+    private List<Action<? super List<String>>> argActions = new ArrayList<Action<? super List<String>>>();
 
-	public ToolType getToolType() {
-		return toolType;
-	}
+    public DefaultCommandLineToolConfiguration(ToolType toolType) {
+        this.toolType = toolType;
+    }
 
-	public void withArguments(Action<? super List<String>> action) {
-		argActions.add(action);
-	}
+    public ToolType getToolType() {
+        return toolType;
+    }
 
-	public Action<List<String>> getArgAction() {
-		return Actions.composite(argActions);
-	}
+    public void withArguments(Action<? super List<String>>  action) {
+        argActions.add(action);
+    }
+
+    public Action<List<String>> getArgAction() {
+        return Actions.composite(argActions);
+    }
 }

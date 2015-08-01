@@ -1,19 +1,14 @@
-//export LD_LIBRARY_PATH=/home/cams7/desenv/github/gradle-samples/samples/native-binaries/prebuilt/3rd-party-lib/util/build/binaries/utilSharedLibrary/release
-//export LD_LIBRARY_PATH=/home/cams7/desenv/github/gradle-samples/samples/native-binaries/prebuilt/3rd-party-lib/util/build/binaries/utilSharedLibrary/debug
 buildscript {	                
 	repositories {
-		mavenCentral()
 		maven {url uri('../../../repo')}
 	}
 	dependencies {	
-		classpath 'dom4j:dom4j:1.6.+'	
-		classpath 'br.com.cams7.plugin:platform-base:1.0-SNAPSHOT'
-		classpath 'br.com.cams7.plugin:platform-native:1.0-SNAPSHOT'
-		classpath 'br.com.cams7.plugin:language-native:1.0-SNAPSHOT'
+		classpath module('br.com.cams7.plugin:language-native:1.0-SNAPSHOT')
 	}
 }
 
-apply plugin: 'br.com.cams7.cpp'
+apply plugin: "cpp"
+
 model {
     buildTypes {
         debug

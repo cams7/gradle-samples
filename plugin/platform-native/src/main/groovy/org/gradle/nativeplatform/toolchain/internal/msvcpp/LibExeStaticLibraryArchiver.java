@@ -16,12 +16,6 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gradle.api.Transformer;
 import org.gradle.api.internal.tasks.SimpleWorkResult;
 import org.gradle.api.tasks.WorkResult;
@@ -34,56 +28,51 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocation;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 
-class LibExeStaticLibraryArchiver implements
-		Compiler<StaticLibraryArchiverSpec> {
-	private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
-	private final Transformer<StaticLibraryArchiverSpec, StaticLibraryArchiverSpec> specTransformer;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-	private final ArgsTransformer<StaticLibraryArchiverSpec> argsTransformer;
-	private final CommandLineToolContext invocationContext;
-	private final BuildOperationProcessor buildOperationProcessor;
+import static org.gradle.nativeplatform.toolchain.internal.msvcpp.EscapeUserArgs.escapeUserArgs;
 
-	LibExeStaticLibraryArchiver(
-			BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
-			CommandLineToolContext invocationContext,
-			Transformer<StaticLibraryArchiverSpec, StaticLibraryArchiverSpec> specTransformer) {
-		this.buildOperationProcessor = buildOperationProcessor;
-		this.specTransformer = specTransformer;
-		this.argsTransformer = new LibExeSpecToArguments();
-		this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
-		this.invocationContext = invocationContext;
-	}
+class LibExeStaticLibraryArchiver implements Compiler<StaticLibraryArchiverSpec> {
+    private final CommandLineToolInvocationWorker commandLineToolInvocationWorker;
+    private final Transformer<StaticLibraryArchiverSpec, StaticLibraryArchiverSpec> specTransformer;
 
-	public WorkResult execute(StaticLibraryArchiverSpec spec) {
-		BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor
-				.newQueue(commandLineToolInvocationWorker, spec
-						.getOperationLogger().getLogLocation());
-		StaticLibraryArchiverSpec transformedSpec = specTransformer
-				.transform(spec);
-		List<String> args = argsTransformer.transform(transformedSpec);
-		invocationContext.getArgAction().execute(args);
-		new VisualCppOptionsFileArgsWriter(spec.getTempDir()).execute(args);
-		CommandLineToolInvocation invocation = invocationContext
-				.createInvocation(String.format("archiving %s", spec
-						.getOutputFile().getName()), args, spec
-						.getOperationLogger());
-		queue.add(invocation);
-		queue.waitForCompletion();
-		return new SimpleWorkResult(true);
-	}
+    private final ArgsTransformer<StaticLibraryArchiverSpec> argsTransformer;
+    private final CommandLineToolContext invocationContext;
+    private final BuildOperationProcessor buildOperationProcessor;
 
-	private static class LibExeSpecToArguments implements
-			ArgsTransformer<StaticLibraryArchiverSpec> {
-		public List<String> transform(StaticLibraryArchiverSpec spec) {
-			List<String> args = new ArrayList<String>();
-			args.add("/OUT:" + spec.getOutputFile().getAbsolutePath());
-			args.add("/NOLOGO");
-			args.addAll(escapeUserArgs(spec.getAllArgs()));
-			for (File file : spec.getObjectFiles()) {
-				args.add(file.getAbsolutePath());
-			}
-			return args;
-		}
-	}
+    LibExeStaticLibraryArchiver(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, Transformer<StaticLibraryArchiverSpec, StaticLibraryArchiverSpec> specTransformer) {
+        this.buildOperationProcessor = buildOperationProcessor;
+        this.specTransformer = specTransformer;
+        this.argsTransformer = new LibExeSpecToArguments();
+        this.commandLineToolInvocationWorker = commandLineToolInvocationWorker;
+        this.invocationContext = invocationContext;
+    }
+
+    public WorkResult execute(StaticLibraryArchiverSpec spec) {
+        BuildOperationQueue<CommandLineToolInvocation> queue = buildOperationProcessor.newQueue(commandLineToolInvocationWorker, spec.getOperationLogger().getLogLocation());
+        StaticLibraryArchiverSpec transformedSpec = specTransformer.transform(spec);
+        List<String> args = argsTransformer.transform(transformedSpec);
+        invocationContext.getArgAction().execute(args);
+        new VisualCppOptionsFileArgsWriter(spec.getTempDir()).execute(args);
+        CommandLineToolInvocation invocation = invocationContext.createInvocation(
+                String.format("archiving %s", spec.getOutputFile().getName()), args, spec.getOperationLogger());
+        queue.add(invocation);
+        queue.waitForCompletion();
+        return new SimpleWorkResult(true);
+    }
+
+    private static class LibExeSpecToArguments implements ArgsTransformer<StaticLibraryArchiverSpec> {
+        public List<String> transform(StaticLibraryArchiverSpec spec) {
+            List<String> args = new ArrayList<String>();
+            args.add("/OUT:" + spec.getOutputFile().getAbsolutePath());
+            args.add("/NOLOGO");
+            args.addAll(escapeUserArgs(spec.getAllArgs()));
+            for (File file : spec.getObjectFiles()) {
+                args.add(file.getAbsolutePath());
+            }
+            return args;
+        }
+    }
 }

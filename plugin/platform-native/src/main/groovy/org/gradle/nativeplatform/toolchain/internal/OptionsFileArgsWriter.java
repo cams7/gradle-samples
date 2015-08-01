@@ -16,12 +16,7 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.apache.commons.io.IOUtils;
 import org.gradle.api.Action;
 import org.gradle.api.Transformer;
@@ -29,43 +24,43 @@ import org.gradle.api.UncheckedIOException;
 import org.gradle.platform.base.internal.toolchain.ArgWriter;
 import org.gradle.util.GFileUtils;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.List;
 
 public class OptionsFileArgsWriter implements Action<List<String>> {
-	private final Transformer<ArgWriter, PrintWriter> argWriterFactory;
-	private final File tempDir;
+    private final Transformer<ArgWriter, PrintWriter> argWriterFactory;
+    private final File tempDir;
 
-	public OptionsFileArgsWriter(
-			Transformer<ArgWriter, PrintWriter> argWriterFactory, File tempDir) {
-		this.argWriterFactory = argWriterFactory;
-		this.tempDir = tempDir;
-	}
+    public OptionsFileArgsWriter(Transformer<ArgWriter, PrintWriter> argWriterFactory, File tempDir) {
+        this.argWriterFactory = argWriterFactory;
+        this.tempDir = tempDir;
+    }
 
-	@Override
-	public void execute(List<String> args) {
-		List<String> originalArgs = Lists.newArrayList(args);
-		args.clear();
-		args.addAll(transformArgs(originalArgs, tempDir));
-	}
+    @Override
+    public void execute(List<String> args) {
+        List<String> originalArgs = Lists.newArrayList(args);
+        args.clear();
+        args.addAll(transformArgs(originalArgs, tempDir));
+    }
 
-	protected List<String> transformArgs(List<String> originalArgs, File tempDir) {
-		GFileUtils.mkdirs(tempDir);
-		File optionsFile = new File(tempDir, "options.txt");
-		try {
-			PrintWriter writer = new PrintWriter(optionsFile);
-			try {
-				ArgWriter argWriter = argWriterFactory.transform(writer);
-				argWriter.args(originalArgs);
-			} finally {
-				IOUtils.closeQuietly(writer);
-			}
-		} catch (IOException e) {
-			throw new UncheckedIOException(String.format(
-					"Could not write compiler options file '%s'.",
-					optionsFile.getAbsolutePath()), e);
-		}
+    protected List<String> transformArgs(List<String> originalArgs, File tempDir) {
+        GFileUtils.mkdirs(tempDir);
+        File optionsFile = new File(tempDir, "options.txt");
+        try {
+            PrintWriter writer = new PrintWriter(optionsFile);
+            try {
+                ArgWriter argWriter = argWriterFactory.transform(writer);
+                argWriter.args(originalArgs);
+            } finally {
+                IOUtils.closeQuietly(writer);
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(String.format("Could not write compiler options file '%s'.", optionsFile.getAbsolutePath()), e);
+        }
 
-		return Arrays
-				.asList(String.format("@%s", optionsFile.getAbsolutePath()));
-	}
+        return Arrays.asList(String.format("@%s", optionsFile.getAbsolutePath()));
+    }
 }

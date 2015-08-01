@@ -16,33 +16,29 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-
 import org.apache.commons.io.FilenameUtils;
 import org.gradle.internal.hash.HashUtil;
 
+import java.io.File;
+
 public class CompilerOutputFileNamingScheme {
-	private String objectFileNameSuffix;
-	private File outputBaseFolder;
+    private String objectFileNameSuffix;
+    private File outputBaseFolder;
 
-	public CompilerOutputFileNamingScheme withOutputBaseFolder(
-			File outputBaseFolder) {
-		this.outputBaseFolder = outputBaseFolder;
-		return this;
-	}
+    public CompilerOutputFileNamingScheme withOutputBaseFolder(File outputBaseFolder) {
+        this.outputBaseFolder = outputBaseFolder;
+        return this;
+    }
 
-	public CompilerOutputFileNamingScheme withObjectFileNameSuffix(String suffix) {
-		this.objectFileNameSuffix = suffix;
-		return this;
-	}
+    public CompilerOutputFileNamingScheme withObjectFileNameSuffix(String suffix){
+        this.objectFileNameSuffix = suffix;
+        return this;
+    }
 
-	public File map(File sourceFile) {
-		final String baseName = FilenameUtils.removeExtension(sourceFile
-				.getName());
-		String compactMD5 = HashUtil.createCompactMD5(sourceFile
-				.getAbsolutePath());
-		File hashDirectory = new File(outputBaseFolder, compactMD5);
-		return new File(hashDirectory, String.format("%s%s", baseName,
-				objectFileNameSuffix));
-	}
+    public File map(File sourceFile) {
+        final String baseName = FilenameUtils.removeExtension(sourceFile.getName());
+        String compactMD5 = HashUtil.createCompactMD5(sourceFile.getAbsolutePath());
+        File hashDirectory = new File(outputBaseFolder, compactMD5);
+        return new File(hashDirectory, String.format("%s%s", baseName, objectFileNameSuffix));
+    }
 }

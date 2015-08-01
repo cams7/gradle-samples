@@ -16,8 +16,6 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
-import java.io.File;
-
 import org.gradle.api.Action;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.internal.operations.BuildOperationProcessor;
@@ -25,48 +23,47 @@ import org.gradle.internal.os.OperatingSystem;
 import org.gradle.listener.ActionBroadcast;
 import org.gradle.nativeplatform.toolchain.NativePlatformToolChain;
 
-public abstract class ExtendableToolChain<T extends NativePlatformToolChain>
-		implements NativeToolChainInternal {
-	private final String name;
-	protected final OperatingSystem operatingSystem;
-	private final FileResolver fileResolver;
-	protected final ActionBroadcast<T> configureActions = new ActionBroadcast<T>();
-	protected final BuildOperationProcessor buildOperationProcessor;
+import java.io.File;
 
-	protected ExtendableToolChain(String name,
-			BuildOperationProcessor buildOperationProcessor,
-			OperatingSystem operatingSystem, FileResolver fileResolver) {
-		this.name = name;
-		this.operatingSystem = operatingSystem;
-		this.fileResolver = fileResolver;
-		this.buildOperationProcessor = buildOperationProcessor;
-	}
+public abstract class ExtendableToolChain<T extends NativePlatformToolChain> implements NativeToolChainInternal {
+    private final String name;
+    protected final OperatingSystem operatingSystem;
+    private final FileResolver fileResolver;
+    protected final ActionBroadcast<T> configureActions = new ActionBroadcast<T>();
+    protected final BuildOperationProcessor buildOperationProcessor;
 
-	public String getName() {
-		return name;
-	}
+    protected ExtendableToolChain(String name, BuildOperationProcessor buildOperationProcessor, OperatingSystem operatingSystem, FileResolver fileResolver) {
+        this.name = name;
+        this.operatingSystem = operatingSystem;
+        this.fileResolver = fileResolver;
+        this.buildOperationProcessor = buildOperationProcessor;
+    }
 
-	protected abstract String getTypeName();
+    public String getName() {
+        return name;
+    }
 
-	public String getDisplayName() {
-		return String.format("Tool chain '%s' (%s)", getName(), getTypeName());
-	}
+    protected abstract String getTypeName();
 
-	@Override
-	public String toString() {
-		return getDisplayName();
-	}
+    public String getDisplayName() {
+        return String.format("Tool chain '%s' (%s)", getName(), getTypeName());
+    }
 
-	public String getOutputType() {
-		return String.format("%s-%s", getName(), operatingSystem.getName());
-	}
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 
-	public void eachPlatform(Action<? super T> action) {
-		configureActions.add(action);
-	}
+    public String getOutputType() {
+        return String.format("%s-%s", getName(), operatingSystem.getName());
+    }
 
-	protected File resolve(Object path) {
-		return fileResolver.resolve(path);
-	}
+    public void eachPlatform(Action<? super T> action) {
+        configureActions.add(action);
+    }
+
+    protected File resolve(Object path) {
+        return fileResolver.resolve(path);
+    }
 
 }

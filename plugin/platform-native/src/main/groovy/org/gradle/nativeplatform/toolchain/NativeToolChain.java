@@ -21,8 +21,7 @@ import org.gradle.internal.HasInternalProtocol;
 import org.gradle.platform.base.ToolChain;
 
 /**
- * A set of compilers and linkers that are used together to construct a native
- * binary.
+ * A set of compilers and linkers that are used together to construct a native binary.
  */
 @Incubating
 @HasInternalProtocol

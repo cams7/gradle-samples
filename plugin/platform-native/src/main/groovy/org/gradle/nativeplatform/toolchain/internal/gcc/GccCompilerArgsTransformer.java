@@ -16,58 +16,55 @@
 
 package org.gradle.nativeplatform.toolchain.internal.gcc;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.gradle.nativeplatform.toolchain.internal.ArgsTransformer;
 import org.gradle.nativeplatform.toolchain.internal.MacroArgsConverter;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Maps common options for C/C++ compiling with GCC
  */
-abstract class GccCompilerArgsTransformer<T extends NativeCompileSpec>
-		implements ArgsTransformer<T> {
-	public List<String> transform(T spec) {
-		List<String> args = Lists.newArrayList();
-		addToolSpecificArgs(spec, args);
-		addMacroArgs(spec, args);
-		addUserArgs(spec, args);
-		addIncludeArgs(spec, args);
-		return args;
-	}
+abstract class GccCompilerArgsTransformer<T extends NativeCompileSpec> implements ArgsTransformer<T> {
+    public List<String> transform(T spec) {
+        List<String> args = Lists.newArrayList();
+        addToolSpecificArgs(spec, args);
+        addMacroArgs(spec, args);
+        addUserArgs(spec, args);
+        addIncludeArgs(spec, args);
+        return args;
+    }
 
-	protected void addToolSpecificArgs(T spec, List<String> args) {
-		Collections.addAll(args, "-x", getLanguage());
-		args.add("-c");
-		if (spec.isPositionIndependentCode()) {
-			if (!spec.getTargetPlatform().getOperatingSystem().isWindows()) {
-				args.add("-fPIC");
-			}
-		}
-	}
+    protected void addToolSpecificArgs(T spec, List<String> args) {
+        Collections.addAll(args, "-x", getLanguage());
+        args.add("-c");
+        if (spec.isPositionIndependentCode()) {
+            if (!spec.getTargetPlatform().getOperatingSystem().isWindows()) {
+                args.add("-fPIC");
+            }
+        }
+    }
 
-	protected void addIncludeArgs(T spec, List<String> args) {
-		for (File file : spec.getIncludeRoots()) {
-			args.add("-I");
-			args.add(file.getAbsolutePath());
-		}
-	}
+    protected void addIncludeArgs(T spec, List<String> args) {
+        for (File file : spec.getIncludeRoots()) {
+            args.add("-I");
+            args.add(file.getAbsolutePath());
+        }
+    }
 
-	protected void addMacroArgs(T spec, List<String> args) {
-		for (String macroArg : new MacroArgsConverter().transform(spec
-				.getMacros())) {
-			args.add("-D" + macroArg);
-		}
-	}
+    protected void addMacroArgs(T spec, List<String> args) {
+        for (String macroArg : new MacroArgsConverter().transform(spec.getMacros())) {
+            args.add("-D" + macroArg);
+        }
+    }
 
-	protected void addUserArgs(T spec, List<String> args) {
-		args.addAll(spec.getAllArgs());
-	}
+    protected void addUserArgs(T spec, List<String> args) {
+        args.addAll(spec.getAllArgs());
+    }
 
-	protected abstract String getLanguage();
+    protected abstract String getLanguage();
 
 }

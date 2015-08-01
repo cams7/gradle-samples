@@ -16,62 +16,45 @@
 
 package org.gradle.nativeplatform.internal.prebuilt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.NamedDomainObjectSet;
 import org.gradle.api.internal.project.ProjectInternal;
 import org.gradle.model.internal.core.ModelPath;
 import org.gradle.model.internal.type.ModelType;
-import org.gradle.nativeplatform.NativeLibraryBinary;
-import org.gradle.nativeplatform.NativeLibraryRequirement;
-import org.gradle.nativeplatform.PrebuiltLibraries;
-import org.gradle.nativeplatform.PrebuiltLibrary;
-import org.gradle.nativeplatform.Repositories;
+import org.gradle.nativeplatform.*;
 import org.gradle.nativeplatform.internal.resolve.LibraryBinaryLocator;
 import org.gradle.nativeplatform.internal.resolve.ProjectLocator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PrebuiltLibraryBinaryLocator implements LibraryBinaryLocator {
-	private final ProjectLocator projectLocator;
+    private final ProjectLocator projectLocator;
 
-	public PrebuiltLibraryBinaryLocator(ProjectLocator projectLocator) {
-		this.projectLocator = projectLocator;
-	}
+    public PrebuiltLibraryBinaryLocator(ProjectLocator projectLocator) {
+        this.projectLocator = projectLocator;
+    }
 
-	public DomainObjectSet<NativeLibraryBinary> getBinaries(
-			NativeLibraryRequirement requirement) {
-		ProjectInternal project = projectLocator.locateProject(requirement
-				.getProjectPath());
-		NamedDomainObjectSet<PrebuiltLibraries> repositories = project
-				.getModelRegistry()
-				.realize(ModelPath.path("repositories"),
-						ModelType.of(Repositories.class))
-				.withType(PrebuiltLibraries.class);
-		if (repositories.isEmpty()) {
-			throw new PrebuiltLibraryResolveException(
-					"Project does not have any prebuilt library repositories.");
-		}
-		PrebuiltLibrary prebuiltLibrary = getPrebuiltLibrary(repositories,
-				requirement.getLibraryName());
-		return prebuiltLibrary.getBinaries();
-	}
+    public DomainObjectSet<NativeLibraryBinary> getBinaries(NativeLibraryRequirement requirement) {
+        ProjectInternal project = projectLocator.locateProject(requirement.getProjectPath());
+        NamedDomainObjectSet<PrebuiltLibraries> repositories = project.getModelRegistry().realize(ModelPath.path("repositories"), ModelType.of(Repositories.class)).withType(PrebuiltLibraries.class);
+        if (repositories.isEmpty()) {
+            throw new PrebuiltLibraryResolveException("Project does not have any prebuilt library repositories.");
+        }
+        PrebuiltLibrary prebuiltLibrary = getPrebuiltLibrary(repositories, requirement.getLibraryName());
+        return prebuiltLibrary.getBinaries();
+    }
 
-	private PrebuiltLibrary getPrebuiltLibrary(
-			NamedDomainObjectSet<PrebuiltLibraries> repositories,
-			String libraryName) {
-		List<String> repositoryNames = new ArrayList<String>();
-		for (PrebuiltLibraries prebuiltLibraries : repositories) {
-			repositoryNames.add(prebuiltLibraries.getName());
-			PrebuiltLibrary prebuiltLibrary = prebuiltLibraries
-					.resolveLibrary(libraryName);
-			if (prebuiltLibrary != null) {
-				return prebuiltLibrary;
-			}
-		}
-		throw new PrebuiltLibraryResolveException(
-				String.format(
-						"Prebuilt library with name '%s' not found in repositories '%s'.",
-						libraryName, repositoryNames));
-	}
+    private PrebuiltLibrary getPrebuiltLibrary(NamedDomainObjectSet<PrebuiltLibraries> repositories, String libraryName) {
+        List<String> repositoryNames = new ArrayList<String>();
+        for (PrebuiltLibraries prebuiltLibraries : repositories) {
+            repositoryNames.add(prebuiltLibraries.getName());
+            PrebuiltLibrary prebuiltLibrary = prebuiltLibraries.resolveLibrary(libraryName);
+            if (prebuiltLibrary != null) {
+                return prebuiltLibrary;
+            }
+        }
+        throw new PrebuiltLibraryResolveException(
+                String.format("Prebuilt library with name '%s' not found in repositories '%s'.", libraryName, repositoryNames));
+    }
 }

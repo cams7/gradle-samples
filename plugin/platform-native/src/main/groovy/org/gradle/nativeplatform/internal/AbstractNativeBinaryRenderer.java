@@ -20,13 +20,12 @@ import org.gradle.api.reporting.components.internal.AbstractBinaryRenderer;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.nativeplatform.NativeBinarySpec;
 
-public abstract class AbstractNativeBinaryRenderer<T extends NativeBinarySpec>
-		extends AbstractBinaryRenderer<T> {
-	@Override
-	protected void renderDetails(T binary, TextReportBuilder builder) {
-		builder.item("platform", binary.getTargetPlatform().getName());
-		builder.item("build type", binary.getBuildType().getName());
-		builder.item("flavor", binary.getFlavor().getName());
-		builder.item("tool chain", binary.getToolChain().getDisplayName());
-	}
+public abstract class AbstractNativeBinaryRenderer<T extends NativeBinarySpec> extends AbstractBinaryRenderer<T> {
+    @Override
+    protected void renderDetails(T binary, TextReportBuilder builder) {
+        builder.item("platform", binary.getTargetPlatform().getName());
+        builder.item("build type", binary.getBuildType().getName());
+        builder.item("flavor", binary.getFlavor().getName());
+        builder.item("tool chain", binary.getToolChain().getDisplayName());
+    }
 }

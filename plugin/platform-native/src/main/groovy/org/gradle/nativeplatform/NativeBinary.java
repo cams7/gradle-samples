@@ -17,27 +17,26 @@
 package org.gradle.nativeplatform;
 
 import org.gradle.api.Incubating;
-import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.platform.base.Binary;
+import org.gradle.nativeplatform.platform.NativePlatform;
 
 /**
  * Represents a particular binary artifact.
  */
 @Incubating
 public interface NativeBinary extends Binary {
-	/**
-	 * The flavor that this binary was built with.
-	 */
-	Flavor getFlavor();
+    /**
+     * The flavor that this binary was built with.
+     */
+    Flavor getFlavor();
 
-	/**
-	 * Returns the {@link org.gradle.nativeplatform.platform.NativePlatform}
-	 * that this binary is targeted to run on.
-	 */
-	NativePlatform getTargetPlatform();
+    /**
+     * Returns the {@link org.gradle.nativeplatform.platform.NativePlatform} that this binary is targeted to run on.
+     */
+    NativePlatform getTargetPlatform();
 
-	/**
-	 * Returns the {@link BuildType} used to construct this binary.
-	 */
-	BuildType getBuildType();
+    /**
+     * Returns the {@link BuildType} used to construct this binary.
+     */
+    BuildType getBuildType();
 }

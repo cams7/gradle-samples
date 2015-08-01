@@ -16,17 +16,9 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-import java.util.Collection;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.nativeplatform.DependentSourceSet;
-import org.gradle.nativeplatform.BuildType;
-import org.gradle.nativeplatform.Flavor;
-import org.gradle.nativeplatform.NativeBinarySpec;
-import org.gradle.nativeplatform.NativeComponentSpec;
-import org.gradle.nativeplatform.NativeDependencySet;
-import org.gradle.nativeplatform.NativeLibraryBinary;
+import org.gradle.nativeplatform.*;
 import org.gradle.nativeplatform.internal.resolve.NativeDependencyResolver;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.toolchain.NativeToolChain;
@@ -34,37 +26,38 @@ import org.gradle.nativeplatform.toolchain.internal.PlatformToolProvider;
 import org.gradle.platform.base.internal.BinaryNamingScheme;
 import org.gradle.platform.base.internal.BinarySpecInternal;
 
-public interface NativeBinarySpecInternal extends NativeBinarySpec,
-		BinarySpecInternal {
-	void setComponent(NativeComponentSpec component);
+import java.io.File;
+import java.util.Collection;
 
-	void setFlavor(Flavor flavor);
+public interface NativeBinarySpecInternal extends NativeBinarySpec, BinarySpecInternal {
+    void setComponent(NativeComponentSpec component);
 
-	void setToolChain(NativeToolChain toolChain);
+    void setFlavor(Flavor flavor);
 
-	void setTargetPlatform(NativePlatform targetPlatform);
+    void setToolChain(NativeToolChain toolChain);
 
-	void setBuildType(BuildType buildType);
+    void setTargetPlatform(NativePlatform targetPlatform);
 
-	BinaryNamingScheme getNamingScheme();
+    void setBuildType(BuildType buildType);
 
-	void setNamingScheme(BinaryNamingScheme namingScheme);
+    BinaryNamingScheme getNamingScheme();
 
-	PlatformToolProvider getPlatformToolProvider();
+    void setNamingScheme(BinaryNamingScheme namingScheme);
 
-	void setPlatformToolProvider(PlatformToolProvider toolProvider);
+    PlatformToolProvider getPlatformToolProvider();
 
-	void setResolver(NativeDependencyResolver resolver);
+    void setPlatformToolProvider(PlatformToolProvider toolProvider);
 
-	File getPrimaryOutput();
+    void setResolver(NativeDependencyResolver resolver);
 
-	Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet);
+    File getPrimaryOutput();
 
-	Collection<NativeLibraryBinary> getDependentBinaries();
+    Collection<NativeDependencySet> getLibs(DependentSourceSet sourceSet);
 
-	/**
-	 * Adds some files to include as input to the link/assemble step of this
-	 * binary.
-	 */
-	void binaryInputs(FileCollection files);
+    Collection<NativeLibraryBinary> getDependentBinaries();
+
+    /**
+     * Adds some files to include as input to the link/assemble step of this binary.
+     */
+    void binaryInputs(FileCollection files);
 }

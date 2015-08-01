@@ -16,24 +16,21 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import java.io.File;
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import org.gradle.api.Transformer;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 
-import com.google.common.collect.Lists;
+import java.io.File;
+import java.util.List;
 
-public class VisualCppPCHSourceFileTransformer<T extends NativeCompileSpec>
-		implements Transformer<T, T> {
-	@Override
-	public T transform(T original) {
-		List<File> newSourceFiles = Lists.newArrayList();
-		for (File sourceFile : original.getSourceFiles()) {
-			newSourceFiles.add(VisualCppPCHSourceFileGeneratorUtil
-					.generatePCHSourceFile(original, sourceFile));
-		}
-		original.setSourceFiles(newSourceFiles);
-		return original;
-	}
+public class VisualCppPCHSourceFileTransformer<T extends NativeCompileSpec> implements Transformer<T, T> {
+    @Override
+    public T transform(T original) {
+        List<File> newSourceFiles = Lists.newArrayList();
+        for (File sourceFile : original.getSourceFiles()) {
+            newSourceFiles.add(VisualCppPCHSourceFileGeneratorUtil.generatePCHSourceFile(original, sourceFile));
+        }
+        original.setSourceFiles(newSourceFiles);
+        return original;
+    }
 }

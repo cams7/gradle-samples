@@ -15,16 +15,15 @@
  */
 package org.gradle.nativeplatform.toolchain.internal.tools;
 
-import java.util.List;
-
 import org.gradle.api.Action;
 import org.gradle.nativeplatform.toolchain.GccCommandLineToolConfiguration;
 import org.gradle.nativeplatform.toolchain.internal.ToolType;
 
-public interface GccCommandLineToolConfigurationInternal extends
-		GccCommandLineToolConfiguration {
+import java.util.List;
 
-	ToolType getToolType();
+public interface GccCommandLineToolConfigurationInternal extends GccCommandLineToolConfiguration {
 
-	Action<List<String>> getArgAction();
+    ToolType getToolType();
+
+    Action<List<String>> getArgAction();
 }

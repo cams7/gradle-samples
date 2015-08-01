@@ -21,15 +21,14 @@ import org.gradle.internal.reflect.Instantiator;
 import org.gradle.nativeplatform.Flavor;
 import org.gradle.nativeplatform.FlavorContainer;
 
-public class DefaultFlavorContainer extends
-		AbstractNamedDomainObjectContainer<Flavor> implements FlavorContainer {
+public class DefaultFlavorContainer extends AbstractNamedDomainObjectContainer<Flavor> implements FlavorContainer {
 
-	public DefaultFlavorContainer(Instantiator instantiator) {
-		super(Flavor.class, instantiator);
-	}
+    public DefaultFlavorContainer(Instantiator instantiator) {
+        super(Flavor.class, instantiator);
+    }
 
-	@Override
-	protected Flavor doCreate(String name) {
-		return getInstantiator().newInstance(DefaultFlavor.class, name);
-	}
+    @Override
+    protected Flavor doCreate(String name) {
+        return getInstantiator().newInstance(DefaultFlavor.class, name);
+    }
 }

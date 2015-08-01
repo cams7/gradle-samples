@@ -16,10 +16,6 @@
 
 package org.gradle.nativeplatform.internal;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Set;
-
 import org.gradle.api.file.FileCollection;
 import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.NativeResourceSet;
@@ -30,109 +26,107 @@ import org.gradle.nativeplatform.tasks.ObjectFilesToBinary;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
-public class DefaultSharedLibraryBinarySpec extends
-		AbstractNativeLibraryBinarySpec implements SharedLibraryBinary,
-		SharedLibraryBinarySpecInternal {
-	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
-			super.getTasks());
-	private File sharedLibraryFile;
-	private File sharedLibraryLinkFile;
+import java.io.File;
+import java.util.Collections;
+import java.util.Set;
 
-	public File getSharedLibraryFile() {
-		return sharedLibraryFile;
-	}
+public class DefaultSharedLibraryBinarySpec extends AbstractNativeLibraryBinarySpec implements SharedLibraryBinary, SharedLibraryBinarySpecInternal {
+    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
+    private File sharedLibraryFile;
+    private File sharedLibraryLinkFile;
 
-	public void setSharedLibraryFile(File sharedLibraryFile) {
-		this.sharedLibraryFile = sharedLibraryFile;
-	}
+    public File getSharedLibraryFile() {
+        return sharedLibraryFile;
+    }
 
-	public File getSharedLibraryLinkFile() {
-		return sharedLibraryLinkFile;
-	}
+    public void setSharedLibraryFile(File sharedLibraryFile) {
+        this.sharedLibraryFile = sharedLibraryFile;
+    }
 
-	public void setSharedLibraryLinkFile(File sharedLibraryLinkFile) {
-		this.sharedLibraryLinkFile = sharedLibraryLinkFile;
-	}
+    public File getSharedLibraryLinkFile() {
+        return sharedLibraryLinkFile;
+    }
 
-	public File getPrimaryOutput() {
-		return getSharedLibraryFile();
-	}
+    public void setSharedLibraryLinkFile(File sharedLibraryLinkFile) {
+        this.sharedLibraryLinkFile = sharedLibraryLinkFile;
+    }
 
-	public FileCollection getLinkFiles() {
-		return new SharedLibraryLinkOutputs();
-	}
+    public File getPrimaryOutput() {
+        return getSharedLibraryFile();
+    }
 
-	public FileCollection getRuntimeFiles() {
-		return new SharedLibraryRuntimeOutputs();
-	}
+    public FileCollection getLinkFiles() {
+        return new SharedLibraryLinkOutputs();
+    }
 
-	@Override
-	protected ObjectFilesToBinary getCreateOrLink() {
-		return tasks.getLink();
-	}
+    public FileCollection getRuntimeFiles() {
+        return new SharedLibraryRuntimeOutputs();
+    }
 
-	public SharedLibraryBinarySpec.TasksCollection getTasks() {
-		return tasks;
-	}
+    @Override
+    protected ObjectFilesToBinary getCreateOrLink() {
+        return tasks.getLink();
+    }
 
-	private static class DefaultTasksCollection extends
-			BinaryTasksCollectionWrapper implements
-			SharedLibraryBinarySpec.TasksCollection {
-		public DefaultTasksCollection(BinaryTasksCollection delegate) {
-			super(delegate);
-		}
+    public SharedLibraryBinarySpec.TasksCollection getTasks() {
+        return tasks;
+    }
 
-		public LinkSharedLibrary getLink() {
-			return findSingleTaskWithType(LinkSharedLibrary.class);
-		}
-	}
+    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements SharedLibraryBinarySpec.TasksCollection {
+        public DefaultTasksCollection(BinaryTasksCollection delegate) {
+            super(delegate);
+        }
 
-	private class SharedLibraryLinkOutputs extends LibraryOutputs {
-		@Override
-		protected boolean hasOutputs() {
-			return hasSources() && !isResourceOnly();
-		}
+        public LinkSharedLibrary getLink() {
+            return findSingleTaskWithType(LinkSharedLibrary.class);
+        }
+    }
 
-		@Override
-		protected Set<File> getOutputs() {
-			return Collections.singleton(getSharedLibraryLinkFile());
-		}
+    private class SharedLibraryLinkOutputs extends LibraryOutputs {
+        @Override
+        protected boolean hasOutputs() {
+            return hasSources() && !isResourceOnly();
+        }
 
-		private boolean isResourceOnly() {
-			return hasResources() && !hasExportedSymbols();
-		}
+        @Override
+        protected Set<File> getOutputs() {
+            return Collections.singleton(getSharedLibraryLinkFile());
+        }
 
-		private boolean hasResources() {
-			for (NativeResourceSet windowsResourceSet : getSource().withType(
-					NativeResourceSet.class)) {
-				if (!windowsResourceSet.getSource().isEmpty()) {
-					return true;
-				}
-			}
-			return false;
-		}
+        private boolean isResourceOnly() {
+            return hasResources() && !hasExportedSymbols();
+        }
 
-		private boolean hasExportedSymbols() {
-			for (LanguageSourceSet languageSourceSet : getSource()) {
-				if (!(languageSourceSet instanceof NativeResourceSet)) {
-					if (!languageSourceSet.getSource().isEmpty()) {
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-	}
+        private boolean hasResources() {
+            for (NativeResourceSet windowsResourceSet : getSource().withType(NativeResourceSet.class)) {
+                if (!windowsResourceSet.getSource().isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-	private class SharedLibraryRuntimeOutputs extends LibraryOutputs {
-		@Override
-		protected boolean hasOutputs() {
-			return hasSources();
-		}
+        private boolean hasExportedSymbols() {
+            for (LanguageSourceSet languageSourceSet : getSource()) {
+                if (!(languageSourceSet instanceof NativeResourceSet)) {
+                    if (!languageSourceSet.getSource().isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 
-		@Override
-		protected Set<File> getOutputs() {
-			return Collections.singleton(getSharedLibraryFile());
-		}
-	}
+    private class SharedLibraryRuntimeOutputs extends LibraryOutputs {
+        @Override
+        protected boolean hasOutputs() {
+            return hasSources();
+        }
+
+        @Override
+        protected Set<File> getOutputs() {
+            return Collections.singleton(getSharedLibraryFile());
+        }
+    }
 }

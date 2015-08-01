@@ -24,8 +24,8 @@ import org.gradle.api.Named;
  */
 @Incubating
 public interface Flavor extends Named {
-	/**
-	 * Returns a human-consumable display name for this flavor.
-	 */
-	String getDisplayName();
+    /**
+     * Returns a human-consumable display name for this flavor.
+     */
+    String getDisplayName();
 }

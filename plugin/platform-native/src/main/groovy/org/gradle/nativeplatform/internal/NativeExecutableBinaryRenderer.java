@@ -19,23 +19,19 @@ package org.gradle.nativeplatform.internal;
 import org.gradle.api.tasks.diagnostics.internal.text.TextReportBuilder;
 import org.gradle.nativeplatform.NativeExecutableBinarySpec;
 
-public class NativeExecutableBinaryRenderer extends
-		AbstractNativeBinaryRenderer<NativeExecutableBinarySpec> {
-	@Override
-	public Class<NativeExecutableBinarySpec> getTargetType() {
-		return NativeExecutableBinarySpec.class;
-	}
+public class NativeExecutableBinaryRenderer extends AbstractNativeBinaryRenderer<NativeExecutableBinarySpec> {
+    @Override
+    public Class<NativeExecutableBinarySpec> getTargetType() {
+        return NativeExecutableBinarySpec.class;
+    }
 
-	@Override
-	protected void renderTasks(NativeExecutableBinarySpec binary,
-			TextReportBuilder builder) {
-		builder.item("install using task", binary.getTasks().getInstall()
-				.getPath());
-	}
+    @Override
+    protected void renderTasks(NativeExecutableBinarySpec binary, TextReportBuilder builder) {
+        builder.item("install using task", binary.getTasks().getInstall().getPath());
+    }
 
-	@Override
-	protected void renderOutputs(NativeExecutableBinarySpec binary,
-			TextReportBuilder builder) {
-		builder.item("executable file", binary.getExecutableFile());
-	}
+    @Override
+    protected void renderOutputs(NativeExecutableBinarySpec binary, TextReportBuilder builder) {
+        builder.item("executable file", binary.getExecutableFile());
+    }
 }

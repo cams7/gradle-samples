@@ -16,71 +16,70 @@
 
 package org.gradle.nativeplatform.toolchain.internal;
 
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
+import org.gradle.nativeplatform.internal.BinaryToolSpec;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.gradle.language.nativeplatform.internal.SourceIncludes;
-import org.gradle.nativeplatform.internal.BinaryToolSpec;
-
 /**
- * A compile spec that will be used to generate object files for combining into
- * a native binary.
+ * A compile spec that will be used to generate object files for combining into a native binary.
  */
 public interface NativeCompileSpec extends BinaryToolSpec {
-	File getObjectFileDir();
+    File getObjectFileDir();
 
-	void setObjectFileDir(File objectFileDir);
+    void setObjectFileDir(File objectFileDir);
 
-	List<File> getIncludeRoots();
+    List<File> getIncludeRoots();
 
-	void include(Iterable<File> includeRoots);
+    void include(Iterable<File> includeRoots);
 
-	void include(File... includeRoots);
+    void include(File... includeRoots);
 
-	List<File> getSourceFiles();
+    List<File> getSourceFiles();
 
-	void setSourceFiles(Collection<File> sources);
+    void setSourceFiles(Collection<File> sources);
 
-	void source(Iterable<File> sources);
+    void source(Iterable<File> sources);
 
-	List<File> getRemovedSourceFiles();
+    List<File> getRemovedSourceFiles();
 
-	void setRemovedSourceFiles(Collection<File> sources);
+    void setRemovedSourceFiles(Collection<File> sources);
 
-	void removedSource(Iterable<File> sources);
+    void removedSource(Iterable<File> sources);
 
-	Map<String, String> getMacros();
+    Map<String, String> getMacros();
 
-	void setMacros(Map<String, String> macros);
+    void setMacros(Map<String, String> macros);
 
-	void define(String name);
+    void define(String name);
 
-	void define(String name, String value);
+    void define(String name, String value);
 
-	boolean isPositionIndependentCode();
+    boolean isPositionIndependentCode();
 
-	void setPositionIndependentCode(boolean flag);
+    void setPositionIndependentCode(boolean flag);
 
-	boolean isIncrementalCompile();
+    boolean isIncrementalCompile();
 
-	void setIncrementalCompile(boolean flag);
+    void setIncrementalCompile(boolean flag);
 
-	File getPrefixHeaderFile();
+    File getPrefixHeaderFile();
 
-	void setPrefixHeaderFile(File prefixHeaderFile);
+    void setPrefixHeaderFile(File prefixHeaderFile);
 
-	File getPreCompiledHeaderObjectFile();
+    File getPreCompiledHeaderObjectFile();
 
-	void setPreCompiledHeaderObjectFile(File preCompiledHeaderObjectFile);
+    void setPreCompiledHeaderObjectFile(File preCompiledHeaderObjectFile);
 
-	Set<String> getPreCompiledHeaders();
+    Set<String> getPreCompiledHeaders();
 
-	void setPreCompiledHeaders(Set<String> headers);
+    void setPreCompiledHeaders(Set<String> headers);
 
-	Map<File, SourceIncludes> getSourceFileIncludes();
+    Map<File, SourceIncludes> getSourceFileIncludes();
 
-	void setSourceFileIncludes(Map<File, SourceIncludes> map);
+    void setSourceFileIncludes(Map<File, SourceIncludes> map);
 }

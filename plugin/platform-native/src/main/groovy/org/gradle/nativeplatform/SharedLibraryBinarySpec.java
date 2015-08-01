@@ -16,50 +16,50 @@
 
 package org.gradle.nativeplatform;
 
-import java.io.File;
-
 import org.gradle.api.Incubating;
 import org.gradle.api.Task;
 import org.gradle.platform.base.BinaryTasksCollection;
+
+import java.io.File;
 
 /**
  * A shared library binary built by Gradle for a native library.
  */
 @Incubating
 public interface SharedLibraryBinarySpec extends NativeLibraryBinarySpec {
-	/**
-	 * Provides access to key tasks used for building the binary.
-	 */
-	public interface TasksCollection extends BinaryTasksCollection {
-		/**
-		 * Returns the link task for this binary.
-		 */
-		Task getLink();
-	}
+    /**
+     * Provides access to key tasks used for building the binary.
+     */
+    public interface TasksCollection extends BinaryTasksCollection {
+        /**
+         * Returns the link task for this binary.
+         */
+        Task getLink();
+    }
 
-	/**
-	 * The shared library file.
-	 */
-	File getSharedLibraryFile();
+    /**
+     * The shared library file.
+     */
+    File getSharedLibraryFile();
 
-	/**
-	 * The shared library link file.
-	 */
-	File getSharedLibraryLinkFile();
+    /**
+     * The shared library link file.
+     */
+    File getSharedLibraryLinkFile();
 
-	/**
-	 * The shared library file.
-	 */
-	void setSharedLibraryFile(File sharedLibraryFile);
+    /**
+     * The shared library file.
+     */
+    void setSharedLibraryFile(File sharedLibraryFile);
 
-	/**
-	 * The shared library link file.
-	 */
-	void setSharedLibraryLinkFile(File sharedLibraryLinkFile);
+    /**
+     * The shared library link file.
+     */
+    void setSharedLibraryLinkFile(File sharedLibraryLinkFile);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	TasksCollection getTasks();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    TasksCollection getTasks();
 }

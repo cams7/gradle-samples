@@ -21,10 +21,7 @@ import org.gradle.internal.exceptions.Contextual;
 
 @Contextual
 public class PrebuiltLibraryResolveException extends GradleException {
-
-	private static final long serialVersionUID = 1L;
-
-	public PrebuiltLibraryResolveException(String message) {
-		super(message);
-	}
+    public PrebuiltLibraryResolveException(String message) {
+        super(message);
+    }
 }

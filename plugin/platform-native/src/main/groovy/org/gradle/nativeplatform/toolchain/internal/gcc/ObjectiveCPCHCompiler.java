@@ -22,23 +22,14 @@ import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.ObjectiveCPCHCompileSpec;
 
-public class ObjectiveCPCHCompiler extends
-		GccCompatibleNativeCompiler<ObjectiveCPCHCompileSpec> {
-	public ObjectiveCPCHCompiler(
-			BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineTool,
-			CommandLineToolContext invocationContext,
-			String objectFileExtension, boolean useCommandFile) {
-		super(buildOperationProcessor, commandLineTool, invocationContext,
-				new ObjectiveCPCHCompileArgsTransformer(), Transformers
-						.<ObjectiveCPCHCompileSpec> noOpTransformer(),
-				objectFileExtension, useCommandFile);
-	}
+public class ObjectiveCPCHCompiler extends GccCompatibleNativeCompiler<ObjectiveCPCHCompileSpec> {
+    public ObjectiveCPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineTool, CommandLineToolContext invocationContext, String objectFileExtension, boolean useCommandFile) {
+        super(buildOperationProcessor, commandLineTool, invocationContext, new ObjectiveCPCHCompileArgsTransformer(), Transformers.<ObjectiveCPCHCompileSpec>noOpTransformer(), objectFileExtension, useCommandFile);
+    }
 
-	private static class ObjectiveCPCHCompileArgsTransformer extends
-			GccCompilerArgsTransformer<ObjectiveCPCHCompileSpec> {
-		protected String getLanguage() {
-			return "objective-c-header";
-		}
-	}
+    private static class ObjectiveCPCHCompileArgsTransformer extends GccCompilerArgsTransformer<ObjectiveCPCHCompileSpec> {
+        protected String getLanguage() {
+            return "objective-c-header";
+        }
+    }
 }

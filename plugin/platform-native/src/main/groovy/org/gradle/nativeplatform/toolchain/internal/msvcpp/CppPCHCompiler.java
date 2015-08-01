@@ -16,30 +16,23 @@
 
 package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-
 import org.gradle.api.Transformer;
 import org.gradle.internal.operations.BuildOperationProcessor;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolContext;
 import org.gradle.nativeplatform.toolchain.internal.CommandLineToolInvocationWorker;
 import org.gradle.nativeplatform.toolchain.internal.compilespec.CppPCHCompileSpec;
 
-public class CppPCHCompiler extends VisualCppNativeCompiler<CppPCHCompileSpec> {
-	public CppPCHCompiler(BuildOperationProcessor buildOperationProcessor,
-			CommandLineToolInvocationWorker commandLineToolInvocationWorker,
-			CommandLineToolContext invocationContext,
-			Transformer<CppPCHCompileSpec, CppPCHCompileSpec> specTransformer,
-			String objectFileExtension, boolean useCommandFile) {
-		super(buildOperationProcessor, commandLineToolInvocationWorker,
-				invocationContext,
-				new VisualCppPCHCompilerArgsTransformer<CppPCHCompileSpec>(),
-				specTransformer, objectFileExtension, useCommandFile);
-	}
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
 
-	@Override
-	protected List<String> getOutputArgs(CppPCHCompileSpec spec, File outputFile) {
-		return Collections.singletonList("/Fp" + outputFile.getAbsolutePath());
-	}
+public class CppPCHCompiler extends VisualCppNativeCompiler<CppPCHCompileSpec> {
+    public CppPCHCompiler(BuildOperationProcessor buildOperationProcessor, CommandLineToolInvocationWorker commandLineToolInvocationWorker, CommandLineToolContext invocationContext, Transformer<CppPCHCompileSpec, CppPCHCompileSpec> specTransformer, String objectFileExtension, boolean useCommandFile) {
+        super(buildOperationProcessor, commandLineToolInvocationWorker, invocationContext, new VisualCppPCHCompilerArgsTransformer<CppPCHCompileSpec>(), specTransformer, objectFileExtension, useCommandFile);
+    }
+
+    @Override
+    protected List<String> getOutputArgs(CppPCHCompileSpec spec, File outputFile) {
+        return Collections.singletonList("/Fp" + outputFile.getAbsolutePath());
+    }
 }

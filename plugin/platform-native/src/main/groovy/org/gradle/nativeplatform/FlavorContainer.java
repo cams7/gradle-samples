@@ -22,9 +22,8 @@ import org.gradle.api.NamedDomainObjectContainer;
 /**
  * A container of {@link Flavor}s.
  * <p/>
- * If no flavor is explicitly configured, will contain a single {@link Flavor}
- * named 'default'. Any flavors explicitly configured will overwrite the default
- * flavor.
+ * If no flavor is explicitly configured, will contain a single {@link Flavor} named 'default'.
+ * Any flavors explicitly configured will overwrite the default flavor.
  */
 @Incubating
 public interface FlavorContainer extends NamedDomainObjectContainer<Flavor> {

@@ -15,8 +15,7 @@
  */
 package org.gradle.nativeplatform.internal;
 
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.gradle.api.specs.Spec;
 import org.gradle.nativeplatform.platform.NativePlatform;
 import org.gradle.nativeplatform.platform.internal.NativePlatforms;
@@ -24,29 +23,27 @@ import org.gradle.platform.base.internal.PlatformRequirement;
 import org.gradle.platform.base.internal.PlatformResolver;
 import org.gradle.util.CollectionUtils;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
 
 public class NativePlatformResolver implements PlatformResolver<NativePlatform> {
-	private final Set<NativePlatform> nativePlatforms = Sets.newHashSet();
+    private final Set<NativePlatform> nativePlatforms = Sets.newHashSet();
 
-	public NativePlatformResolver() {
-		nativePlatforms.addAll(NativePlatforms.defaultPlatformDefinitions());
-	}
+    public NativePlatformResolver() {
+        nativePlatforms.addAll(NativePlatforms.defaultPlatformDefinitions());
+    }
 
-	public Class<NativePlatform> getType() {
-		return NativePlatform.class;
-	}
+    public Class<NativePlatform> getType() {
+        return NativePlatform.class;
+    }
 
-	@Override
-	public NativePlatform resolve(final PlatformRequirement platformRequirement) {
-		NativePlatforms.defaultPlatformDefinitions();
-		return CollectionUtils.findFirst(nativePlatforms,
-				new Spec<NativePlatform>() {
-					@Override
-					public boolean isSatisfiedBy(NativePlatform element) {
-						return element.getName().equals(
-								platformRequirement.getPlatformName());
-					}
-				});
-	}
+    @Override
+    public NativePlatform resolve(final PlatformRequirement platformRequirement) {
+        NativePlatforms.defaultPlatformDefinitions();
+        return CollectionUtils.findFirst(nativePlatforms, new Spec<NativePlatform>() {
+            @Override
+            public boolean isSatisfiedBy(NativePlatform element) {
+                return element.getName().equals(platformRequirement.getPlatformName());
+            }
+        });
+    }
 }

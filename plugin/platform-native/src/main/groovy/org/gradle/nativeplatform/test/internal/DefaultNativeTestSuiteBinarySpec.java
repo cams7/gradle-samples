@@ -15,8 +15,6 @@
  */
 package org.gradle.nativeplatform.test.internal;
 
-import java.io.File;
-
 import org.gradle.nativeplatform.NativeBinarySpec;
 import org.gradle.nativeplatform.internal.AbstractNativeBinarySpec;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
@@ -29,69 +27,67 @@ import org.gradle.nativeplatform.test.tasks.RunTestExecutable;
 import org.gradle.platform.base.BinaryTasksCollection;
 import org.gradle.platform.base.internal.BinaryTasksCollectionWrapper;
 
-public abstract class DefaultNativeTestSuiteBinarySpec extends
-		AbstractNativeBinarySpec implements NativeTestSuiteBinarySpecInternal {
-	private final DefaultTasksCollection tasks = new DefaultTasksCollection(
-			super.getTasks());
-	private NativeBinarySpec testedBinary;
-	private File executableFile;
+import java.io.File;
 
-	@Override
-	public NativeTestSuiteSpec getComponent() {
-		return (NativeTestSuiteSpec) super.getComponent();
-	}
+public abstract class DefaultNativeTestSuiteBinarySpec extends AbstractNativeBinarySpec implements NativeTestSuiteBinarySpecInternal {
+    private final DefaultTasksCollection tasks = new DefaultTasksCollection(super.getTasks());
+    private NativeBinarySpec testedBinary;
+    private File executableFile;
 
-	public NativeBinarySpec getTestedBinary() {
-		return testedBinary;
-	}
+    @Override
+    public NativeTestSuiteSpec getComponent() {
+        return (NativeTestSuiteSpec) super.getComponent();
+    }
 
-	public void setTestedBinary(NativeBinarySpecInternal testedBinary) {
-		this.testedBinary = testedBinary;
-		setTargetPlatform(testedBinary.getTargetPlatform());
-		setToolChain(testedBinary.getToolChain());
-		setPlatformToolProvider(testedBinary.getPlatformToolProvider());
-		setBuildType(testedBinary.getBuildType());
-		setFlavor(testedBinary.getFlavor());
-	}
+    public NativeBinarySpec getTestedBinary() {
+        return testedBinary;
+    }
 
-	public File getExecutableFile() {
-		return executableFile;
-	}
+    public void setTestedBinary(NativeBinarySpecInternal testedBinary) {
+        this.testedBinary = testedBinary;
+        setTargetPlatform(testedBinary.getTargetPlatform());
+        setToolChain(testedBinary.getToolChain());
+        setPlatformToolProvider(testedBinary.getPlatformToolProvider());
+        setBuildType(testedBinary.getBuildType());
+        setFlavor(testedBinary.getFlavor());
+    }
 
-	public void setExecutableFile(File executableFile) {
-		this.executableFile = executableFile;
-	}
+    public File getExecutableFile() {
+        return executableFile;
+    }
 
-	public File getPrimaryOutput() {
-		return getExecutableFile();
-	}
+    public void setExecutableFile(File executableFile) {
+        this.executableFile = executableFile;
+    }
 
-	@Override
-	protected ObjectFilesToBinary getCreateOrLink() {
-		return tasks.getLink();
-	}
+    public File getPrimaryOutput() {
+        return getExecutableFile();
+    }
 
-	public NativeTestSuiteBinarySpec.TasksCollection getTasks() {
-		return tasks;
-	}
+    @Override
+    protected ObjectFilesToBinary getCreateOrLink() {
+        return tasks.getLink();
+    }
 
-	private static class DefaultTasksCollection extends
-			BinaryTasksCollectionWrapper implements
-			NativeTestSuiteBinarySpec.TasksCollection {
-		public DefaultTasksCollection(BinaryTasksCollection delegate) {
-			super(delegate);
-		}
+    public NativeTestSuiteBinarySpec.TasksCollection getTasks() {
+        return tasks;
+    }
 
-		public LinkExecutable getLink() {
-			return findSingleTaskWithType(LinkExecutable.class);
-		}
+    private static class DefaultTasksCollection extends BinaryTasksCollectionWrapper implements NativeTestSuiteBinarySpec.TasksCollection {
+        public DefaultTasksCollection(BinaryTasksCollection delegate) {
+            super(delegate);
+        }
 
-		public InstallExecutable getInstall() {
-			return findSingleTaskWithType(InstallExecutable.class);
-		}
+        public LinkExecutable getLink() {
+            return findSingleTaskWithType(LinkExecutable.class);
+        }
 
-		public RunTestExecutable getRun() {
-			return findSingleTaskWithType(RunTestExecutable.class);
-		}
-	}
+        public InstallExecutable getInstall() {
+            return findSingleTaskWithType(InstallExecutable.class);
+        }
+
+        public RunTestExecutable getRun() {
+            return findSingleTaskWithType(RunTestExecutable.class);
+        }
+    }
 }

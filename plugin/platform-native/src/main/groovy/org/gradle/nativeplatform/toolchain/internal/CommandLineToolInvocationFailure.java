@@ -20,10 +20,7 @@ import org.gradle.internal.operations.BuildOperation;
 import org.gradle.internal.operations.BuildOperationFailure;
 
 class CommandLineToolInvocationFailure extends BuildOperationFailure {
-
-	private static final long serialVersionUID = 1L;
-
-	CommandLineToolInvocationFailure(BuildOperation operation, String message) {
-		super(operation, message);
-	}
+    CommandLineToolInvocationFailure(BuildOperation operation, String message) {
+        super(operation, message);
+    }
 }
