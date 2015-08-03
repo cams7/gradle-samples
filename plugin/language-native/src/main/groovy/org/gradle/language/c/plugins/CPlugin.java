@@ -22,18 +22,28 @@ import org.gradle.api.Project;
 import org.gradle.nativeplatform.plugins.NativeComponentPlugin;
 
 /**
- * A plugin for projects wishing to build native binary components from C sources.
+ * A plugin for projects wishing to build native binary components from C
+ * sources.
  *
- * <p>Automatically includes the {@link CLangPlugin} for core C++ support and the {@link org.gradle.nativeplatform.plugins.NativeComponentPlugin} for native component support.</p>
+ * <p>
+ * Automatically includes the {@link CLangPlugin} for core C++ support and the
+ * {@link br.com.cams7.nativeplatform.plugins.NativeComponentPlugin} for native
+ * component support.
+ * </p>
  *
- * <li>Creates a {@link org.gradle.language.c.tasks.CCompile} task for each {@link org.gradle.language.c.CSourceSet} to compile the C sources.</li>
+ * <li>Creates a {@link org.gradle.language.c.tasks.CCompile} task for each
+ * {@link org.gradle.language.c.CSourceSet} to compile the C sources.</li>
  */
 @Incubating
 public class CPlugin implements Plugin<Project> {
-    public void apply(Project project) {
-        project.getPluginManager().apply(NativeComponentPlugin.class);
-        project.getPluginManager().apply(CLangPlugin.class);
-        project.getPluginManager().apply(CLangPCHPlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(NativeComponentPlugin.class);
+		project.getPluginManager().apply(CLangPlugin.class);
+		project.getPluginManager().apply(CLangPCHPlugin.class);
+		
+		System.out.println(
+				this.getClass().getName() + ".apply(project="
+						+ project.getName() + ")");
+	}
 
 }

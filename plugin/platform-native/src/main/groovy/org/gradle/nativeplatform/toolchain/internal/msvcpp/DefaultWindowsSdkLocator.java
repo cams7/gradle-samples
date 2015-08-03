@@ -17,6 +17,7 @@ package org.gradle.nativeplatform.toolchain.internal.msvcpp;
 
 import net.rubygrapefruit.platform.MissingRegistryEntryException;
 import net.rubygrapefruit.platform.WindowsRegistry;
+
 import org.apache.commons.lang.StringUtils;
 import org.gradle.internal.os.OperatingSystem;
 import org.gradle.util.GFileUtils;

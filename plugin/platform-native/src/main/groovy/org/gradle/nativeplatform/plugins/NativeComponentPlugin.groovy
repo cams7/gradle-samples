@@ -30,7 +30,6 @@ import org.gradle.nativeplatform.tasks.InstallExecutable
 import org.gradle.nativeplatform.tasks.LinkExecutable
 import org.gradle.nativeplatform.tasks.LinkSharedLibrary
 import org.gradle.nativeplatform.test.NativeTestSuiteBinarySpec
-import org.gradle.nativeplatform.toolchain.internal.plugins.StandardToolChainsPlugin
 import org.gradle.platform.base.BinaryContainer
 
 /**
@@ -39,94 +38,96 @@ import org.gradle.platform.base.BinaryContainer
 @Incubating
 public class NativeComponentPlugin implements Plugin<ProjectInternal> {
 
-    public void apply(final ProjectInternal project) {
-        project.pluginManager.apply(NativeComponentModelPlugin.class);
-        project.pluginManager.apply(StandardToolChainsPlugin)
+	public void apply(final ProjectInternal project) {
+		project.pluginManager.apply(NativeComponentModelPlugin.class);
+		project.pluginManager.apply(StandardToolChainsPlugin)
 
-        createTasks(project.tasks, project.binaries)
-    }
+		createTasks(project.tasks, project.binaries)
 
-    // TODO:DAZ Convert to a model rule and use simple iteration - this breaks non-rule code that uses binary.tasks.link
-    static void createTasks(TaskContainer tasks, BinaryContainer binaries) {
-        binaries.withType(NativeBinarySpec) { NativeBinarySpecInternal binary ->
-            createTasksForBinary(tasks, binary)
-        }
-    }
+		println this.getClass().getName() + ".apply(project=" + project.getName() + ")"
+	}
 
-    private static void createTasksForBinary(TaskContainer tasks, NativeBinarySpecInternal binary) {
-        def builderTask
-        if (binary instanceof NativeExecutableBinarySpec || binary instanceof NativeTestSuiteBinarySpec) {
-            builderTask = createLinkExecutableTask(tasks, binary)
-            binary.tasks.add createInstallTask(tasks, binary);
-        } else if (binary instanceof SharedLibraryBinarySpec) {
-            builderTask = createLinkSharedLibraryTask(tasks, binary)
-        } else if (binary instanceof StaticLibraryBinarySpec) {
-            builderTask = createStaticLibraryTask(tasks, binary)
-        } else {
-            throw new RuntimeException("Not a valid binary type for building: " + binary)
-        }
-        binary.tasks.add builderTask
-        binary.builtBy builderTask
-    }
+	// TODO:DAZ Convert to a model rule and use simple iteration - this breaks non-rule code that uses binary.tasks.link
+	static void createTasks(TaskContainer tasks, BinaryContainer binaries) {
+		binaries.withType(NativeBinarySpec) { NativeBinarySpecInternal binary ->
+			createTasksForBinary(tasks, binary)
+		}
+	}
 
-    private static LinkExecutable createLinkExecutableTask(TaskContainer tasks, def executable) {
-        def binary = executable as NativeBinarySpecInternal
-        LinkExecutable linkTask = tasks.create(binary.namingScheme.getTaskName("link"), LinkExecutable)
-        linkTask.description = "Links ${executable}"
+	private static void createTasksForBinary(TaskContainer tasks, NativeBinarySpecInternal binary) {
+		def builderTask
+		if (binary instanceof NativeExecutableBinarySpec || binary instanceof NativeTestSuiteBinarySpec) {
+			builderTask = createLinkExecutableTask(tasks, binary)
+			binary.tasks.add createInstallTask(tasks, binary);
+		} else if (binary instanceof SharedLibraryBinarySpec) {
+			builderTask = createLinkSharedLibraryTask(tasks, binary)
+		} else if (binary instanceof StaticLibraryBinarySpec) {
+			builderTask = createStaticLibraryTask(tasks, binary)
+		} else {
+			throw new RuntimeException("Not a valid binary type for building: " + binary)
+		}
+		binary.tasks.add builderTask
+		binary.builtBy builderTask
+	}
 
-        linkTask.toolChain = binary.toolChain
-        linkTask.targetPlatform = executable.targetPlatform
+	private static LinkExecutable createLinkExecutableTask(TaskContainer tasks, def executable) {
+		def binary = executable as NativeBinarySpecInternal
+		LinkExecutable linkTask = tasks.create(binary.namingScheme.getTaskName("link"), LinkExecutable)
+		linkTask.description = "Links ${executable}"
 
-        linkTask.lib { binary.libs*.linkFiles }
+		linkTask.toolChain = binary.toolChain
+		linkTask.targetPlatform = executable.targetPlatform
 
-        linkTask.conventionMapping.outputFile = { executable.executableFile }
-        linkTask.linkerArgs = binary.linker.args
-        return linkTask
-    }
+		linkTask.lib { binary.libs*.linkFiles }
 
-    private static LinkSharedLibrary createLinkSharedLibraryTask(TaskContainer tasks, SharedLibraryBinarySpec sharedLibrary) {
-        def binary = sharedLibrary as NativeBinarySpecInternal
-        LinkSharedLibrary linkTask = tasks.create(binary.namingScheme.getTaskName("link"), LinkSharedLibrary)
-        linkTask.description = "Links ${sharedLibrary}"
+		linkTask.conventionMapping.outputFile = { executable.executableFile }
+		linkTask.linkerArgs = binary.linker.args
+		return linkTask
+	}
 
-        linkTask.toolChain = binary.toolChain
-        linkTask.targetPlatform = binary.targetPlatform
+	private static LinkSharedLibrary createLinkSharedLibraryTask(TaskContainer tasks, SharedLibraryBinarySpec sharedLibrary) {
+		def binary = sharedLibrary as NativeBinarySpecInternal
+		LinkSharedLibrary linkTask = tasks.create(binary.namingScheme.getTaskName("link"), LinkSharedLibrary)
+		linkTask.description = "Links ${sharedLibrary}"
 
-        linkTask.lib { binary.libs*.linkFiles }
+		linkTask.toolChain = binary.toolChain
+		linkTask.targetPlatform = binary.targetPlatform
 
-        linkTask.conventionMapping.outputFile = { sharedLibrary.sharedLibraryFile }
-        linkTask.conventionMapping.installName = { sharedLibrary.sharedLibraryFile.name }
-        linkTask.linkerArgs = binary.linker.args
-        return linkTask
-    }
+		linkTask.lib { binary.libs*.linkFiles }
 
-    private static CreateStaticLibrary createStaticLibraryTask(TaskContainer tasks, StaticLibraryBinarySpec staticLibrary) {
-        def binary = staticLibrary as NativeBinarySpecInternal
-        CreateStaticLibrary task = tasks.create(binary.namingScheme.getTaskName("create"), CreateStaticLibrary)
-        task.description = "Creates ${staticLibrary}"
+		linkTask.conventionMapping.outputFile = { sharedLibrary.sharedLibraryFile }
+		linkTask.conventionMapping.installName = { sharedLibrary.sharedLibraryFile.name }
+		linkTask.linkerArgs = binary.linker.args
+		return linkTask
+	}
 
-        task.toolChain = binary.toolChain
-        task.targetPlatform = staticLibrary.targetPlatform
-        task.conventionMapping.outputFile = { staticLibrary.staticLibraryFile }
-        task.staticLibArgs = binary.staticLibArchiver.args
-        return task
-    }
+	private static CreateStaticLibrary createStaticLibraryTask(TaskContainer tasks, StaticLibraryBinarySpec staticLibrary) {
+		def binary = staticLibrary as NativeBinarySpecInternal
+		CreateStaticLibrary task = tasks.create(binary.namingScheme.getTaskName("create"), CreateStaticLibrary)
+		task.description = "Creates ${staticLibrary}"
 
-    private static createInstallTask(TaskContainer tasks, def executable) {
-        def binary = executable as NativeBinarySpecInternal
-        InstallExecutable installTask = tasks.create(binary.namingScheme.getTaskName("install"), InstallExecutable)
-        installTask.description = "Installs a development image of $executable"
-        installTask.group = LifecycleBasePlugin.BUILD_GROUP
+		task.toolChain = binary.toolChain
+		task.targetPlatform = staticLibrary.targetPlatform
+		task.conventionMapping.outputFile = { staticLibrary.staticLibraryFile }
+		task.staticLibArgs = binary.staticLibArchiver.args
+		return task
+	}
 
-        installTask.toolChain = binary.toolChain
+	private static createInstallTask(TaskContainer tasks, def executable) {
+		def binary = executable as NativeBinarySpecInternal
+		InstallExecutable installTask = tasks.create(binary.namingScheme.getTaskName("install"), InstallExecutable)
+		installTask.description = "Installs a development image of $executable"
+		installTask.group = LifecycleBasePlugin.BUILD_GROUP
 
-        def project = installTask.project
-        installTask.conventionMapping.destinationDir = { project.file("${project.buildDir}/install/${binary.namingScheme.outputDirectoryBase}") }
+		installTask.toolChain = binary.toolChain
 
-        installTask.conventionMapping.executable = { executable.executableFile }
-        installTask.lib { binary.libs*.runtimeFiles }
+		def project = installTask.project
+		installTask.conventionMapping.destinationDir = { project.file("${project.buildDir}/install/${binary.namingScheme.outputDirectoryBase}") }
 
-        installTask.dependsOn(executable)
-        return installTask
-    }
+		installTask.conventionMapping.executable = { executable.executableFile }
+		installTask.lib { binary.libs*.runtimeFiles }
+
+		installTask.dependsOn(executable)
+		return installTask
+	}
 }

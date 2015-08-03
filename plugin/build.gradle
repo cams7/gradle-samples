@@ -1,6 +1,6 @@
 allprojects {
 	apply plugin: 'maven'
-	
+		
 	group = 'br.com.cams7.plugin'
 	version = '1.0-SNAPSHOT'
 	
@@ -19,7 +19,10 @@ subprojects {
 		plugin 'eclipse'
 	}
 	
+	compileJava.options.encoding = 'UTF-8'
 	compileGroovy.options.encoding = 'UTF-8'
+	
+	sourceCompatibility = 1.7
 		
 	repositories {  
 		mavenCentral()  

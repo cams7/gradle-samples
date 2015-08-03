@@ -16,6 +16,7 @@
 package org.gradle.language.c.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -42,37 +43,40 @@ import java.util.Map;
 @Incubating
 public class CLangPlugin implements Plugin<Project> {
 
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+		System.out.println(this.getClass().getName() + ".apply(project="
+				+ project.getName() + ")");
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<CSourceSet> builder) {
-            builder.setLanguageName("c");
-            builder.defaultImplementation(DefaultCSourceSet.class);
-        }
+	}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new C());
-        }
-    }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<CSourceSet> builder) {
+			builder.setLanguageName("c");
+			builder.defaultImplementation(DefaultCSourceSet.class);
+		}
 
-    private static class C extends NativeLanguageTransform<CSourceSet> {
-        public Class<CSourceSet> getSourceSetType() {
-            return CSourceSet.class;
-        }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new C());
+		}
+	}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("cCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+	private static class C extends NativeLanguageTransform<CSourceSet> {
+		public Class<CSourceSet> getSourceSetType() {
+			return CSourceSet.class;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new CompileTaskConfig(this, CCompile.class);
-        }
-    }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("cCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
+
+		public SourceTransformTaskConfig getTransformTask() {
+			return new CompileTaskConfig(this, CCompile.class);
+		}
+	}
 }

@@ -17,6 +17,7 @@
 package org.gradle.language.nativeplatform.internal;
 
 import org.gradle.internal.operations.logging.BuildOperationLogger;
+import org.gradle.language.nativeplatform.internal.SourceIncludes;
 import org.gradle.nativeplatform.internal.AbstractBinaryToolSpec;
 import org.gradle.nativeplatform.toolchain.internal.NativeCompileSpec;
 

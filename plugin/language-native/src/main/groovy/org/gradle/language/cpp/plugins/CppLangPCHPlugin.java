@@ -17,6 +17,7 @@
 package org.gradle.language.cpp.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.cpp.CppSourceSet;
 import org.gradle.language.cpp.tasks.CppPreCompiledHeaderCompile;
@@ -32,28 +33,28 @@ import java.util.Map;
 /**
  * Adds support for compiling C++ pre-compiled headers.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class CppLangPCHPlugin extends RuleSource {
-    @Mutate
-    void registerPreCompiledHeaderTask(PreCompiledHeaderTransformContainer pchTransformContainer) {
-        pchTransformContainer.add(new CppPCH());
-    }
+	@Mutate
+	void registerPreCompiledHeaderTask(
+			PreCompiledHeaderTransformContainer pchTransformContainer) {
+		pchTransformContainer.add(new CppPCH());
+	}
 
+	private static class CppPCH extends NativeLanguageTransform<CppSourceSet> {
+		public Class<CppSourceSet> getSourceSetType() {
+			return CppSourceSet.class;
+		}
 
-    private static class CppPCH extends NativeLanguageTransform<CppSourceSet> {
-        public Class<CppSourceSet> getSourceSetType() {
-            return CppSourceSet.class;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("cppCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("cppCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
-
-        @Override
-        public SourceTransformTaskConfig getTransformTask() {
-            return new PCHCompileTaskConfig(this, CppPreCompiledHeaderCompile.class);
-        }
-    }
+		@Override
+		public SourceTransformTaskConfig getTransformTask() {
+			return new PCHCompileTaskConfig(this,
+					CppPreCompiledHeaderCompile.class);
+		}
+	}
 }

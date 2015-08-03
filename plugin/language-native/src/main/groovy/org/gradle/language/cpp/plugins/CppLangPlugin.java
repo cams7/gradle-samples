@@ -16,6 +16,7 @@
 package org.gradle.language.cpp.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -41,37 +42,37 @@ import java.util.Map;
  */
 @Incubating
 public class CppLangPlugin implements Plugin<Project> {
-    public void apply(final Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(final Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<CppSourceSet> builder) {
-            builder.setLanguageName("cpp");
-            builder.defaultImplementation(DefaultCppSourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<CppSourceSet> builder) {
+			builder.setLanguageName("cpp");
+			builder.defaultImplementation(DefaultCppSourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new Cpp());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new Cpp());
+		}
+	}
 
-    private static class Cpp extends NativeLanguageTransform<CppSourceSet> {
-        public Class<CppSourceSet> getSourceSetType() {
-            return CppSourceSet.class;
-        }
+	private static class Cpp extends NativeLanguageTransform<CppSourceSet> {
+		public Class<CppSourceSet> getSourceSetType() {
+			return CppSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("cppCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("cppCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new CompileTaskConfig(this, CppCompile.class);
-        }
-    }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new CompileTaskConfig(this, CppCompile.class);
+		}
+	}
 }

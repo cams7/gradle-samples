@@ -33,6 +33,8 @@ public class GccToolChain extends AbstractGccCompatibleToolChain implements Gcc 
 
     public GccToolChain(Instantiator instantiator, String name, BuildOperationProcessor buildOperationProcessor, OperatingSystem operatingSystem, FileResolver fileResolver, ExecActionFactory execActionFactory, CompilerMetaDataProviderFactory metaDataProviderFactory) {
         super(name, buildOperationProcessor, operatingSystem, fileResolver, execActionFactory, metaDataProviderFactory.gcc(), instantiator);
+        
+        System.out.println(this.getClass().getName() +"("+name+")");
     }
 
     @Override
@@ -43,5 +45,6 @@ public class GccToolChain extends AbstractGccCompatibleToolChain implements Gcc 
     @Override
     protected void initForImplementation(DefaultGccPlatformToolChain platformToolChain, GccVersionResult versionResult) {
         platformToolChain.setCanUseCommandFile(versionResult.getVersion().getMajor() >= 4);
+        System.out.println(this.getClass().getName() +".initForImplementation()");
     }
 }

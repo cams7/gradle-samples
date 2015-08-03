@@ -16,6 +16,7 @@
 package org.gradle.language.assembler.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -41,37 +42,38 @@ import java.util.Map;
 @Incubating
 public class AssemblerLangPlugin implements Plugin<Project> {
 
-    public void apply(Project project) {
-        project.getPluginManager().apply(ComponentModelBasePlugin.class);
-    }
+	public void apply(Project project) {
+		project.getPluginManager().apply(ComponentModelBasePlugin.class);
+	}
 
-    @SuppressWarnings("UnusedDeclaration")
-    static class Rules extends RuleSource {
-        @LanguageType
-        void registerLanguage(LanguageTypeBuilder<AssemblerSourceSet> builder) {
-            builder.setLanguageName("asm");
-            builder.defaultImplementation(DefaultAssemblerSourceSet.class);
-        }
+	static class Rules extends RuleSource {
+		@LanguageType
+		void registerLanguage(LanguageTypeBuilder<AssemblerSourceSet> builder) {
+			builder.setLanguageName("asm");
+			builder.defaultImplementation(DefaultAssemblerSourceSet.class);
+		}
 
-        @Mutate
-        void registerLanguageTransform(LanguageTransformContainer languages, ServiceRegistry serviceRegistry) {
-            languages.add(new Assembler());
-        }
-    }
+		@Mutate
+		void registerLanguageTransform(LanguageTransformContainer languages,
+				ServiceRegistry serviceRegistry) {
+			languages.add(new Assembler());
+		}
+	}
 
-    private static class Assembler extends NativeLanguageTransform<AssemblerSourceSet> {
-        public Class<AssemblerSourceSet> getSourceSetType() {
-            return AssemblerSourceSet.class;
-        }
+	private static class Assembler extends
+			NativeLanguageTransform<AssemblerSourceSet> {
+		public Class<AssemblerSourceSet> getSourceSetType() {
+			return AssemblerSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("assembler", DefaultTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("assembler", DefaultTool.class);
+			return tools;
+		}
 
-        public SourceTransformTaskConfig getTransformTask() {
-            return new AssembleTaskConfig();
-        }
-    }
+		public SourceTransformTaskConfig getTransformTask() {
+			return new AssembleTaskConfig();
+		}
+	}
 }

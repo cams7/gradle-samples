@@ -15,6 +15,12 @@
  */
 package org.gradle.language.nativeplatform.internal;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -40,12 +46,6 @@ import org.gradle.nativeplatform.Tool;
 import org.gradle.nativeplatform.internal.NativeBinarySpecInternal;
 import org.gradle.platform.base.BinarySpec;
 import org.gradle.util.CollectionUtils;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
 
 public class CompileTaskConfig implements SourceTransformTaskConfig {
 

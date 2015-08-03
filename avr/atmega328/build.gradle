@@ -1,19 +1,24 @@
 buildscript {	                
 	repositories {
-		maven {url uri('../../repo')}
+		mavenCentral()
+		maven {url "https://gradle.artifactoryonline.com/gradle/libs-releases-local"}
+		maven {url "../../lib"}
+		maven {url "../../repo"}
+		
 	}
 	dependencies {
-		classpath module("br.com.cams7.plugin:avr:1.0-SNAPSHOT")
+		classpath "br.com.cams7.plugin:avr:1.0-SNAPSHOT"
 	}	
 }
 
 apply {
-	plugin "assembler"
-	plugin "c"
-	plugin "cpp"
-	//plugin "objective-c"
-	//plugin "objective-cpp"
-	//plugin "windows-resources"
+	//plugin "br.com.cams7.native-component"
+	plugin "br.com.cams7.assembler"
+	plugin "br.com.cams7.c"
+	plugin "br.com.cams7.cpp"
+	//plugin "br.com.cams7.objective-c"
+	//plugin "br.com.cams7.objective-cpp"
+	//plugin "br.com.cams7.windows-resources"
 	plugin "br.com.cams7.avr"			
 }
 

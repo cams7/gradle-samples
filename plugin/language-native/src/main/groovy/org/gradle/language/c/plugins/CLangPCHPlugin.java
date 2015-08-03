@@ -17,6 +17,7 @@
 package org.gradle.language.c.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.c.CSourceSet;
 import org.gradle.language.c.tasks.CPreCompiledHeaderCompile;
@@ -32,27 +33,28 @@ import java.util.Map;
 /**
  * Adds support for compiling C pre-compiled headers.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class CLangPCHPlugin extends RuleSource {
-    @Mutate
-    void registerPreCompiledHeaderTask(PreCompiledHeaderTransformContainer pchTransformContainer) {
-        pchTransformContainer.add(new CPCH());
-    }
+	@Mutate
+	void registerPreCompiledHeaderTask(
+			PreCompiledHeaderTransformContainer pchTransformContainer) {
+		pchTransformContainer.add(new CPCH());
+	}
 
-    private static class CPCH extends NativeLanguageTransform<CSourceSet> {
-        public Class<CSourceSet> getSourceSetType() {
-            return CSourceSet.class;
-        }
+	private static class CPCH extends NativeLanguageTransform<CSourceSet> {
+		public Class<CSourceSet> getSourceSetType() {
+			return CSourceSet.class;
+		}
 
-        public Map<String, Class<?>> getBinaryTools() {
-            Map<String, Class<?>> tools = Maps.newLinkedHashMap();
-            tools.put("cCompiler", DefaultPreprocessingTool.class);
-            return tools;
-        }
+		public Map<String, Class<?>> getBinaryTools() {
+			Map<String, Class<?>> tools = Maps.newLinkedHashMap();
+			tools.put("cCompiler", DefaultPreprocessingTool.class);
+			return tools;
+		}
 
-        @Override
-        public SourceTransformTaskConfig getTransformTask() {
-            return new PCHCompileTaskConfig(this, CPreCompiledHeaderCompile.class);
-        }
-    }
+		@Override
+		public SourceTransformTaskConfig getTransformTask() {
+			return new PCHCompileTaskConfig(this,
+					CPreCompiledHeaderCompile.class);
+		}
+	}
 }

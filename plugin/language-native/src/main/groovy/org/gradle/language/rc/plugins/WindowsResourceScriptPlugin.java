@@ -16,6 +16,7 @@
 package org.gradle.language.rc.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.api.Incubating;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -47,7 +48,6 @@ public class WindowsResourceScriptPlugin implements Plugin<Project> {
         project.getPluginManager().apply(ComponentModelBasePlugin.class);
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     static class Rules extends RuleSource {
         @LanguageType
         void registerLanguage(LanguageTypeBuilder<WindowsResourceSet> builder) {

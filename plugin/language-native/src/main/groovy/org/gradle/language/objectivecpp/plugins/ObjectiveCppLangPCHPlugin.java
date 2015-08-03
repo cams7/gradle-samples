@@ -17,6 +17,7 @@
 package org.gradle.language.objectivecpp.plugins;
 
 import com.google.common.collect.Maps;
+
 import org.gradle.language.base.internal.SourceTransformTaskConfig;
 import org.gradle.language.nativeplatform.internal.DefaultPreprocessingTool;
 import org.gradle.language.nativeplatform.internal.NativeLanguageTransform;
@@ -32,7 +33,6 @@ import java.util.Map;
 /**
  * Adds support for compiling Objective C++ pre-compiled headers.
  */
-@SuppressWarnings("UnusedDeclaration")
 public class ObjectiveCppLangPCHPlugin extends RuleSource {
     @Mutate
     void registerPreCompiledHeaderTask(PreCompiledHeaderTransformContainer pchTransformContainer) {

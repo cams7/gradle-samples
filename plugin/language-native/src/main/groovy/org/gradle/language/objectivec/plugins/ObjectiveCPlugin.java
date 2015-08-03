@@ -24,7 +24,7 @@ import org.gradle.nativeplatform.plugins.NativeComponentPlugin;
 /**
  * A plugin for projects wishing to build native binary components from Objective-C sources.
  *
- * <p>Automatically includes the {@link ObjectiveCLangPlugin} for core Objective-C support and the {@link org.gradle.nativeplatform.plugins.NativeComponentPlugin} for native component support.</p>
+ * <p>Automatically includes the {@link ObjectiveCLangPlugin} for core Objective-C support and the {@link br.com.cams7.nativeplatform.plugins.NativeComponentPlugin} for native component support.</p>
  *
  * <li>Creates a {@link org.gradle.language.objectivec.tasks.ObjectiveCCompile} task for each {@link org.gradle.language.objectivec.ObjectiveCSourceSet} to compile the Objective-C sources.</li>
  */

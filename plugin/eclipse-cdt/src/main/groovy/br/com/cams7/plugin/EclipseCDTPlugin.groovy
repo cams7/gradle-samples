@@ -7,11 +7,6 @@ import javax.inject.Inject
 
 import org.gradle.api.Project
 import org.gradle.internal.reflect.Instantiator
-import org.gradle.language.cpp.plugins.CppLangPlugin.Cpp;
-import org.gradle.language.cpp.plugins.CppPlugin
-import org.gradle.language.cpp.tasks.CppCompile;
-import org.gradle.nativeplatform.NativeExecutableSpec;
-import org.gradle.nativeplatform.toolchain.internal.compilespec.CppCompileSpec;
 import org.gradle.plugins.ide.api.XmlFileContentMerger
 import org.gradle.plugins.ide.eclipse.EclipsePlugin
 import org.gradle.plugins.ide.eclipse.GenerateEclipseProject

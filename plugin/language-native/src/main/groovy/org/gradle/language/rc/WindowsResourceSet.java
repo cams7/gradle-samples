@@ -16,9 +16,9 @@
 package org.gradle.language.rc;
 
 import org.gradle.api.Incubating;
+import org.gradle.language.base.LanguageSourceSet;
 import org.gradle.language.nativeplatform.HeaderExportingSourceSet;
 import org.gradle.language.nativeplatform.NativeResourceSet;
-import org.gradle.language.base.LanguageSourceSet;
 
 /**
  * A set of Windows Resource definition files.
